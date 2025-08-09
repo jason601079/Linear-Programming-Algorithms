@@ -75,32 +75,87 @@ namespace Linear_Programming_Algorithms
         {
             try
             {
+                // Read file into memory
                 var text = File.ReadAllText(path);
+                var lines = text.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+
+                // === Validation ===
+                if (lines.Length < 3)
+                    throw new FormatException("File must have at least an objective line, one constraint, and a sign restriction line.");
+
+                // --- Objective Line ---
+                var firstLineParts = lines[0].Trim().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                if (firstLineParts.Length < 2)
+                    throw new FormatException("Objective line must have 'max' or 'min' followed by at least one coefficient.");
+
+                string problemType = firstLineParts[0].ToLower();
+                if (problemType != "max" && problemType != "min")
+                    throw new FormatException("First word must be 'max' or 'min'.");
+
+                int decisionVarCount = firstLineParts.Length - 1;
+                for (int i = 1; i < firstLineParts.Length; i++)
+                {
+                    if (!IsSignedNumber(firstLineParts[i]))
+                        throw new FormatException("Invalid coefficient in objective function: " + firstLineParts[i]);
+                }
+
+                // --- Constraints ---
+                for (int i = 1; i < lines.Length - 1; i++)
+                {
+                    var parts = lines[i].Trim().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                    if (parts.Length != decisionVarCount + 2)
+                        throw new FormatException("Constraint " + i + " does not have correct number of terms.");
+
+                    for (int j = 0; j < decisionVarCount; j++)
+                    {
+                        if (!IsSignedNumber(parts[j]))
+                            throw new FormatException("Invalid coefficient in constraint " + i + ": " + parts[j]);
+                    }
+
+                    string relation = parts[decisionVarCount];
+                    if (relation != "<=" && relation != ">=" && relation != "=")
+                        throw new FormatException("Invalid relation in constraint " + i + ": " + relation);
+
+                    double rhs;
+                    if (!double.TryParse(parts[decisionVarCount + 1], out rhs))
+                        throw new FormatException("Invalid RHS in constraint " + i + ": " + parts[decisionVarCount + 1]);
+                }
+
+                // --- Sign Restrictions ---
+                var lastLineParts = lines[lines.Length - 1].Trim().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                if (lastLineParts.Length != decisionVarCount)
+                    throw new FormatException("Sign restriction line must match number of decision variables.");
+
+                foreach (var token in lastLineParts)
+                {
+                    if (token != "+" && token != "-" && token != "urs" && token != "int" && token != "bin")
+                        throw new FormatException("Invalid sign restriction: " + token);
+                }
+
+                // === If we reached here, format is valid ===
                 _currentFilePath = path;
                 txtPreview.Text = text;
                 lblDropHint.Text = $"Loaded: {Path.GetFileName(path)}";
-                statusLabel.Text = $"Loaded {Path.GetFileName(path)}";
-
-                var lines = text.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-                var objectiveLine = lines.FirstOrDefault(l =>
-                    l.IndexOf("max", StringComparison.OrdinalIgnoreCase) >= 0 ||
-                    l.IndexOf("min", StringComparison.OrdinalIgnoreCase) >= 0 ||
-                    l.IndexOf("objective", StringComparison.OrdinalIgnoreCase) >= 0);
-
-                string summary = $"Lines: {lines.Length}";
-                if (!string.IsNullOrEmpty(objectiveLine))
-                {
-                    summary += $" • Objective preview: {Truncate(objectiveLine.Trim(), 80)}";
-                }
-
-                statusLabel.Text = summary;
+                statusLabel.Text = $"Loaded {Path.GetFileName(path)} • Variables: {decisionVarCount} • Constraints: {lines.Length - 2}";
+            }
+            catch (FormatException ex)
+            {
+                MessageBox.Show("Invalid file format:\n" + ex.Message, "Format Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                statusLabel.Text = "Error: invalid format";
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Failed to load file: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Failed to load file:\n" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 statusLabel.Text = "Error loading file";
             }
         }
+
+        private bool IsSignedNumber(string input)
+        {
+            double val;
+            return (input.StartsWith("+") || input.StartsWith("-")) && double.TryParse(input, out val);
+        }
+
 
         private static string Truncate(string value, int maxChars)
         {
