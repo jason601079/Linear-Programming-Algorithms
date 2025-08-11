@@ -1,0 +1,11 @@
+C:\Belgium Campus\2025 (3rd Year)\Classes\LPR381\Project\Morne\Brnach & Bound algorithm\bin\Debug\Brnach & Bound algorithm.exe.config
+C:\Belgium Campus\2025 (3rd Year)\Classes\LPR381\Project\Morne\Brnach & Bound algorithm\bin\Debug\Brnach & Bound algorithm.exe
+C:\Belgium Campus\2025 (3rd Year)\Classes\LPR381\Project\Morne\Brnach & Bound algorithm\bin\Debug\Brnach & Bound algorithm.pdb
+C:\Belgium Campus\2025 (3rd Year)\Classes\LPR381\Project\Morne\Brnach & Bound algorithm\obj\Debug\Brnach & Bound algorithm.csproj.AssemblyReference.cache
+C:\Belgium Campus\2025 (3rd Year)\Classes\LPR381\Project\Morne\Brnach & Bound algorithm\obj\Debug\Brnach___Bound_algorithm.Form1.resources
+C:\Belgium Campus\2025 (3rd Year)\Classes\LPR381\Project\Morne\Brnach & Bound algorithm\obj\Debug\Brnach___Bound_algorithm.Properties.Resources.resources
+C:\Belgium Campus\2025 (3rd Year)\Classes\LPR381\Project\Morne\Brnach & Bound algorithm\obj\Debug\Brnach & Bound algorithm.csproj.GenerateResource.cache
+C:\Belgium Campus\2025 (3rd Year)\Classes\LPR381\Project\Morne\Brnach & Bound algorithm\obj\Debug\Brnach & Bound algorithm.csproj.CoreCompileInputs.cache
+C:\Belgium Campus\2025 (3rd Year)\Classes\LPR381\Project\Morne\Brnach & Bound algorithm\obj\Debug\Brnach & Bound algorithm.exe
+C:\Belgium Campus\2025 (3rd Year)\Classes\LPR381\Project\Morne\Brnach & Bound algorithm\obj\Debug\Brnach & Bound algorithm.pdb
+C:\Belgium Campus\2025 (3rd Year)\Classes\LPR381\Project\Morne\Brnach & Bound algorithm\obj\Debug\Brnach & Bound algorithm.exe.config
