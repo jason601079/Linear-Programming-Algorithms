@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using System.Globalization;
+using System.Xml.Linq;
 
 namespace Linear_Programming_Algorithms
 {
@@ -75,27 +77,16 @@ namespace Linear_Programming_Algorithms
         {
             try
             {
-                // Read file into memory
-                var text = File.ReadAllText(path);
-                var lines = text.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-
-                // === Validation ===
-                if (lines.Length < 3)
-                    throw new FormatException("File must have at least an objective line, one constraint, and a sign restriction line.");
-
-                // --- Objective Line ---
-                var firstLineParts = lines[0].Trim().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                if (firstLineParts.Length < 2)
-                    throw new FormatException("Objective line must have 'max' or 'min' followed by at least one coefficient.");
-
-                string problemType = firstLineParts[0].ToLower();
-                if (problemType != "max" && problemType != "min")
-                    throw new FormatException("First word must be 'max' or 'min'.");
+                var lp = LPData.Parse(path);
 
                 _currentFilePath = path;
+                var text = File.ReadAllText(path);
                 txtPreview.Text = text;
                 lblDropHint.Text = $"Loaded: {Path.GetFileName(path)}";
-                statusLabel.Text = $"Loaded {Path.GetFileName(path)} • Variables: {decisionVarCount} • Constraints: {lines.Length - 2}";
+                statusLabel.Text = $"Loaded {Path.GetFileName(path)} • Variables: {lp.VariableCount} • Constraints: {lp.Constraints.Count}";
+
+                // Example: show objective coefficients as comma list (optional)
+                // MessageBox.Show(string.Join(", ", lp.Objective.Coefficients.Select(c => c.ToString(CultureInfo.InvariantCulture))));
             }
             catch (FormatException ex)
             {
@@ -108,6 +99,7 @@ namespace Linear_Programming_Algorithms
                 statusLabel.Text = "Error loading file";
             }
         }
+
 
         private bool IsSignedNumber(string input)
         {
@@ -134,14 +126,59 @@ namespace Linear_Programming_Algorithms
             }
 
             lstPrimalLog.Items.Clear();
-            lstPrimalLog.Items.Add("Primal Simplex — Run started.");
-            lstPrimalLog.Items.Add("Parsing LP and converting to standard form... (stub)");
-            lstPrimalLog.Items.Add("Initial tableau built.");
-            lstPrimalLog.Items.Add("Performing pivots until optimality... (stub)");
-            lstPrimalLog.Items.Add("Optimal tableau reached. Objective = 42.00 (stub)");
-            _stepIndices[lstPrimalLog.Name] = 0;
-            statusLabel.Text = "Primal Simplex run completed (stub)";
+            try
+            {
+                var lp = LPData.Parse(_currentFilePath); // may throw FormatException / NotSupportedException
+                lstPrimalLog.Items.Add("LP parsed successfully.");
+                lstPrimalLog.Items.Add($"Vars: {lp.VariableCount}, Constraints: {lp.Constraints.Count}");
+                lstPrimalLog.Items.Add("Running TestAlgo (basic primal simplex)...");
+
+                var algo = new TestAlgo(lp);
+                var result = algo.RunSimplex(maxIterations: 500);
+
+                foreach (var line in result.Log)
+                    lstPrimalLog.Items.Add(line);
+
+                if (result.Status == SimplexStatus.Optimal)
+                {
+                    lstPrimalLog.Items.Add($"Solution (first {lp.VariableCount} vars):");
+                    for (int i = 0; i < result.PrimalSolution.Length; i++)
+                    {
+                        lstPrimalLog.Items.Add($"x{i + 1} = {result.PrimalSolution[i].ToString(CultureInfo.InvariantCulture)}");
+                    }
+                    lstPrimalLog.Items.Add($"Objective = {result.ObjectiveValue.ToString(CultureInfo.InvariantCulture)}");
+                    statusLabel.Text = "Primal Simplex: Optimal";
+                }
+                else if (result.Status == SimplexStatus.Unbounded)
+                {
+                    lstPrimalLog.Items.Add("Result: Unbounded.");
+                    statusLabel.Text = "Primal Simplex: Unbounded";
+                }
+                else
+                {
+                    lstPrimalLog.Items.Add("Result: Iteration limit reached / no solution.");
+                    statusLabel.Text = "Primal Simplex: Iteration limit";
+                }
+
+                _stepIndices[lstPrimalLog.Name] = 0;
+            }
+            catch (FormatException fex)
+            {
+                MessageBox.Show("Invalid file format:\n" + fex.Message, "Format Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                statusLabel.Text = "Error: invalid format";
+            }
+            catch (NotSupportedException nsx)
+            {
+                MessageBox.Show("Unsupported LP for this quick solver:\n" + nsx.Message, "Not supported", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                statusLabel.Text = "Error: unsupported LP";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Failed to run primal simplex:\n" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                statusLabel.Text = "Error running primal";
+            }
         }
+
 
         // Revised Primal Simplex: Run
         private void RunRevised_Click(object sender, EventArgs e)
