@@ -92,47 +92,6 @@ namespace Linear_Programming_Algorithms
                 if (problemType != "max" && problemType != "min")
                     throw new FormatException("First word must be 'max' or 'min'.");
 
-                int decisionVarCount = firstLineParts.Length - 1;
-                for (int i = 1; i < firstLineParts.Length; i++)
-                {
-                    if (!IsSignedNumber(firstLineParts[i]))
-                        throw new FormatException("Invalid coefficient in objective function: " + firstLineParts[i]);
-                }
-
-                // --- Constraints ---
-                for (int i = 1; i < lines.Length - 1; i++)
-                {
-                    var parts = lines[i].Trim().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                    if (parts.Length != decisionVarCount + 2)
-                        throw new FormatException("Constraint " + i + " does not have correct number of terms.");
-
-                    for (int j = 0; j < decisionVarCount; j++)
-                    {
-                        if (!IsSignedNumber(parts[j]))
-                            throw new FormatException("Invalid coefficient in constraint " + i + ": " + parts[j]);
-                    }
-
-                    string relation = parts[decisionVarCount];
-                    if (relation != "<=" && relation != ">=" && relation != "=")
-                        throw new FormatException("Invalid relation in constraint " + i + ": " + relation);
-
-                    double rhs;
-                    if (!double.TryParse(parts[decisionVarCount + 1], out rhs))
-                        throw new FormatException("Invalid RHS in constraint " + i + ": " + parts[decisionVarCount + 1]);
-                }
-
-                // --- Sign Restrictions ---
-                var lastLineParts = lines[lines.Length - 1].Trim().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                if (lastLineParts.Length != decisionVarCount)
-                    throw new FormatException("Sign restriction line must match number of decision variables.");
-
-                foreach (var token in lastLineParts)
-                {
-                    if (token != "+" && token != "-" && token != "urs" && token != "int" && token != "bin")
-                        throw new FormatException("Invalid sign restriction: " + token);
-                }
-
-                // === If we reached here, format is valid ===
                 _currentFilePath = path;
                 txtPreview.Text = text;
                 lblDropHint.Text = $"Loaded: {Path.GetFileName(path)}";
