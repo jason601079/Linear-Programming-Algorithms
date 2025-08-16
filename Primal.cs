@@ -3,14 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Linear_Programming_Algorithms.Cutting_plane;
+
 
 namespace Linear_Programming_Algorithms
 {
-    internal class Primal
+    public class Primal
     {
         private double[,] tableau;
         private int numConstraints;
         private int numVariables;
+
+        public double[,] TableauPublic => tableau;
+
 
         public Primal(double[,] A, double[] b, double[] c)
         {
