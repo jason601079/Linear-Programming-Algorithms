@@ -1,10 +1,11 @@
 ﻿// Form1.cs
 using System;
+using System.Collections.Generic;
+using System.Drawing.Drawing2D;
+using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Collections.Generic;
 using System.Windows.Forms;
-using System.Globalization;
 using System.Xml.Linq;
 
 namespace Linear_Programming_Algorithms
@@ -131,36 +132,88 @@ namespace Linear_Programming_Algorithms
                 var lp = LPData.Parse(_currentFilePath); // may throw FormatException / NotSupportedException
                 lstPrimalLog.Items.Add("LP parsed successfully.");
                 lstPrimalLog.Items.Add($"Vars: {lp.VariableCount}, Constraints: {lp.Constraints.Count}");
-                lstPrimalLog.Items.Add("Running TestAlgo (basic primal simplex)...");
+                lstPrimalLog.Items.Add("Running  Primal simplex)...");
 
-                var algo = new TestAlgo(lp);
-                var result = algo.RunSimplex(maxIterations: 500);
+                double[] c = lp.Objective.Coefficients;
 
-                foreach (var line in result.Log)
-                    lstPrimalLog.Items.Add(line);
+                int m = lp.Constraints.Count;        // number of constraints
+                int n = lp.VariableCount;            // number of variables
 
-                if (result.Status == SimplexStatus.Optimal)
+                double[,] A = new double[m, n];
+                for (int i = 0; i < m; i++)
                 {
-                    lstPrimalLog.Items.Add($"Solution (first {lp.VariableCount} vars):");
-                    for (int i = 0; i < result.PrimalSolution.Length; i++)
+                    for (int j = 0; j < n; j++)
                     {
-                        lstPrimalLog.Items.Add($"x{i + 1} = {result.PrimalSolution[i].ToString(CultureInfo.InvariantCulture)}");
+                        A[i, j] = lp.Constraints[i].Coefficients[j];
                     }
-                    lstPrimalLog.Items.Add($"Objective = {result.ObjectiveValue.ToString(CultureInfo.InvariantCulture)}");
-                    statusLabel.Text = "Primal Simplex: Optimal";
-                }
-                else if (result.Status == SimplexStatus.Unbounded)
-                {
-                    lstPrimalLog.Items.Add("Result: Unbounded.");
-                    statusLabel.Text = "Primal Simplex: Unbounded";
-                }
-                else
-                {
-                    lstPrimalLog.Items.Add("Result: Iteration limit reached / no solution.");
-                    statusLabel.Text = "Primal Simplex: Iteration limit";
                 }
 
-                _stepIndices[lstPrimalLog.Name] = 0;
+                double[] b = new double[m];
+                for (int i = 0; i < m; i++)
+                {
+                    b[i] = lp.Constraints[i].Rhs;
+                }
+
+                var solver = new Primal(A, b, c);
+
+                solver.Solve();
+
+                string header = "";
+                for (int j = 0; j < lp.VariableCount; j++)
+                    header += $"x{j + 1}".PadLeft(10);
+                for (int j = 0; j < lp.VariableCount; j++)
+                    header += $"s{j + 1}".PadLeft(10);
+                header += "RHS".PadLeft(11);
+
+                int matrixIndex = 1;
+                foreach (var matrix in solver.TableauList) // listOf2DArrays = List<double[,]>
+                {
+                    lstPrimalLog.Items.Add($"Tableau {matrixIndex}:");
+
+                    int rows = matrix.GetLength(0);
+                    int cols = matrix.GetLength(1);
+
+  
+
+                    lstPrimalLog.Items.Add(header);
+
+                    for (int i = 0; i < rows; i++)
+                    {
+                        string row = "";
+                        for (int j = 0; j < cols; j++)
+                        {
+                            // Format each number to 3 decimals, pad for alignment
+                            row += matrix[i, j].ToString("F3").PadLeft(12);
+                        }
+                        lstPrimalLog.Items.Add(row);
+                    }
+
+                    lstPrimalLog.Items.Add(""); // blank line
+                    matrixIndex++;
+                }
+
+                lstPrimalLog.Items.Add("Optimal Table");
+                lstPrimalLog.Items.Add(""); // blank line
+                lstPrimalLog.Items.Add(header);
+
+                for (int i = 0; i < solver.OptimalTableau.GetLength(0); i++) // rows
+                {
+                    string row = "";
+                    for (int j = 0; j < solver.OptimalTableau.GetLength(1); j++) // columns
+                    {
+                        row += solver.OptimalTableau[i, j].ToString("F3").PadLeft(12);  // add each number with space
+                    }
+                   
+                    lstPrimalLog.Items.Add(row);
+                    lstPrimalLog.Items.Add(""); // blank line
+                }
+
+                var (x, z) = solver.GetSolution();
+
+                lstPrimalLog.Items.Add($"Optimal Value = {z:F3}");
+                for (int i = 0; i < x.Length; i++)
+                    lstPrimalLog.Items.Add($"x{i + 1} = {x[i]:F3}");
+
             }
             catch (FormatException fex)
             {
