@@ -10,8 +10,12 @@ using System.Xml.Linq;
 
 namespace Linear_Programming_Algorithms
 {
+
     public partial class Form1 : Form
     {
+        private KnapsackStepper _stepper = new KnapsackStepper();
+
+
         private string _currentFilePath = null;
         // per-log step counters (keyed by ListBox.Name)
         private readonly Dictionary<string, int> _stepIndices = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
@@ -452,6 +456,109 @@ namespace Linear_Programming_Algorithms
             }
 
             statusLabel.Text = "Reset target not found";
+        }
+
+      
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            // ensure a file was already loaded
+            if (string.IsNullOrEmpty(_currentFilePath))
+            {
+                MessageBox.Show("Load an LP file first (Browse or drag & drop).", "No file", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            if (!System.IO.File.Exists(_currentFilePath))
+            {
+                MessageBox.Show("The LP file could not be found. Please re-load the file.", "File not found", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            lstKnapsack.Items.Clear();
+
+            try
+            {
+                // Parse LP file using your Data.Parse
+                var data = LPData.Parse(_currentFilePath);
+
+                // Solve
+                var solver = new KnapsackSolver();
+                var (maxProfit, taken) = solver.Solve(data);
+
+                // Show in listBox
+                lstKnapsack.Items.Add($"Max profit: {maxProfit}");
+                lstKnapsack.Items.Add("Items taken (1-based indices):");
+
+                double totalWeight = 0.0;
+                bool any = false;
+                for (int i = 0; i < taken.Length; i++)
+                {
+                    if (taken[i])
+                    {
+                        any = true;
+                        double profit = data.Objective.Coefficients[i];
+                        double weight = data.Constraints[0].Coefficients[i];
+                        lstKnapsack.Items.Add($"  Item {i + 1}: profit={profit}, weight={weight}");
+                        totalWeight += weight;
+                    }
+                }
+
+                if (!any) lstKnapsack.Items.Add("  (none)");
+                lstKnapsack.Items.Add($"Total weight: {totalWeight} / {data.Constraints[0].Rhs}");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error: {ex.Message}", "Solve failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnKnapsackStep_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(_currentFilePath))
+            {
+                MessageBox.Show("Load an LP file first (Browse or drag & drop).", "No file", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            try
+            {
+                // If stepper not initialized, initialize it (first step)
+                if (!_stepper.IsInitialized)
+                {
+                    var data = LPData.Parse(_currentFilePath);
+                    _stepper.Initialize(data);
+                    lstKnapsack.Items.Clear();
+                    lstKnapsack.Items.Add("=== Step Trace (press Step repeatedly) ===");
+                    lstKnapsack.Items.Add($"Root bound = {_stepper.RunAll().MaxProfit}"); // optional quick sanity line - remove if undesired
+                    lstKnapsack.Items.Clear(); // prefer to start with empty trace
+                }
+
+                var step = _stepper.Step();
+                foreach (var line in step.Lines)
+                    lstKnapsack.Items.Add(line);
+
+                // if finished, append final summary and optionally reset stepper
+                if (step.IsFinished)
+                {
+                    lstKnapsack.Items.Add("");
+                    lstKnapsack.Items.Add("Finished. (press Reset to start new trace)");
+                }
+
+                // auto-scroll to bottom
+                if (lstKnapsack.Items.Count > 0)
+                    lstKnapsack.SelectedIndex = lstKnapsack.Items.Count - 1;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error: {ex.Message}", "Step failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            _stepper.Reset();
+            lstKnapsack.Items.Clear();
         }
     }
 }
