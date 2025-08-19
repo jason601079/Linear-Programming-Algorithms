@@ -16,7 +16,7 @@ namespace Linear_Programming_Algorithms
 
             int n = profits.Length;
 
-            // Build items and sort by profit/weight ratio descending (used by bound)
+            // Build items and sort by profit/weight ratio descending 
             var items = Enumerable.Range(0, n)
                 .Select(i => new Item
                 {
@@ -144,7 +144,7 @@ namespace Linear_Programming_Algorithms
             return Solve(profits, weights, capacity);
         }
 
-        // Convenience: parse file path using your Data.Parse and solve
+        // Parse file path using Data.Parse and solve
         public (double maxProfit, bool[] taken) SolveFromFile(string path)
         {
             var data = LPData.Parse(path);

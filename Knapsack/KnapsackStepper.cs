@@ -138,23 +138,25 @@ namespace Linear_Programming_Algorithms
             yield return new string('-', 60);
         }
 
-        // Step: perform one loop iteration (pop one node and branch it).
-        // When finished (queue empty) returns IsFinished==true with final summary.
+        
         public StepResult Step()
         {
-            if (!IsInitialized) throw new InvalidOperationException("Stepper not initialized. Call Initialize(...) first.");
+            if (!IsInitialized)
+                throw new InvalidOperationException("Stepper not initialized. Call Initialize(...) first.");
+            //Check if finished already
             if (IsFinished)
             {
-                var finishedAlready = new StepResult();
-                finishedAlready.IsFinished = true;
+                var finishedAlready = new StepResult { IsFinished = true };
                 finishedAlready.Lines.Add("Stepper already finished.");
                 finishedAlready.Lines.Add($"Best profit = {_bestProfit:0.##}");
-                finishedAlready.Lines.Add("Taken (original indices): " + (_bestTakenOriginal == null ? "(none)" : string.Join(", ", IndicesFromBoolArray(_bestTakenOriginal))));
+                finishedAlready.Lines.Add("Taken (original indices): " +
+                    (_bestTakenOriginal == null ? "(none)" : string.Join(", ", IndicesFromBoolArray(_bestTakenOriginal))));
                 return finishedAlready;
             }
 
             var res = new StepResult();
 
+            //Check if queue is empty
             if (_queue == null || _queue.Count == 0)
             {
                 // finished
@@ -162,11 +164,12 @@ namespace Linear_Programming_Algorithms
                 res.IsFinished = true;
                 res.Lines.Add("No more nodes. Search finished.");
                 res.Lines.Add($"Best profit = {_bestProfit:0.##}");
-                res.Lines.Add("Taken (original indices): " + (_bestTakenOriginal == null ? "(none)" : string.Join(", ", IndicesFromBoolArray(_bestTakenOriginal))));
+                res.Lines.Add("Taken (original indices): " +
+                    (_bestTakenOriginal == null ? "(none)" : string.Join(", ", IndicesFromBoolArray(_bestTakenOriginal))));
                 return res;
             }
 
-            // Pop best-bound node
+            // Choose the best node to expand
             int bestIdx = 0;
             for (int i = 1; i < _queue.Count; i++)
                 if (_queue[i].Bound > _queue[bestIdx].Bound) bestIdx = i;
@@ -175,21 +178,32 @@ namespace Linear_Programming_Algorithms
             _queue.RemoveAt(bestIdx);
             _nodeCounter++;
 
-           
-            res.Lines.Add($"[{_nodeCounter}] Node level={node.Level}  —  Profit={node.Profit:0.##}, Weight={node.Weight:0.##}, Bound={node.Bound:0.##}");
+            //Report current node
+            res.Lines.Add($"[{_nodeCounter}] Node level = {node.Level}");
+            res.Lines.Add($"    Profit: {node.Profit:0.##}    Weight: {node.Weight:0.##}    Bound: {node.Bound:0.##}");
+            res.Lines.Add("");
 
-            // compute deciding item (subproblem)
+            // Check if any items left to decide
             int nextLevel = node.Level + 1;
             if (nextLevel >= _n)
             {
-                res.Lines.Add("    Subproblem: no more items to decide at this node.");
-                res.Lines.Add($"    Queue size: {_queue.Count}  |  Current best: {_bestProfit:0.##}");
+                res.Lines.Add("    → Subproblem: no more items to decide at this node.");
+                res.Lines.Add("");
+                res.Lines.Add($"    Queue summary:");
+                res.Lines.Add($"        Size = {_queue.Count}");
+                res.Lines.Add($"        Current best = {_bestProfit:0.##}");
+                res.Lines.Add($"        Taken = " +
+                    (_bestTakenOriginal == null ? "(none)" :
+                     string.Join(", ", _bestTakenOriginal.Select((t, i) => t ? (i + 1).ToString() : null).Where(x => x != null))));
                 res.Lines.Add(new string('-', 60));
                 return res;
             }
 
+            //Pick the next item to decide
             var deciding = _items[nextLevel];
-            res.Lines.Add($"    Subproblem: decide item -> sorted={nextLevel}, orig={deciding.OriginalIndex + 1}, ratio={deciding.Ratio:0.##}");
+            res.Lines.Add($"    → Subproblem: decide item");
+            res.Lines.Add($"        sorted = {nextLevel}, original index = {deciding.OriginalIndex + 1}, ratio = {deciding.Ratio:0.##}");
+            res.Lines.Add("");
 
             // Branch: TAKE
             var take = node.Clone();
@@ -198,10 +212,9 @@ namespace Linear_Programming_Algorithms
             take.Profit += deciding.Profit;
             take.Taken[nextLevel] = true;
 
-            // Evaluate TAKE branch
+            //Check feasibility
             if (take.Weight <= _capacity)
             {
-                // feasible
                 bool isNewBest = false;
                 if (take.Profit > _bestProfit)
                 {
@@ -214,13 +227,12 @@ namespace Linear_Programming_Algorithms
                 bool enqueued = take.Bound > _bestProfit;
                 string takeAction = isNewBest ? "NEW BEST" : (enqueued ? "enqueued" : "pruned");
 
-                res.Lines.Add($"    [TAKE] Profit={take.Profit:0.##}, Weight={take.Weight:0.##} — feasible — Bound={take.Bound:0.##} — {takeAction}");
+                res.Lines.Add($"    → [TAKE]  Profit: {take.Profit:0.##}   Weight: {take.Weight:0.##}   — feasible   — Bound: {take.Bound:0.##}   — {takeAction}");
                 if (enqueued) _queue.Add(take);
             }
             else
             {
-                // infeasible
-                res.Lines.Add($"    [TAKE] Profit={take.Profit:0.##}, Weight={take.Weight:0.##} — INFEASIBLE (exceeds capacity) — pruned");
+                res.Lines.Add($"    → [TAKE]  Profit: {take.Profit:0.##}   Weight: {take.Weight:0.##}   — INFEASIBLE (exceeds capacity) — pruned");
             }
 
             // Branch: SKIP
@@ -228,20 +240,30 @@ namespace Linear_Programming_Algorithms
             notTake.Level = nextLevel;
             notTake.Taken[nextLevel] = false;
             notTake.Bound = Bound(notTake);
+
             bool skipEnqueued = notTake.Bound > _bestProfit;
             string skipAction = skipEnqueued ? "enqueued" : "pruned";
-            res.Lines.Add($"    [SKIP] Bound={notTake.Bound:0.##} — {skipAction}");
+            res.Lines.Add($"    → [SKIP]  Bound: {notTake.Bound:0.##} — {skipAction}");
+            res.Lines.Add("");
+
             if (skipEnqueued) _queue.Add(notTake);
 
             // Summary
-            res.Lines.Add($"    Queue size after branching: {_queue.Count}  |  Current best: {_bestProfit:0.##}  |  Taken: " +
-                          (_bestTakenOriginal == null ? "(none)" : string.Join(", ", _bestTakenOriginal.Select((t, i) => t ? (i + 1).ToString() : null).Where(x => x != null))));
-
+            res.Lines.Add($"    Queue summary:");
+            res.Lines.Add($"        Size after branching = {_queue.Count}");
+            res.Lines.Add($"        Current best = {_bestProfit:0.##}");
+            res.Lines.Add($"        Taken = " +
+                (_bestTakenOriginal == null ? "(none)" :
+                 string.Join(", ", _bestTakenOriginal.Select((t, i) => t ? (i + 1).ToString() : null).Where(x => x != null))));
             res.Lines.Add(new string('-', 60));
+
             return res;
         }
 
-       
+
+
+
+
         public KnapsackResult RunAll()
         {
             if (!IsInitialized) throw new InvalidOperationException("Stepper not initialized. Call Initialize(...) first.");
