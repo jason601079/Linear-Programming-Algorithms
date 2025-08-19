@@ -1,4 +1,6 @@
 ﻿// Form1.cs
+using iTextSharp.text.pdf;
+using iTextSharp.text;
 using System;
 using System.Collections.Generic;
 using System.Drawing.Drawing2D;
@@ -23,6 +25,69 @@ namespace Linear_Programming_Algorithms
         public Form1()
         {
             InitializeComponent();
+
+            btnPrimalExport.Click += (s, e) => ExportListBox(lstPrimalLog, "PrimalLog.txt");
+            btnRevisedExport.Click += (s, e) => ExportListBox(lstRevisedLog, "RevisedLog.txt");
+            btnCuttingExport.Click += (s, e) => ExportListBox(lstCuttingLog, "CuttingLog.txt");
+            btnDSExport.Click += (s, e) => ExportListBox(lstSensitivityLog, "SensitivityLog.txt");
+            btnBBExport.Click += (s, e) => ExportListBox(lstBranchLog, "BranchLog.txt");
+            btnKnapsackExport.Click += (s, e) => ExportListBox(lstKnapsack, "KnapsackLog.txt");
+        }
+
+        private void ExportListBox(ListBox listBox, string baseFileName)
+        {
+            if (listBox.Items.Count == 0)
+            {
+                MessageBox.Show("No data to export.", "Export", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            using (SaveFileDialog saveFileDialog = new SaveFileDialog())
+            {
+                saveFileDialog.FileName = baseFileName;
+                saveFileDialog.Filter = "Text Files (*.txt)|*.txt|PDF Files (*.pdf)|*.pdf|All Files (*.*)|*.*";
+
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    string extension = Path.GetExtension(saveFileDialog.FileName).ToLower();
+
+                    if (extension == ".pdf")
+                        ExportToPdf(listBox, saveFileDialog.FileName);
+                    else
+                        ExportToText(listBox, saveFileDialog.FileName);
+
+                    MessageBox.Show("Export successful!", "Export", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+        }
+
+        private void ExportToText(ListBox listBox, string filePath)
+        {
+            using (StreamWriter writer = new StreamWriter(filePath))
+            {
+                foreach (var item in listBox.Items)
+                    writer.WriteLine(item.ToString());
+            }
+        }
+
+        private void ExportToPdf(ListBox listBox, string filePath)
+        {
+            Document doc = new Document(PageSize.A4, 20, 20, 20, 20);
+
+            using (FileStream stream = new FileStream(filePath, FileMode.Create))
+            {
+                PdfWriter.GetInstance(doc, stream);
+                doc.Open();
+
+                var font = FontFactory.GetFont(FontFactory.HELVETICA, 12);
+
+                foreach (var item in listBox.Items)
+                {
+                    doc.Add(new Paragraph(item.ToString(), font));
+                }
+
+                doc.Close();
+            }
         }
 
         private void Form1_Load(object sender, EventArgs e)

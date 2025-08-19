@@ -19,43 +19,6 @@ namespace Linear_Programming_Algorithms
         private System.Windows.Forms.Button btnCopyPreview;
         private System.Windows.Forms.TextBox txtPreview;
 
-        private System.Windows.Forms.TabControl tabControlAlgorithms;
-        private System.Windows.Forms.TabPage tabPrimal;
-        private System.Windows.Forms.TabPage tabRevised;
-        private System.Windows.Forms.TabPage tabSensitivity;
-        private System.Windows.Forms.TabPage tabCutting;
-        private System.Windows.Forms.TabPage tabBranchBound;
-
-        private System.Windows.Forms.FlowLayoutPanel flowPrimalButtons;
-        private System.Windows.Forms.Button btnRunPrimal;
-        private System.Windows.Forms.Button btnStepPrimal;
-        private System.Windows.Forms.Button btnResetPrimal;
-        private System.Windows.Forms.ListBox lstPrimalLog;
-
-        private System.Windows.Forms.FlowLayoutPanel flowRevisedButtons;
-        private System.Windows.Forms.Button btnRunRevised;
-        private System.Windows.Forms.Button btnStepRevised;
-        private System.Windows.Forms.Button btnResetRevised;
-        private System.Windows.Forms.ListBox lstRevisedLog;
-
-        private System.Windows.Forms.FlowLayoutPanel flowSensitivityButtons;
-        private System.Windows.Forms.Button btnRunSensitivity;
-        private System.Windows.Forms.Button btnStepSensitivity;
-        private System.Windows.Forms.Button btnResetSensitivity;
-        private System.Windows.Forms.ListBox lstSensitivityLog;
-
-        private System.Windows.Forms.FlowLayoutPanel flowCuttingButtons;
-        private System.Windows.Forms.Button btnRunCutting;
-        private System.Windows.Forms.Button btnStepCutting;
-        private System.Windows.Forms.Button btnResetCutting;
-        private System.Windows.Forms.ListBox lstCuttingLog;
-
-        private System.Windows.Forms.FlowLayoutPanel flowBranchButtons;
-        private System.Windows.Forms.Button btnRunBranch;
-        private System.Windows.Forms.Button btnStepBranch;
-        private System.Windows.Forms.Button btnResetBranch;
-        private System.Windows.Forms.ListBox lstBranchLog;
-
         private System.Windows.Forms.OpenFileDialog openFileDialog;
         private System.Windows.Forms.StatusStrip statusStrip;
         private System.Windows.Forms.ToolStripStatusLabel statusLabel;
@@ -84,7 +47,6 @@ namespace Linear_Programming_Algorithms
             this.tabPrimal = new System.Windows.Forms.TabPage();
             this.panelPrimal = new System.Windows.Forms.Panel();
             this.lstPrimalLog = new System.Windows.Forms.ListBox();
-            this.lblPrimal = new System.Windows.Forms.Label();
             this.flowPrimalButtons = new System.Windows.Forms.FlowLayoutPanel();
             this.btnRunPrimal = new System.Windows.Forms.Button();
             this.btnStepPrimal = new System.Windows.Forms.Button();
@@ -92,7 +54,6 @@ namespace Linear_Programming_Algorithms
             this.tabRevised = new System.Windows.Forms.TabPage();
             this.panelRevised = new System.Windows.Forms.Panel();
             this.lstRevisedLog = new System.Windows.Forms.ListBox();
-            this.lblRevised = new System.Windows.Forms.Label();
             this.flowRevisedButtons = new System.Windows.Forms.FlowLayoutPanel();
             this.btnRunRevised = new System.Windows.Forms.Button();
             this.btnStepRevised = new System.Windows.Forms.Button();
@@ -100,7 +61,6 @@ namespace Linear_Programming_Algorithms
             this.tabSensitivity = new System.Windows.Forms.TabPage();
             this.panelSensitivity = new System.Windows.Forms.Panel();
             this.lstSensitivityLog = new System.Windows.Forms.ListBox();
-            this.lblSensitivity = new System.Windows.Forms.Label();
             this.flowSensitivityButtons = new System.Windows.Forms.FlowLayoutPanel();
             this.btnRunSensitivity = new System.Windows.Forms.Button();
             this.btnStepSensitivity = new System.Windows.Forms.Button();
@@ -108,7 +68,6 @@ namespace Linear_Programming_Algorithms
             this.tabCutting = new System.Windows.Forms.TabPage();
             this.panelCutting = new System.Windows.Forms.Panel();
             this.lstCuttingLog = new System.Windows.Forms.ListBox();
-            this.lblCutting = new System.Windows.Forms.Label();
             this.flowCuttingButtons = new System.Windows.Forms.FlowLayoutPanel();
             this.btnRunCutting = new System.Windows.Forms.Button();
             this.btnStepCutting = new System.Windows.Forms.Button();
@@ -116,12 +75,12 @@ namespace Linear_Programming_Algorithms
             this.tabBranchBound = new System.Windows.Forms.TabPage();
             this.panelBranch = new System.Windows.Forms.Panel();
             this.lstBranchLog = new System.Windows.Forms.ListBox();
-            this.lblBranch = new System.Windows.Forms.Label();
             this.flowBranchButtons = new System.Windows.Forms.FlowLayoutPanel();
             this.btnRunBranch = new System.Windows.Forms.Button();
             this.btnStepBranch = new System.Windows.Forms.Button();
             this.btnResetBranch = new System.Windows.Forms.Button();
             this.tabBBKnapsack = new System.Windows.Forms.TabPage();
+            this.lstKnapsack = new System.Windows.Forms.ListBox();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.btnKnapsackRun = new System.Windows.Forms.Button();
             this.btnKnapsackStep = new System.Windows.Forms.Button();
@@ -129,7 +88,12 @@ namespace Linear_Programming_Algorithms
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
-            this.lstKnapsack = new System.Windows.Forms.ListBox();
+            this.btnBBExport = new System.Windows.Forms.Button();
+            this.btnCuttingExport = new System.Windows.Forms.Button();
+            this.btnDSExport = new System.Windows.Forms.Button();
+            this.btnRevisedExport = new System.Windows.Forms.Button();
+            this.btnPrimalExport = new System.Windows.Forms.Button();
+            this.btnKnapsackExport = new System.Windows.Forms.Button();
             this.tableLayoutMain.SuspendLayout();
             this.leftColumn.SuspendLayout();
             this.groupFileInput.SuspendLayout();
@@ -354,7 +318,6 @@ namespace Linear_Programming_Algorithms
             // panelPrimal
             // 
             this.panelPrimal.Controls.Add(this.lstPrimalLog);
-            this.panelPrimal.Controls.Add(this.lblPrimal);
             this.panelPrimal.Controls.Add(this.flowPrimalButtons);
             this.panelPrimal.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelPrimal.Location = new System.Drawing.Point(0, 0);
@@ -370,32 +333,22 @@ namespace Linear_Programming_Algorithms
             this.lstPrimalLog.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lstPrimalLog.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.lstPrimalLog.ItemHeight = 37;
-            this.lstPrimalLog.Location = new System.Drawing.Point(12, 94);
+            this.lstPrimalLog.Location = new System.Drawing.Point(12, 82);
             this.lstPrimalLog.Name = "lstPrimalLog";
-            this.lstPrimalLog.Size = new System.Drawing.Size(1166, 812);
+            this.lstPrimalLog.Size = new System.Drawing.Size(1166, 824);
             this.lstPrimalLog.TabIndex = 0;
-            // 
-            // lblPrimal
-            // 
-            this.lblPrimal.Dock = System.Windows.Forms.DockStyle.Top;
-            this.lblPrimal.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(77)))), ((int)(((byte)(85)))), ((int)(((byte)(101)))));
-            this.lblPrimal.Location = new System.Drawing.Point(12, 68);
-            this.lblPrimal.Name = "lblPrimal";
-            this.lblPrimal.Padding = new System.Windows.Forms.Padding(8, 6, 8, 0);
-            this.lblPrimal.Size = new System.Drawing.Size(1166, 26);
-            this.lblPrimal.TabIndex = 1;
-            this.lblPrimal.Text = "Control branching strategy and explore nodes (UI stub).";
             // 
             // flowPrimalButtons
             // 
             this.flowPrimalButtons.Controls.Add(this.btnRunPrimal);
             this.flowPrimalButtons.Controls.Add(this.btnStepPrimal);
             this.flowPrimalButtons.Controls.Add(this.btnResetPrimal);
+            this.flowPrimalButtons.Controls.Add(this.btnPrimalExport);
             this.flowPrimalButtons.Dock = System.Windows.Forms.DockStyle.Top;
             this.flowPrimalButtons.Location = new System.Drawing.Point(12, 12);
             this.flowPrimalButtons.Name = "flowPrimalButtons";
             this.flowPrimalButtons.Padding = new System.Windows.Forms.Padding(8);
-            this.flowPrimalButtons.Size = new System.Drawing.Size(1166, 56);
+            this.flowPrimalButtons.Size = new System.Drawing.Size(1166, 70);
             this.flowPrimalButtons.TabIndex = 2;
             // 
             // btnRunPrimal
@@ -461,7 +414,6 @@ namespace Linear_Programming_Algorithms
             // panelRevised
             // 
             this.panelRevised.Controls.Add(this.lstRevisedLog);
-            this.panelRevised.Controls.Add(this.lblRevised);
             this.panelRevised.Controls.Add(this.flowRevisedButtons);
             this.panelRevised.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelRevised.Location = new System.Drawing.Point(0, 0);
@@ -477,32 +429,22 @@ namespace Linear_Programming_Algorithms
             this.lstRevisedLog.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lstRevisedLog.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.lstRevisedLog.ItemHeight = 37;
-            this.lstRevisedLog.Location = new System.Drawing.Point(12, 94);
+            this.lstRevisedLog.Location = new System.Drawing.Point(12, 82);
             this.lstRevisedLog.Name = "lstRevisedLog";
-            this.lstRevisedLog.Size = new System.Drawing.Size(1166, 812);
+            this.lstRevisedLog.Size = new System.Drawing.Size(1166, 824);
             this.lstRevisedLog.TabIndex = 0;
-            // 
-            // lblRevised
-            // 
-            this.lblRevised.Dock = System.Windows.Forms.DockStyle.Top;
-            this.lblRevised.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(77)))), ((int)(((byte)(85)))), ((int)(((byte)(101)))));
-            this.lblRevised.Location = new System.Drawing.Point(12, 68);
-            this.lblRevised.Name = "lblRevised";
-            this.lblRevised.Padding = new System.Windows.Forms.Padding(8, 6, 8, 0);
-            this.lblRevised.Size = new System.Drawing.Size(1166, 26);
-            this.lblRevised.TabIndex = 1;
-            this.lblRevised.Text = "Control branching strategy and explore nodes (UI stub).";
             // 
             // flowRevisedButtons
             // 
             this.flowRevisedButtons.Controls.Add(this.btnRunRevised);
             this.flowRevisedButtons.Controls.Add(this.btnStepRevised);
             this.flowRevisedButtons.Controls.Add(this.btnResetRevised);
+            this.flowRevisedButtons.Controls.Add(this.btnRevisedExport);
             this.flowRevisedButtons.Dock = System.Windows.Forms.DockStyle.Top;
             this.flowRevisedButtons.Location = new System.Drawing.Point(12, 12);
             this.flowRevisedButtons.Name = "flowRevisedButtons";
             this.flowRevisedButtons.Padding = new System.Windows.Forms.Padding(8);
-            this.flowRevisedButtons.Size = new System.Drawing.Size(1166, 56);
+            this.flowRevisedButtons.Size = new System.Drawing.Size(1166, 70);
             this.flowRevisedButtons.TabIndex = 2;
             // 
             // btnRunRevised
@@ -568,7 +510,6 @@ namespace Linear_Programming_Algorithms
             // panelSensitivity
             // 
             this.panelSensitivity.Controls.Add(this.lstSensitivityLog);
-            this.panelSensitivity.Controls.Add(this.lblSensitivity);
             this.panelSensitivity.Controls.Add(this.flowSensitivityButtons);
             this.panelSensitivity.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelSensitivity.Location = new System.Drawing.Point(0, 0);
@@ -584,32 +525,22 @@ namespace Linear_Programming_Algorithms
             this.lstSensitivityLog.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lstSensitivityLog.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.lstSensitivityLog.ItemHeight = 37;
-            this.lstSensitivityLog.Location = new System.Drawing.Point(12, 94);
+            this.lstSensitivityLog.Location = new System.Drawing.Point(12, 82);
             this.lstSensitivityLog.Name = "lstSensitivityLog";
-            this.lstSensitivityLog.Size = new System.Drawing.Size(1166, 812);
+            this.lstSensitivityLog.Size = new System.Drawing.Size(1166, 824);
             this.lstSensitivityLog.TabIndex = 0;
-            // 
-            // lblSensitivity
-            // 
-            this.lblSensitivity.Dock = System.Windows.Forms.DockStyle.Top;
-            this.lblSensitivity.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(77)))), ((int)(((byte)(85)))), ((int)(((byte)(101)))));
-            this.lblSensitivity.Location = new System.Drawing.Point(12, 68);
-            this.lblSensitivity.Name = "lblSensitivity";
-            this.lblSensitivity.Padding = new System.Windows.Forms.Padding(8, 6, 8, 0);
-            this.lblSensitivity.Size = new System.Drawing.Size(1166, 26);
-            this.lblSensitivity.TabIndex = 1;
-            this.lblSensitivity.Text = "Control branching strategy and explore nodes (UI stub).";
             // 
             // flowSensitivityButtons
             // 
             this.flowSensitivityButtons.Controls.Add(this.btnRunSensitivity);
             this.flowSensitivityButtons.Controls.Add(this.btnStepSensitivity);
             this.flowSensitivityButtons.Controls.Add(this.btnResetSensitivity);
+            this.flowSensitivityButtons.Controls.Add(this.btnDSExport);
             this.flowSensitivityButtons.Dock = System.Windows.Forms.DockStyle.Top;
             this.flowSensitivityButtons.Location = new System.Drawing.Point(12, 12);
             this.flowSensitivityButtons.Name = "flowSensitivityButtons";
             this.flowSensitivityButtons.Padding = new System.Windows.Forms.Padding(8);
-            this.flowSensitivityButtons.Size = new System.Drawing.Size(1166, 56);
+            this.flowSensitivityButtons.Size = new System.Drawing.Size(1166, 70);
             this.flowSensitivityButtons.TabIndex = 2;
             // 
             // btnRunSensitivity
@@ -675,7 +606,6 @@ namespace Linear_Programming_Algorithms
             // panelCutting
             // 
             this.panelCutting.Controls.Add(this.lstCuttingLog);
-            this.panelCutting.Controls.Add(this.lblCutting);
             this.panelCutting.Controls.Add(this.flowCuttingButtons);
             this.panelCutting.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelCutting.Location = new System.Drawing.Point(0, 0);
@@ -691,32 +621,22 @@ namespace Linear_Programming_Algorithms
             this.lstCuttingLog.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lstCuttingLog.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.lstCuttingLog.ItemHeight = 37;
-            this.lstCuttingLog.Location = new System.Drawing.Point(12, 94);
+            this.lstCuttingLog.Location = new System.Drawing.Point(12, 82);
             this.lstCuttingLog.Name = "lstCuttingLog";
-            this.lstCuttingLog.Size = new System.Drawing.Size(1166, 812);
+            this.lstCuttingLog.Size = new System.Drawing.Size(1166, 824);
             this.lstCuttingLog.TabIndex = 0;
-            // 
-            // lblCutting
-            // 
-            this.lblCutting.Dock = System.Windows.Forms.DockStyle.Top;
-            this.lblCutting.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(77)))), ((int)(((byte)(85)))), ((int)(((byte)(101)))));
-            this.lblCutting.Location = new System.Drawing.Point(12, 68);
-            this.lblCutting.Name = "lblCutting";
-            this.lblCutting.Padding = new System.Windows.Forms.Padding(8, 6, 8, 0);
-            this.lblCutting.Size = new System.Drawing.Size(1166, 26);
-            this.lblCutting.TabIndex = 1;
-            this.lblCutting.Text = "Control branching strategy and explore nodes (UI stub).";
             // 
             // flowCuttingButtons
             // 
             this.flowCuttingButtons.Controls.Add(this.btnRunCutting);
             this.flowCuttingButtons.Controls.Add(this.btnStepCutting);
             this.flowCuttingButtons.Controls.Add(this.btnResetCutting);
+            this.flowCuttingButtons.Controls.Add(this.btnCuttingExport);
             this.flowCuttingButtons.Dock = System.Windows.Forms.DockStyle.Top;
             this.flowCuttingButtons.Location = new System.Drawing.Point(12, 12);
             this.flowCuttingButtons.Name = "flowCuttingButtons";
             this.flowCuttingButtons.Padding = new System.Windows.Forms.Padding(8);
-            this.flowCuttingButtons.Size = new System.Drawing.Size(1166, 56);
+            this.flowCuttingButtons.Size = new System.Drawing.Size(1166, 70);
             this.flowCuttingButtons.TabIndex = 2;
             // 
             // btnRunCutting
@@ -782,7 +702,6 @@ namespace Linear_Programming_Algorithms
             // panelBranch
             // 
             this.panelBranch.Controls.Add(this.lstBranchLog);
-            this.panelBranch.Controls.Add(this.lblBranch);
             this.panelBranch.Controls.Add(this.flowBranchButtons);
             this.panelBranch.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelBranch.Location = new System.Drawing.Point(0, 0);
@@ -798,32 +717,22 @@ namespace Linear_Programming_Algorithms
             this.lstBranchLog.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lstBranchLog.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.lstBranchLog.ItemHeight = 37;
-            this.lstBranchLog.Location = new System.Drawing.Point(12, 94);
+            this.lstBranchLog.Location = new System.Drawing.Point(12, 82);
             this.lstBranchLog.Name = "lstBranchLog";
-            this.lstBranchLog.Size = new System.Drawing.Size(1166, 812);
+            this.lstBranchLog.Size = new System.Drawing.Size(1166, 824);
             this.lstBranchLog.TabIndex = 0;
-            // 
-            // lblBranch
-            // 
-            this.lblBranch.Dock = System.Windows.Forms.DockStyle.Top;
-            this.lblBranch.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(77)))), ((int)(((byte)(85)))), ((int)(((byte)(101)))));
-            this.lblBranch.Location = new System.Drawing.Point(12, 68);
-            this.lblBranch.Name = "lblBranch";
-            this.lblBranch.Padding = new System.Windows.Forms.Padding(8, 6, 8, 0);
-            this.lblBranch.Size = new System.Drawing.Size(1166, 26);
-            this.lblBranch.TabIndex = 1;
-            this.lblBranch.Text = "Control branching strategy and explore nodes (UI stub).";
             // 
             // flowBranchButtons
             // 
             this.flowBranchButtons.Controls.Add(this.btnRunBranch);
             this.flowBranchButtons.Controls.Add(this.btnStepBranch);
             this.flowBranchButtons.Controls.Add(this.btnResetBranch);
+            this.flowBranchButtons.Controls.Add(this.btnBBExport);
             this.flowBranchButtons.Dock = System.Windows.Forms.DockStyle.Top;
             this.flowBranchButtons.Location = new System.Drawing.Point(12, 12);
             this.flowBranchButtons.Name = "flowBranchButtons";
             this.flowBranchButtons.Padding = new System.Windows.Forms.Padding(8);
-            this.flowBranchButtons.Size = new System.Drawing.Size(1166, 56);
+            this.flowBranchButtons.Size = new System.Drawing.Size(1166, 70);
             this.flowBranchButtons.TabIndex = 2;
             // 
             // btnRunBranch
@@ -888,13 +797,27 @@ namespace Linear_Programming_Algorithms
             this.tabBBKnapsack.TabIndex = 5;
             this.tabBBKnapsack.Text = "B&B Knapsack";
             // 
+            // lstKnapsack
+            // 
+            this.lstKnapsack.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(251)))), ((int)(((byte)(252)))));
+            this.lstKnapsack.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.lstKnapsack.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.lstKnapsack.ItemHeight = 37;
+            this.lstKnapsack.Location = new System.Drawing.Point(11, 75);
+            this.lstKnapsack.Margin = new System.Windows.Forms.Padding(10);
+            this.lstKnapsack.Name = "lstKnapsack";
+            this.lstKnapsack.Size = new System.Drawing.Size(1158, 777);
+            this.lstKnapsack.TabIndex = 4;
+            // 
             // flowLayoutPanel1
             // 
             this.flowLayoutPanel1.Controls.Add(this.btnKnapsackRun);
             this.flowLayoutPanel1.Controls.Add(this.btnKnapsackStep);
             this.flowLayoutPanel1.Controls.Add(this.button3);
+            this.flowLayoutPanel1.Controls.Add(this.btnKnapsackExport);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(10);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Padding = new System.Windows.Forms.Padding(8);
             this.flowLayoutPanel1.Size = new System.Drawing.Size(1190, 70);
@@ -967,17 +890,107 @@ namespace Linear_Programming_Algorithms
             this.statusLabel.Size = new System.Drawing.Size(89, 37);
             this.statusLabel.Text = "Ready";
             // 
-            // lstKnapsack
+            // btnBBExport
             // 
-            this.lstKnapsack.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(251)))), ((int)(((byte)(252)))));
-            this.lstKnapsack.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.lstKnapsack.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lstKnapsack.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.lstKnapsack.ItemHeight = 37;
-            this.lstKnapsack.Location = new System.Drawing.Point(0, 70);
-            this.lstKnapsack.Name = "lstKnapsack";
-            this.lstKnapsack.Size = new System.Drawing.Size(1190, 848);
-            this.lstKnapsack.TabIndex = 4;
+            this.btnBBExport.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.btnBBExport.AutoSize = true;
+            this.btnBBExport.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(167)))), ((int)(((byte)(69)))));
+            this.btnBBExport.FlatAppearance.BorderSize = 0;
+            this.btnBBExport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnBBExport.ForeColor = System.Drawing.Color.White;
+            this.btnBBExport.Location = new System.Drawing.Point(314, 11);
+            this.btnBBExport.Name = "btnBBExport";
+            this.btnBBExport.Padding = new System.Windows.Forms.Padding(10, 6, 10, 6);
+            this.btnBBExport.Size = new System.Drawing.Size(112, 51);
+            this.btnBBExport.TabIndex = 3;
+            this.btnBBExport.Tag = "lstBranchLog";
+            this.btnBBExport.Text = "Export";
+            this.btnBBExport.UseVisualStyleBackColor = false;
+            // 
+            // btnCuttingExport
+            // 
+            this.btnCuttingExport.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.btnCuttingExport.AutoSize = true;
+            this.btnCuttingExport.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(167)))), ((int)(((byte)(69)))));
+            this.btnCuttingExport.FlatAppearance.BorderSize = 0;
+            this.btnCuttingExport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCuttingExport.ForeColor = System.Drawing.Color.White;
+            this.btnCuttingExport.Location = new System.Drawing.Point(314, 11);
+            this.btnCuttingExport.Name = "btnCuttingExport";
+            this.btnCuttingExport.Padding = new System.Windows.Forms.Padding(10, 6, 10, 6);
+            this.btnCuttingExport.Size = new System.Drawing.Size(112, 51);
+            this.btnCuttingExport.TabIndex = 4;
+            this.btnCuttingExport.Tag = "lstBranchLog";
+            this.btnCuttingExport.Text = "Export";
+            this.btnCuttingExport.UseVisualStyleBackColor = false;
+            // 
+            // btnDSExport
+            // 
+            this.btnDSExport.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.btnDSExport.AutoSize = true;
+            this.btnDSExport.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(167)))), ((int)(((byte)(69)))));
+            this.btnDSExport.FlatAppearance.BorderSize = 0;
+            this.btnDSExport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnDSExport.ForeColor = System.Drawing.Color.White;
+            this.btnDSExport.Location = new System.Drawing.Point(314, 11);
+            this.btnDSExport.Name = "btnDSExport";
+            this.btnDSExport.Padding = new System.Windows.Forms.Padding(10, 6, 10, 6);
+            this.btnDSExport.Size = new System.Drawing.Size(112, 51);
+            this.btnDSExport.TabIndex = 4;
+            this.btnDSExport.Tag = "lstBranchLog";
+            this.btnDSExport.Text = "Export";
+            this.btnDSExport.UseVisualStyleBackColor = false;
+            // 
+            // btnRevisedExport
+            // 
+            this.btnRevisedExport.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.btnRevisedExport.AutoSize = true;
+            this.btnRevisedExport.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(167)))), ((int)(((byte)(69)))));
+            this.btnRevisedExport.FlatAppearance.BorderSize = 0;
+            this.btnRevisedExport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnRevisedExport.ForeColor = System.Drawing.Color.White;
+            this.btnRevisedExport.Location = new System.Drawing.Point(314, 11);
+            this.btnRevisedExport.Name = "btnRevisedExport";
+            this.btnRevisedExport.Padding = new System.Windows.Forms.Padding(10, 6, 10, 6);
+            this.btnRevisedExport.Size = new System.Drawing.Size(112, 51);
+            this.btnRevisedExport.TabIndex = 4;
+            this.btnRevisedExport.Tag = "lstBranchLog";
+            this.btnRevisedExport.Text = "Export";
+            this.btnRevisedExport.UseVisualStyleBackColor = false;
+            // 
+            // btnPrimalExport
+            // 
+            this.btnPrimalExport.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.btnPrimalExport.AutoSize = true;
+            this.btnPrimalExport.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(167)))), ((int)(((byte)(69)))));
+            this.btnPrimalExport.FlatAppearance.BorderSize = 0;
+            this.btnPrimalExport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnPrimalExport.ForeColor = System.Drawing.Color.White;
+            this.btnPrimalExport.Location = new System.Drawing.Point(314, 11);
+            this.btnPrimalExport.Name = "btnPrimalExport";
+            this.btnPrimalExport.Padding = new System.Windows.Forms.Padding(10, 6, 10, 6);
+            this.btnPrimalExport.Size = new System.Drawing.Size(112, 51);
+            this.btnPrimalExport.TabIndex = 4;
+            this.btnPrimalExport.Tag = "lstBranchLog";
+            this.btnPrimalExport.Text = "Export";
+            this.btnPrimalExport.UseVisualStyleBackColor = false;
+            // 
+            // btnKnapsackExport
+            // 
+            this.btnKnapsackExport.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.btnKnapsackExport.AutoSize = true;
+            this.btnKnapsackExport.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(167)))), ((int)(((byte)(69)))));
+            this.btnKnapsackExport.FlatAppearance.BorderSize = 0;
+            this.btnKnapsackExport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnKnapsackExport.ForeColor = System.Drawing.Color.White;
+            this.btnKnapsackExport.Location = new System.Drawing.Point(314, 11);
+            this.btnKnapsackExport.Name = "btnKnapsackExport";
+            this.btnKnapsackExport.Padding = new System.Windows.Forms.Padding(10, 6, 10, 6);
+            this.btnKnapsackExport.Size = new System.Drawing.Size(112, 51);
+            this.btnKnapsackExport.TabIndex = 4;
+            this.btnKnapsackExport.Tag = "lstBranchLog";
+            this.btnKnapsackExport.Text = "Export";
+            this.btnKnapsackExport.UseVisualStyleBackColor = false;
             // 
             // Form1
             // 
@@ -1033,21 +1046,53 @@ namespace Linear_Programming_Algorithms
 
         }
 
+        private System.Windows.Forms.TabControl tabControlAlgorithms;
+        private System.Windows.Forms.TabPage tabPrimal;
         private System.Windows.Forms.Panel panelPrimal;
-        private System.Windows.Forms.Label lblPrimal;
+        private System.Windows.Forms.ListBox lstPrimalLog;
+        private System.Windows.Forms.FlowLayoutPanel flowPrimalButtons;
+        private System.Windows.Forms.Button btnRunPrimal;
+        private System.Windows.Forms.Button btnStepPrimal;
+        private System.Windows.Forms.Button btnResetPrimal;
+        private System.Windows.Forms.TabPage tabRevised;
         private System.Windows.Forms.Panel panelRevised;
-        private System.Windows.Forms.Label lblRevised;
+        private System.Windows.Forms.ListBox lstRevisedLog;
+        private System.Windows.Forms.FlowLayoutPanel flowRevisedButtons;
+        private System.Windows.Forms.Button btnRunRevised;
+        private System.Windows.Forms.Button btnStepRevised;
+        private System.Windows.Forms.Button btnResetRevised;
+        private System.Windows.Forms.TabPage tabSensitivity;
         private System.Windows.Forms.Panel panelSensitivity;
-        private System.Windows.Forms.Label lblSensitivity;
+        private System.Windows.Forms.ListBox lstSensitivityLog;
+        private System.Windows.Forms.FlowLayoutPanel flowSensitivityButtons;
+        private System.Windows.Forms.Button btnRunSensitivity;
+        private System.Windows.Forms.Button btnStepSensitivity;
+        private System.Windows.Forms.Button btnResetSensitivity;
+        private System.Windows.Forms.TabPage tabCutting;
         private System.Windows.Forms.Panel panelCutting;
-        private System.Windows.Forms.Label lblCutting;
+        private System.Windows.Forms.ListBox lstCuttingLog;
+        private System.Windows.Forms.FlowLayoutPanel flowCuttingButtons;
+        private System.Windows.Forms.Button btnRunCutting;
+        private System.Windows.Forms.Button btnStepCutting;
+        private System.Windows.Forms.Button btnResetCutting;
+        private System.Windows.Forms.TabPage tabBranchBound;
         private System.Windows.Forms.Panel panelBranch;
-        private System.Windows.Forms.Label lblBranch;
+        private System.Windows.Forms.ListBox lstBranchLog;
+        private System.Windows.Forms.FlowLayoutPanel flowBranchButtons;
+        private System.Windows.Forms.Button btnRunBranch;
+        private System.Windows.Forms.Button btnStepBranch;
+        private System.Windows.Forms.Button btnResetBranch;
         private System.Windows.Forms.TabPage tabBBKnapsack;
+        private System.Windows.Forms.ListBox lstKnapsack;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.Button btnKnapsackRun;
         private System.Windows.Forms.Button btnKnapsackStep;
         private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.ListBox lstKnapsack;
+        private System.Windows.Forms.Button btnPrimalExport;
+        private System.Windows.Forms.Button btnRevisedExport;
+        private System.Windows.Forms.Button btnDSExport;
+        private System.Windows.Forms.Button btnCuttingExport;
+        private System.Windows.Forms.Button btnBBExport;
+        private System.Windows.Forms.Button btnKnapsackExport;
     }
 }
