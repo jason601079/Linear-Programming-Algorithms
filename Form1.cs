@@ -1,5 +1,4 @@
-﻿// Form1.cs
-using iTextSharp.text.pdf;
+﻿using iTextSharp.text.pdf;
 using iTextSharp.text;
 using System;
 using System.Collections.Generic;
@@ -9,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using System.Xml.Linq;
+using System.Drawing;
 
 namespace Linear_Programming_Algorithms
 {
@@ -18,8 +18,7 @@ namespace Linear_Programming_Algorithms
         private KnapsackStepper _stepper = new KnapsackStepper();
 
 
-        private string _currentFilePath = null;
-        // per-log step counters (keyed by ListBox.Name)
+        private string _currentFilePath = null;      
         private readonly Dictionary<string, int> _stepIndices = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
 
         public Form1()
@@ -31,7 +30,7 @@ namespace Linear_Programming_Algorithms
             btnCuttingExport.Click += (s, e) => ExportListBox(lstCuttingLog, "CuttingLog.txt");
             btnDSExport.Click += (s, e) => ExportListBox(lstSensitivityLog, "SensitivityLog.txt");
             btnBBExport.Click += (s, e) => ExportListBox(lstBranchLog, "BranchLog.txt");
-            btnKnapsackExport.Click += (s, e) => ExportListBox(lstKnapsack, "KnapsackLog.txt");
+            btnKnapsackExport.Click += (s, e) => ExportRichText(rtbKnapsack, "KnapsackLog.txt");
         }
 
         private void ExportListBox(ListBox listBox, string baseFileName)
@@ -60,6 +59,55 @@ namespace Linear_Programming_Algorithms
                 }
             }
         }
+
+        private void ExportRichText(RichTextBox richTextBox, string baseFileName)
+        {
+            if (string.IsNullOrWhiteSpace(richTextBox.Text))
+            {
+                MessageBox.Show("No data to export.", "Export", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            using (SaveFileDialog saveFileDialog = new SaveFileDialog())
+            {
+                saveFileDialog.FileName = baseFileName;
+                saveFileDialog.Filter = "Text Files (*.txt)|*.txt|PDF Files (*.pdf)|*.pdf|All Files (*.*)|*.*";
+
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    string extension = Path.GetExtension(saveFileDialog.FileName).ToLower();
+
+                    if (extension == ".pdf")
+                        ExportToPdf(richTextBox, saveFileDialog.FileName);
+                    else
+                        ExportToText(richTextBox, saveFileDialog.FileName);
+
+                    MessageBox.Show("Export successful!", "Export", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+        }
+
+        private void ExportToText(RichTextBox richTextBox, string filePath)
+        {
+            File.WriteAllText(filePath, richTextBox.Text);
+        }
+
+        private void ExportToPdf(RichTextBox richTextBox, string filePath)
+        {
+            Document doc = new Document(PageSize.A4, 20, 20, 20, 20);
+
+            using (FileStream stream = new FileStream(filePath, FileMode.Create))
+            {
+                PdfWriter.GetInstance(doc, stream);
+                doc.Open();
+
+                var font = FontFactory.GetFont(FontFactory.COURIER, 11); 
+                doc.Add(new Paragraph(richTextBox.Text, font));
+
+                doc.Close();
+            }
+        }
+
 
         private void ExportToText(ListBox listBox, string filePath)
         {
@@ -94,7 +142,7 @@ namespace Linear_Programming_Algorithms
         {
             openFileDialog.Filter = "LP or text files (*.lp;*.txt)|*.lp;*.txt|All files (*.*)|*.*";
 
-            // Keep copy button nicely aligned
+       
             btnCopyPreview.Left = Math.Max(8, previewTopPanel.ClientSize.Width - btnCopyPreview.Width - 8);
             btnCopyPreview.Top = Math.Max(4, (previewTopPanel.ClientSize.Height - btnCopyPreview.Height) / 2);
             previewTopPanel.Resize += (s, ev) =>
@@ -155,8 +203,7 @@ namespace Linear_Programming_Algorithms
                 lblDropHint.Text = $"Loaded: {Path.GetFileName(path)}";
                 statusLabel.Text = $"Loaded {Path.GetFileName(path)} • Variables: {lp.VariableCount} • Constraints: {lp.Constraints.Count}";
 
-                // Example: show objective coefficients as comma list (optional)
-                // MessageBox.Show(string.Join(", ", lp.Objective.Coefficients.Select(c => c.ToString(CultureInfo.InvariantCulture))));
+               
             }
             catch (FormatException ex)
             {
@@ -184,7 +231,7 @@ namespace Linear_Programming_Algorithms
             return value.Length <= maxChars ? value : value.Substring(0, maxChars - 3) + "...";
         }
 
-        // ---------------- Run methods (unique per tab) ----------------
+        // ---------------- Run methods ---------------
 
         // Primal Simplex: Run
         private void RunPrimal_Click(object sender, EventArgs e)
@@ -198,15 +245,15 @@ namespace Linear_Programming_Algorithms
             lstPrimalLog.Items.Clear();
             try
             {
-                var lp = LPData.Parse(_currentFilePath); // may throw FormatException / NotSupportedException
+                var lp = LPData.Parse(_currentFilePath); 
                 lstPrimalLog.Items.Add("LP parsed successfully.");
                 lstPrimalLog.Items.Add($"Vars: {lp.VariableCount}, Constraints: {lp.Constraints.Count}");
                 lstPrimalLog.Items.Add("Running  Primal simplex)...");
 
                 double[] c = lp.Objective.Coefficients;
 
-                int m = lp.Constraints.Count;        // number of constraints
-                int n = lp.VariableCount;            // number of variables
+                int m = lp.Constraints.Count;        
+                int n = lp.VariableCount;            
 
                 double[,] A = new double[m, n];
                 for (int i = 0; i < m; i++)
@@ -235,7 +282,7 @@ namespace Linear_Programming_Algorithms
                 header += "RHS".PadLeft(11);
 
                 int matrixIndex = 1;
-                foreach (var matrix in solver.TableauList) // listOf2DArrays = List<double[,]>
+                foreach (var matrix in solver.TableauList) 
                 {
                     lstPrimalLog.Items.Add($"Tableau {matrixIndex}:");
 
@@ -257,7 +304,7 @@ namespace Linear_Programming_Algorithms
                         lstPrimalLog.Items.Add(row);
                     }
 
-                    lstPrimalLog.Items.Add(""); // blank line
+                    lstPrimalLog.Items.Add(""); 
                     matrixIndex++;
                 }
 
@@ -270,11 +317,11 @@ namespace Linear_Programming_Algorithms
                     string row = "";
                     for (int j = 0; j < solver.OptimalTableau.GetLength(1); j++) // columns
                     {
-                        row += solver.OptimalTableau[i, j].ToString("F3").PadLeft(12);  // add each number with space
+                        row += solver.OptimalTableau[i, j].ToString("F3").PadLeft(12);  
                     }
                    
                     lstPrimalLog.Items.Add(row);
-                    lstPrimalLog.Items.Add(""); // blank line
+                    lstPrimalLog.Items.Add(""); 
                 }
 
                 var (x, z) = solver.GetSolution();
@@ -360,7 +407,7 @@ namespace Linear_Programming_Algorithms
             statusLabel.Text = "Branch & Bound run completed (stub)";
         }
 
-        // ---------------- Step methods (unique per tab) ----------------
+        // ---------------- Step methods ----------------
 
         private void StepPrimal_Click(object sender, EventArgs e)
         {
@@ -492,7 +539,7 @@ namespace Linear_Programming_Algorithms
             statusLabel.Text = $"Branch Step {i}";
         }
 
-        // ---------------- Reset (single shared handler) ----------------
+        // ---------------- Reset  ----------------
         // Wired as the Click handler for ALL reset buttons.
         private void AlgorithmReset_Click(object sender, EventArgs e)
         {
@@ -502,7 +549,7 @@ namespace Linear_Programming_Algorithms
                 return;
             }
 
-            // Designer should set Tag on each reset button to the listbox name (e.g. "lstPrimalLog")
+            // Designer should set Tag on each reset button to the listbox name 
             var tag = btn.Tag as string;
             if (string.IsNullOrEmpty(tag))
             {
@@ -515,19 +562,45 @@ namespace Linear_Programming_Algorithms
             if (ctrl is ListBox lb)
             {
                 _stepIndices[lb.Name] = 0;
-                lb.Items.Clear();          // <-- only clear, do NOT add any text
+                lb.Items.Clear();          
                 statusLabel.Text = $"Reset {lb.Name}";
                 return;
             }
 
             statusLabel.Text = "Reset target not found";
         }
+        private void AppendColoredLine(RichTextBox box, string text, Color defaultColor)
+        {
+            int start = box.TextLength;
+            box.SelectionStart = start;
+            box.SelectionLength = 0;
+            box.SelectionColor = defaultColor;
+            box.AppendText(text + Environment.NewLine);
 
-      
+          
+            HighlightKeyword(box, "feasible", Color.Goldenrod); 
+            HighlightKeyword(box, "infeasible", Color.Red);      
+            HighlightKeyword(box, "new best", Color.Green);       
+            HighlightKeyword(box, "best", Color.Green);           
+        }
+        private void HighlightKeyword(RichTextBox box, string keyword, Color color)
+        {
+            int index = 0;
+            while ((index = box.Text.IndexOf(keyword, index, StringComparison.OrdinalIgnoreCase)) != -1)
+            {
+                box.Select(index, keyword.Length);
+                box.SelectionColor = color;
+                index += keyword.Length;
+            }
+            // reset selection
+            box.SelectionLength = 0;
+            box.SelectionColor = box.ForeColor;
+        }
+
+
 
         private void button1_Click(object sender, EventArgs e)
         {
-            // ensure a file was already loaded
             if (string.IsNullOrEmpty(_currentFilePath))
             {
                 MessageBox.Show("Load an LP file first (Browse or drag & drop).", "No file", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -540,20 +613,16 @@ namespace Linear_Programming_Algorithms
                 return;
             }
 
-            lstKnapsack.Items.Clear();
+            rtbKnapsack.Clear();
 
             try
             {
-                // Parse LP file using your Data.Parse
                 var data = LPData.Parse(_currentFilePath);
-
-                // Solve
                 var solver = new KnapsackSolver();
                 var (maxProfit, taken) = solver.Solve(data);
 
-                // Show in listBox
-                lstKnapsack.Items.Add($"Max profit: {maxProfit}");
-                lstKnapsack.Items.Add("Items taken (1-based indices):");
+                AppendColoredLine(rtbKnapsack, $"Max profit: {maxProfit}", Color.Black);
+                AppendColoredLine(rtbKnapsack, "Items taken (1-based indices):", Color.Black);
 
                 double totalWeight = 0.0;
                 bool any = false;
@@ -564,19 +633,23 @@ namespace Linear_Programming_Algorithms
                         any = true;
                         double profit = data.Objective.Coefficients[i];
                         double weight = data.Constraints[0].Coefficients[i];
-                        lstKnapsack.Items.Add($"  Item {i + 1}: profit={profit}, weight={weight}");
+                        AppendColoredLine(rtbKnapsack, $"  Item {i + 1}: profit={profit}, weight={weight}", Color.Black);
                         totalWeight += weight;
                     }
                 }
 
-                if (!any) lstKnapsack.Items.Add("  (none)");
-                lstKnapsack.Items.Add($"Total weight: {totalWeight} / {data.Constraints[0].Rhs}");
+                if (!any)
+                    AppendColoredLine(rtbKnapsack, "  (none)", Color.Gray);
+
+                AppendColoredLine(rtbKnapsack, $"Total weight: {totalWeight} / {data.Constraints[0].Rhs}", Color.Black);
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Error: {ex.Message}", "Solve failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+
 
         private void btnKnapsackStep_Click(object sender, EventArgs e)
         {
@@ -588,31 +661,27 @@ namespace Linear_Programming_Algorithms
 
             try
             {
-                // If stepper not initialized, initialize it (first step)
                 if (!_stepper.IsInitialized)
                 {
                     var data = LPData.Parse(_currentFilePath);
                     _stepper.Initialize(data);
-                    lstKnapsack.Items.Clear();
-                    lstKnapsack.Items.Add("=== Step Trace (press Step repeatedly) ===");
-                    lstKnapsack.Items.Add($"Root bound = {_stepper.RunAll().MaxProfit}"); // optional quick sanity line - remove if undesired
-                    lstKnapsack.Items.Clear(); // prefer to start with empty trace
+                    rtbKnapsack.Clear();
+                    AppendColoredLine(rtbKnapsack, "=== Step Trace (press Step repeatedly) ===", Color.Black);
                 }
 
                 var step = _stepper.Step();
                 foreach (var line in step.Lines)
-                    lstKnapsack.Items.Add(line);
-
-                // if finished, append final summary and optionally reset stepper
-                if (step.IsFinished)
                 {
-                    lstKnapsack.Items.Add("");
-                    lstKnapsack.Items.Add("Finished. (press Reset to start new trace)");
+                    AppendColoredLine(rtbKnapsack, line, Color.Black);
                 }
 
-                // auto-scroll to bottom
-                if (lstKnapsack.Items.Count > 0)
-                    lstKnapsack.SelectedIndex = lstKnapsack.Items.Count - 1;
+                if (step.IsFinished)
+                {
+                    rtbKnapsack.AppendText(Environment.NewLine);
+                    AppendColoredLine(rtbKnapsack, "Finished. (press Reset to start new trace)", Color.Cyan);
+                }
+
+                rtbKnapsack.ScrollToCaret();
             }
             catch (Exception ex)
             {
@@ -620,10 +689,12 @@ namespace Linear_Programming_Algorithms
             }
         }
 
+
+
         private void button3_Click(object sender, EventArgs e)
         {
             _stepper.Reset();
-            lstKnapsack.Items.Clear();
+            rtbKnapsack.Clear();
         }
     }
 }

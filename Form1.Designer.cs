@@ -51,6 +51,7 @@ namespace Linear_Programming_Algorithms
             this.btnRunPrimal = new System.Windows.Forms.Button();
             this.btnStepPrimal = new System.Windows.Forms.Button();
             this.btnResetPrimal = new System.Windows.Forms.Button();
+            this.btnPrimalExport = new System.Windows.Forms.Button();
             this.tabRevised = new System.Windows.Forms.TabPage();
             this.panelRevised = new System.Windows.Forms.Panel();
             this.lstRevisedLog = new System.Windows.Forms.ListBox();
@@ -58,6 +59,7 @@ namespace Linear_Programming_Algorithms
             this.btnRunRevised = new System.Windows.Forms.Button();
             this.btnStepRevised = new System.Windows.Forms.Button();
             this.btnResetRevised = new System.Windows.Forms.Button();
+            this.btnRevisedExport = new System.Windows.Forms.Button();
             this.tabSensitivity = new System.Windows.Forms.TabPage();
             this.panelSensitivity = new System.Windows.Forms.Panel();
             this.lstSensitivityLog = new System.Windows.Forms.ListBox();
@@ -65,6 +67,7 @@ namespace Linear_Programming_Algorithms
             this.btnRunSensitivity = new System.Windows.Forms.Button();
             this.btnStepSensitivity = new System.Windows.Forms.Button();
             this.btnResetSensitivity = new System.Windows.Forms.Button();
+            this.btnDSExport = new System.Windows.Forms.Button();
             this.tabCutting = new System.Windows.Forms.TabPage();
             this.panelCutting = new System.Windows.Forms.Panel();
             this.lstCuttingLog = new System.Windows.Forms.ListBox();
@@ -72,6 +75,7 @@ namespace Linear_Programming_Algorithms
             this.btnRunCutting = new System.Windows.Forms.Button();
             this.btnStepCutting = new System.Windows.Forms.Button();
             this.btnResetCutting = new System.Windows.Forms.Button();
+            this.btnCuttingExport = new System.Windows.Forms.Button();
             this.tabBranchBound = new System.Windows.Forms.TabPage();
             this.panelBranch = new System.Windows.Forms.Panel();
             this.lstBranchLog = new System.Windows.Forms.ListBox();
@@ -79,21 +83,17 @@ namespace Linear_Programming_Algorithms
             this.btnRunBranch = new System.Windows.Forms.Button();
             this.btnStepBranch = new System.Windows.Forms.Button();
             this.btnResetBranch = new System.Windows.Forms.Button();
+            this.btnBBExport = new System.Windows.Forms.Button();
             this.tabBBKnapsack = new System.Windows.Forms.TabPage();
-            this.lstKnapsack = new System.Windows.Forms.ListBox();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.btnKnapsackRun = new System.Windows.Forms.Button();
             this.btnKnapsackStep = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
+            this.btnKnapsackExport = new System.Windows.Forms.Button();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
-            this.btnBBExport = new System.Windows.Forms.Button();
-            this.btnCuttingExport = new System.Windows.Forms.Button();
-            this.btnDSExport = new System.Windows.Forms.Button();
-            this.btnRevisedExport = new System.Windows.Forms.Button();
-            this.btnPrimalExport = new System.Windows.Forms.Button();
-            this.btnKnapsackExport = new System.Windows.Forms.Button();
+            this.rtbKnapsack = new System.Windows.Forms.RichTextBox();
             this.tableLayoutMain.SuspendLayout();
             this.leftColumn.SuspendLayout();
             this.groupFileInput.SuspendLayout();
@@ -402,6 +402,23 @@ namespace Linear_Programming_Algorithms
             this.btnResetPrimal.UseVisualStyleBackColor = false;
             this.btnResetPrimal.Click += new System.EventHandler(this.AlgorithmReset_Click);
             // 
+            // btnPrimalExport
+            // 
+            this.btnPrimalExport.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.btnPrimalExport.AutoSize = true;
+            this.btnPrimalExport.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(167)))), ((int)(((byte)(69)))));
+            this.btnPrimalExport.FlatAppearance.BorderSize = 0;
+            this.btnPrimalExport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnPrimalExport.ForeColor = System.Drawing.Color.White;
+            this.btnPrimalExport.Location = new System.Drawing.Point(314, 11);
+            this.btnPrimalExport.Name = "btnPrimalExport";
+            this.btnPrimalExport.Padding = new System.Windows.Forms.Padding(10, 6, 10, 6);
+            this.btnPrimalExport.Size = new System.Drawing.Size(112, 51);
+            this.btnPrimalExport.TabIndex = 4;
+            this.btnPrimalExport.Tag = "lstBranchLog";
+            this.btnPrimalExport.Text = "Export";
+            this.btnPrimalExport.UseVisualStyleBackColor = false;
+            // 
             // tabRevised
             // 
             this.tabRevised.Controls.Add(this.panelRevised);
@@ -497,6 +514,23 @@ namespace Linear_Programming_Algorithms
             this.btnResetRevised.Text = "Reset";
             this.btnResetRevised.UseVisualStyleBackColor = false;
             this.btnResetRevised.Click += new System.EventHandler(this.AlgorithmReset_Click);
+            // 
+            // btnRevisedExport
+            // 
+            this.btnRevisedExport.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.btnRevisedExport.AutoSize = true;
+            this.btnRevisedExport.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(167)))), ((int)(((byte)(69)))));
+            this.btnRevisedExport.FlatAppearance.BorderSize = 0;
+            this.btnRevisedExport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnRevisedExport.ForeColor = System.Drawing.Color.White;
+            this.btnRevisedExport.Location = new System.Drawing.Point(314, 11);
+            this.btnRevisedExport.Name = "btnRevisedExport";
+            this.btnRevisedExport.Padding = new System.Windows.Forms.Padding(10, 6, 10, 6);
+            this.btnRevisedExport.Size = new System.Drawing.Size(112, 51);
+            this.btnRevisedExport.TabIndex = 4;
+            this.btnRevisedExport.Tag = "lstBranchLog";
+            this.btnRevisedExport.Text = "Export";
+            this.btnRevisedExport.UseVisualStyleBackColor = false;
             // 
             // tabSensitivity
             // 
@@ -594,6 +628,23 @@ namespace Linear_Programming_Algorithms
             this.btnResetSensitivity.UseVisualStyleBackColor = false;
             this.btnResetSensitivity.Click += new System.EventHandler(this.AlgorithmReset_Click);
             // 
+            // btnDSExport
+            // 
+            this.btnDSExport.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.btnDSExport.AutoSize = true;
+            this.btnDSExport.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(167)))), ((int)(((byte)(69)))));
+            this.btnDSExport.FlatAppearance.BorderSize = 0;
+            this.btnDSExport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnDSExport.ForeColor = System.Drawing.Color.White;
+            this.btnDSExport.Location = new System.Drawing.Point(314, 11);
+            this.btnDSExport.Name = "btnDSExport";
+            this.btnDSExport.Padding = new System.Windows.Forms.Padding(10, 6, 10, 6);
+            this.btnDSExport.Size = new System.Drawing.Size(112, 51);
+            this.btnDSExport.TabIndex = 4;
+            this.btnDSExport.Tag = "lstBranchLog";
+            this.btnDSExport.Text = "Export";
+            this.btnDSExport.UseVisualStyleBackColor = false;
+            // 
             // tabCutting
             // 
             this.tabCutting.Controls.Add(this.panelCutting);
@@ -689,6 +740,23 @@ namespace Linear_Programming_Algorithms
             this.btnResetCutting.Text = "Reset";
             this.btnResetCutting.UseVisualStyleBackColor = false;
             this.btnResetCutting.Click += new System.EventHandler(this.AlgorithmReset_Click);
+            // 
+            // btnCuttingExport
+            // 
+            this.btnCuttingExport.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.btnCuttingExport.AutoSize = true;
+            this.btnCuttingExport.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(167)))), ((int)(((byte)(69)))));
+            this.btnCuttingExport.FlatAppearance.BorderSize = 0;
+            this.btnCuttingExport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCuttingExport.ForeColor = System.Drawing.Color.White;
+            this.btnCuttingExport.Location = new System.Drawing.Point(314, 11);
+            this.btnCuttingExport.Name = "btnCuttingExport";
+            this.btnCuttingExport.Padding = new System.Windows.Forms.Padding(10, 6, 10, 6);
+            this.btnCuttingExport.Size = new System.Drawing.Size(112, 51);
+            this.btnCuttingExport.TabIndex = 4;
+            this.btnCuttingExport.Tag = "lstBranchLog";
+            this.btnCuttingExport.Text = "Export";
+            this.btnCuttingExport.UseVisualStyleBackColor = false;
             // 
             // tabBranchBound
             // 
@@ -786,28 +854,33 @@ namespace Linear_Programming_Algorithms
             this.btnResetBranch.UseVisualStyleBackColor = false;
             this.btnResetBranch.Click += new System.EventHandler(this.AlgorithmReset_Click);
             // 
+            // btnBBExport
+            // 
+            this.btnBBExport.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.btnBBExport.AutoSize = true;
+            this.btnBBExport.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(167)))), ((int)(((byte)(69)))));
+            this.btnBBExport.FlatAppearance.BorderSize = 0;
+            this.btnBBExport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnBBExport.ForeColor = System.Drawing.Color.White;
+            this.btnBBExport.Location = new System.Drawing.Point(314, 11);
+            this.btnBBExport.Name = "btnBBExport";
+            this.btnBBExport.Padding = new System.Windows.Forms.Padding(10, 6, 10, 6);
+            this.btnBBExport.Size = new System.Drawing.Size(112, 51);
+            this.btnBBExport.TabIndex = 3;
+            this.btnBBExport.Tag = "lstBranchLog";
+            this.btnBBExport.Text = "Export";
+            this.btnBBExport.UseVisualStyleBackColor = false;
+            // 
             // tabBBKnapsack
             // 
             this.tabBBKnapsack.BackColor = System.Drawing.SystemColors.Control;
-            this.tabBBKnapsack.Controls.Add(this.lstKnapsack);
+            this.tabBBKnapsack.Controls.Add(this.rtbKnapsack);
             this.tabBBKnapsack.Controls.Add(this.flowLayoutPanel1);
             this.tabBBKnapsack.Location = new System.Drawing.Point(10, 49);
             this.tabBBKnapsack.Name = "tabBBKnapsack";
             this.tabBBKnapsack.Size = new System.Drawing.Size(1190, 918);
             this.tabBBKnapsack.TabIndex = 5;
             this.tabBBKnapsack.Text = "B&B Knapsack";
-            // 
-            // lstKnapsack
-            // 
-            this.lstKnapsack.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(251)))), ((int)(((byte)(252)))));
-            this.lstKnapsack.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.lstKnapsack.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.lstKnapsack.ItemHeight = 37;
-            this.lstKnapsack.Location = new System.Drawing.Point(11, 75);
-            this.lstKnapsack.Margin = new System.Windows.Forms.Padding(10);
-            this.lstKnapsack.Name = "lstKnapsack";
-            this.lstKnapsack.Size = new System.Drawing.Size(1158, 777);
-            this.lstKnapsack.TabIndex = 4;
             // 
             // flowLayoutPanel1
             // 
@@ -874,107 +947,6 @@ namespace Linear_Programming_Algorithms
             this.button3.UseVisualStyleBackColor = false;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
-            // statusStrip
-            // 
-            this.statusStrip.ImageScalingSize = new System.Drawing.Size(36, 36);
-            this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.statusLabel});
-            this.statusStrip.Location = new System.Drawing.Point(0, 1007);
-            this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(1924, 48);
-            this.statusStrip.TabIndex = 1;
-            // 
-            // statusLabel
-            // 
-            this.statusLabel.Name = "statusLabel";
-            this.statusLabel.Size = new System.Drawing.Size(89, 37);
-            this.statusLabel.Text = "Ready";
-            // 
-            // btnBBExport
-            // 
-            this.btnBBExport.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.btnBBExport.AutoSize = true;
-            this.btnBBExport.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(167)))), ((int)(((byte)(69)))));
-            this.btnBBExport.FlatAppearance.BorderSize = 0;
-            this.btnBBExport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnBBExport.ForeColor = System.Drawing.Color.White;
-            this.btnBBExport.Location = new System.Drawing.Point(314, 11);
-            this.btnBBExport.Name = "btnBBExport";
-            this.btnBBExport.Padding = new System.Windows.Forms.Padding(10, 6, 10, 6);
-            this.btnBBExport.Size = new System.Drawing.Size(112, 51);
-            this.btnBBExport.TabIndex = 3;
-            this.btnBBExport.Tag = "lstBranchLog";
-            this.btnBBExport.Text = "Export";
-            this.btnBBExport.UseVisualStyleBackColor = false;
-            // 
-            // btnCuttingExport
-            // 
-            this.btnCuttingExport.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.btnCuttingExport.AutoSize = true;
-            this.btnCuttingExport.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(167)))), ((int)(((byte)(69)))));
-            this.btnCuttingExport.FlatAppearance.BorderSize = 0;
-            this.btnCuttingExport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnCuttingExport.ForeColor = System.Drawing.Color.White;
-            this.btnCuttingExport.Location = new System.Drawing.Point(314, 11);
-            this.btnCuttingExport.Name = "btnCuttingExport";
-            this.btnCuttingExport.Padding = new System.Windows.Forms.Padding(10, 6, 10, 6);
-            this.btnCuttingExport.Size = new System.Drawing.Size(112, 51);
-            this.btnCuttingExport.TabIndex = 4;
-            this.btnCuttingExport.Tag = "lstBranchLog";
-            this.btnCuttingExport.Text = "Export";
-            this.btnCuttingExport.UseVisualStyleBackColor = false;
-            // 
-            // btnDSExport
-            // 
-            this.btnDSExport.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.btnDSExport.AutoSize = true;
-            this.btnDSExport.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(167)))), ((int)(((byte)(69)))));
-            this.btnDSExport.FlatAppearance.BorderSize = 0;
-            this.btnDSExport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnDSExport.ForeColor = System.Drawing.Color.White;
-            this.btnDSExport.Location = new System.Drawing.Point(314, 11);
-            this.btnDSExport.Name = "btnDSExport";
-            this.btnDSExport.Padding = new System.Windows.Forms.Padding(10, 6, 10, 6);
-            this.btnDSExport.Size = new System.Drawing.Size(112, 51);
-            this.btnDSExport.TabIndex = 4;
-            this.btnDSExport.Tag = "lstBranchLog";
-            this.btnDSExport.Text = "Export";
-            this.btnDSExport.UseVisualStyleBackColor = false;
-            // 
-            // btnRevisedExport
-            // 
-            this.btnRevisedExport.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.btnRevisedExport.AutoSize = true;
-            this.btnRevisedExport.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(167)))), ((int)(((byte)(69)))));
-            this.btnRevisedExport.FlatAppearance.BorderSize = 0;
-            this.btnRevisedExport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnRevisedExport.ForeColor = System.Drawing.Color.White;
-            this.btnRevisedExport.Location = new System.Drawing.Point(314, 11);
-            this.btnRevisedExport.Name = "btnRevisedExport";
-            this.btnRevisedExport.Padding = new System.Windows.Forms.Padding(10, 6, 10, 6);
-            this.btnRevisedExport.Size = new System.Drawing.Size(112, 51);
-            this.btnRevisedExport.TabIndex = 4;
-            this.btnRevisedExport.Tag = "lstBranchLog";
-            this.btnRevisedExport.Text = "Export";
-            this.btnRevisedExport.UseVisualStyleBackColor = false;
-            // 
-            // btnPrimalExport
-            // 
-            this.btnPrimalExport.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.btnPrimalExport.AutoSize = true;
-            this.btnPrimalExport.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(167)))), ((int)(((byte)(69)))));
-            this.btnPrimalExport.FlatAppearance.BorderSize = 0;
-            this.btnPrimalExport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnPrimalExport.ForeColor = System.Drawing.Color.White;
-            this.btnPrimalExport.Location = new System.Drawing.Point(314, 11);
-            this.btnPrimalExport.Name = "btnPrimalExport";
-            this.btnPrimalExport.Padding = new System.Windows.Forms.Padding(10, 6, 10, 6);
-            this.btnPrimalExport.Size = new System.Drawing.Size(112, 51);
-            this.btnPrimalExport.TabIndex = 4;
-            this.btnPrimalExport.Tag = "lstBranchLog";
-            this.btnPrimalExport.Text = "Export";
-            this.btnPrimalExport.UseVisualStyleBackColor = false;
-            // 
             // btnKnapsackExport
             // 
             this.btnKnapsackExport.Anchor = System.Windows.Forms.AnchorStyles.None;
@@ -991,6 +963,35 @@ namespace Linear_Programming_Algorithms
             this.btnKnapsackExport.Tag = "lstBranchLog";
             this.btnKnapsackExport.Text = "Export";
             this.btnKnapsackExport.UseVisualStyleBackColor = false;
+            // 
+            // statusStrip
+            // 
+            this.statusStrip.ImageScalingSize = new System.Drawing.Size(36, 36);
+            this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.statusLabel});
+            this.statusStrip.Location = new System.Drawing.Point(0, 1007);
+            this.statusStrip.Name = "statusStrip";
+            this.statusStrip.Size = new System.Drawing.Size(1924, 48);
+            this.statusStrip.TabIndex = 1;
+            // 
+            // statusLabel
+            // 
+            this.statusLabel.Name = "statusLabel";
+            this.statusLabel.Size = new System.Drawing.Size(89, 37);
+            this.statusLabel.Text = "Ready";
+            // 
+            // rtbKnapsack
+            // 
+            this.rtbKnapsack.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.rtbKnapsack.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(251)))), ((int)(((byte)(252)))));
+            this.rtbKnapsack.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.rtbKnapsack.Location = new System.Drawing.Point(11, 83);
+            this.rtbKnapsack.Name = "rtbKnapsack";
+            this.rtbKnapsack.Size = new System.Drawing.Size(1164, 830);
+            this.rtbKnapsack.TabIndex = 4;
+            this.rtbKnapsack.Text = "";
             // 
             // Form1
             // 
@@ -1083,7 +1084,6 @@ namespace Linear_Programming_Algorithms
         private System.Windows.Forms.Button btnStepBranch;
         private System.Windows.Forms.Button btnResetBranch;
         private System.Windows.Forms.TabPage tabBBKnapsack;
-        private System.Windows.Forms.ListBox lstKnapsack;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.Button btnKnapsackRun;
         private System.Windows.Forms.Button btnKnapsackStep;
@@ -1094,5 +1094,6 @@ namespace Linear_Programming_Algorithms
         private System.Windows.Forms.Button btnCuttingExport;
         private System.Windows.Forms.Button btnBBExport;
         private System.Windows.Forms.Button btnKnapsackExport;
+        private System.Windows.Forms.RichTextBox rtbKnapsack;
     }
 }
