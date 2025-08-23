@@ -159,5 +159,42 @@ namespace Linear_Programming_Algorithms
             Console.WriteLine($"Optimal Value: {tableau[numConstraints, tableau.GetLength(1) - 1]:F3}");
         }
 
+        public void AddGomoryCut(List<double> cutCoeffs, double rhsFrac, string inequality = "<=")
+        {
+            int oldRows = tableau.GetLength(0);
+            int oldCols = tableau.GetLength(1);
+
+            // New tableau: +1 row for cut, +1 column for new slack/excess
+            double[,] newTableau = new double[oldRows + 1, oldCols + 1];
+
+
+            for (int i = 0; i < oldRows; i++)
+                for (int j = 0; j < oldCols; j++)
+                    newTableau[i, j] = tableau[i, j];
+            for (int j = 0; j < cutCoeffs.Count; j++)
+            {
+                newTableau[oldRows, j] = (inequality == "<=") ? cutCoeffs[j] : -cutCoeffs[j];
+            }
+
+            newTableau[oldRows, oldCols] = 1; 
+
+            newTableau[oldRows, oldCols + 1] = rhsFrac;
+
+            numConstraints++;
+            tableau = newTableau;
+        }
+
+
+        public bool IsFeasible()
+        {
+            for (int i = 0; i < numConstraints; i++)
+            {
+                if (tableau[i, tableau.GetLength(1) - 1] < -1e-6)
+                    return false;
+            }
+            return true;
+        }
+
+
     }
 }
