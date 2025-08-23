@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,7 +16,6 @@ namespace Linear_Programming_Algorithms.Analysis
             _primal = primal;
         }
 
-        /// Get allowable range for a non-basic variable (approximation using reduced cost).
         public (double min, double max) NonBasicVariableRange(int variableIndex)
         {
             var tableau = _primal.TableauPublic;
@@ -31,14 +30,13 @@ namespace Linear_Programming_Algorithms.Analysis
             return (min, max);
         }
 
-        /// Apply a change to the objective coefficient of a variable.
         public void ApplyVariableChange(int variableIndex, double newCoefficient)
         {
             int lastRow = _primal.TableauPublic.GetLength(0) - 1;
             _primal.TableauPublic[lastRow, variableIndex] = -newCoefficient;
         }
-      
-        /// Get allowable range for a basic variable (using RHS fractional parts).
+
+        /// Get allowable range for a basic variable
         public (double min, double max) BasicVariableRange(int rowIndex)
         {
             var tableau = _primal.TableauPublic;
@@ -51,14 +49,12 @@ namespace Linear_Programming_Algorithms.Analysis
             return (min, max);
         }
 
-        /// Apply a change to a basic variable by updating its RHS.
         public void ApplyBasicVariableChange(int rowIndex, double newValue)
         {
             int lastCol = _primal.TableauPublic.GetLength(1) - 1;
             _primal.TableauPublic[rowIndex, lastCol] = newValue;
         }
 
-        /// Get the range for a constraint RHS (shadow price approximation).
         public (double min, double max) ConstraintRHSRange(int constraintIndex)
         {
             var tableau = _primal.TableauPublic;
@@ -71,25 +67,20 @@ namespace Linear_Programming_Algorithms.Analysis
             return (min, max);
         }
 
-        /// Apply a change to a constraint RHS.
         public void ApplyConstraintChange(int constraintIndex, double newRHS)
         {
             int lastCol = _primal.TableauPublic.GetLength(1) - 1;
             _primal.TableauPublic[constraintIndex, lastCol] = newRHS;
         }
 
-        /// Get shadow price for a constraint (dual value approximation).
         public double GetShadowPrice(int constraintIndex)
         {
-            // Simplified: take the coefficient from the objective row in the canonical tableau
             var tableau = _primal.TableauPublic;
             int lastRow = tableau.GetLength(0) - 1;
 
-            // For a more accurate dual value, you'd extract it from the final tableau of the dual
             return tableau[lastRow, constraintIndex];
         }
 
-        /// Add a new activity (variable) to the optimal solution.
         public void AddNewVariable(List<double> coefficients, double objectiveCoeff)
         {
             int oldRows = _primal.TableauPublic.GetLength(0);
@@ -131,11 +122,10 @@ namespace Linear_Programming_Algorithms.Analysis
 
         }
 
-        /// Solve the dual programming model based on the primal tableau.
+        /// Solve the dual LP based on the primal tableau.
         public void SolveDual()
         {
-            Dual dual = new Dual(_primal.TableauPublic, _primal.TableauPublic.GetLength(0) - 1,
-                                 _primal.TableauPublic.GetLength(1) - 1);
+            Dual dual = new Dual(_primal.TableauPublic, _primal.TableauPublic.GetLength(0) - 1, _primal.TableauPublic.GetLength(1) - 1);
             dual.Solve();
         }
     }
