@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,7 +14,7 @@ namespace Linear_Programming_Algorithms
 
         public double[,] OptimalTableau { get; private set; }
         public List<double[,]> TableauList { get; private set; } = new List<double[,]>();
-        public double[,] TableauPublic => tableau;
+        public double[,] TableauPublic => tableau; 
 
         public Primal(double[,] A, double[] b, double[] c)
         {
@@ -34,7 +34,6 @@ namespace Linear_Programming_Algorithms
                 tableau[i, tableau.GetLength(1) - 1] = b[i];
             }
 
-            // Objective row
             for (int j = 0; j < numVariables; j++)
                 tableau[numConstraints, j] = -c[j];
         }
@@ -61,7 +60,7 @@ namespace Linear_Programming_Algorithms
             }
 
             Console.WriteLine("Optimal solution found.");
-            OptimalTableau = (double[,])tableau.Clone();
+            OptimalTableau = (double[,])tableau.Clone(); 
         }
 
         private int FindPivotColumn()
@@ -151,10 +150,8 @@ namespace Linear_Programming_Algorithms
             int oldRows = tableau.GetLength(0);
             int oldCols = tableau.GetLength(1);
 
-            // New tableau: +1 row for cut, +1 column for new slack/surplus
             double[,] newTableau = new double[oldRows + 1, oldCols + 1];
 
-            // Copy old tableau
             for (int i = 0; i < oldRows; i++)
                 for (int j = 0; j < oldCols; j++)
                     newTableau[i, j] = tableau[i, j];
@@ -163,13 +160,10 @@ namespace Linear_Programming_Algorithms
             for (int j = 0; j < cutCoeffs.Count; j++)
                 newTableau[oldRows, j] = (inequality == "<=") ? cutCoeffs[j] : -cutCoeffs[j];
 
-            // Slack / surplus variable
             newTableau[oldRows, oldCols] = 1;
 
-            // RHS
             newTableau[oldRows, oldCols + 1] = rhsFrac;
 
-            // Update
             numConstraints++;
             tableau = newTableau;
         }
@@ -185,4 +179,3 @@ namespace Linear_Programming_Algorithms
         }
     }
 }
-
