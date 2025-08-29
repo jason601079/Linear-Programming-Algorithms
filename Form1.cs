@@ -738,6 +738,7 @@ namespace Linear_Programming_Algorithms
         private void btnNLReset_Click(object sender, EventArgs e)
         {
             rtbNL.Clear();
+        }
 
         private void ConvertToStandardForm(LPData lp, out double[,] A, out double[] b, out double[] c)
         {
