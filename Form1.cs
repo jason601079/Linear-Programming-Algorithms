@@ -1,14 +1,15 @@
-﻿using iTextSharp.text.pdf;
-using iTextSharp.text;
+﻿using iTextSharp.text;
+using iTextSharp.text.pdf;
+using Org.BouncyCastle.Tsp;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using System.Xml.Linq;
-using System.Drawing;
 
 namespace Linear_Programming_Algorithms
 {
@@ -361,6 +362,40 @@ namespace Linear_Programming_Algorithms
             lstRevisedLog.Items.Add("Basis changed 3 times. Final objective = 40.75 (stub)");
             _stepIndices[lstRevisedLog.Name] = 0;
             statusLabel.Text = "Revised Primal run completed (stub)";
+
+            var lp = LPData.Parse(_currentFilePath);
+
+            /*  int m = lp.Constraints.Count;
+              int n = lp.VariableCount;
+
+              // 2. Build arrays
+              double[,] A = new double[m, n];
+              double[] b = new double[m];
+              double[] c = (double[])lp.Objective.Coefficients.Clone();
+
+              for (int i = 0; i < m; i++)
+              {
+                  var con = lp.Constraints[i];
+                  for (int j = 0; j < n; j++)
+                      A[i, j] = con.Coefficients[j];
+                  b[i] = con.Rhs;
+              }*/
+
+            ConvertToStandardForm(lp, out double[,] A, out double[] b, out double[] c);
+
+
+            var solver = new RevisedPrimalSimplex(A, b, c);
+            var answer = solver.Solve();
+
+            lstRevisedLog.Items.Add($"Status :{answer.Status}");
+            lstRevisedLog.Items.Add($"Optimal value: {answer.z}");
+            lstRevisedLog.Items.Add($"x = [{string.Join(", ", answer.x)}]");
+
+            lstRevisedLog.Items.Add("");
+
+            foreach (var iter in solver.Iterations)
+                lstRevisedLog.Items.Add(iter.ToPrettyString());
+
         }
 
         // Data Sensitivity: Run
@@ -695,6 +730,48 @@ namespace Linear_Programming_Algorithms
         {
             _stepper.Reset();
             rtbKnapsack.Clear();
+        }
+
+        private void ConvertToStandardForm(LPData lp, out double[,] A, out double[] b, out double[] c)
+        {
+            int m = lp.Constraints.Count;
+            int n = lp.VariableCount;
+
+            // count slack vars (only for <= constraints)
+            int slackCount = lp.Constraints.Count(cons => cons.Relation == Relation.LessOrEqual);
+
+            int totalVars = n + slackCount;
+            A = new double[m, totalVars];
+            b = new double[m];
+            c = new double[totalVars];
+
+            // copy objective
+            for (int j = 0; j < n; j++)
+                c[j] = lp.Objective.Coefficients[j];
+
+            // flip if minimization
+            if (lp.Objective.Type == ProblemType.Min)
+                for (int j = 0; j < n; j++) c[j] = -c[j];
+
+            // fill A and b
+            int slackCol = n;
+            for (int i = 0; i < m; i++)
+            {
+                var cons = lp.Constraints[i];
+                for (int j = 0; j < n; j++)
+                    A[i, j] = cons.Coefficients[j];
+                b[i] = cons.Rhs;
+
+                if (cons.Relation == Relation.LessOrEqual)
+                {
+                    A[i, slackCol] = 1.0; // add slack
+                    slackCol++;
+                }
+                else
+                {
+                    throw new NotSupportedException("Only <= constraints are supported in this solver.");
+                }
+            }
         }
     }
 }
