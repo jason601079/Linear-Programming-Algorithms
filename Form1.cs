@@ -357,13 +357,7 @@ namespace Linear_Programming_Algorithms
         {
             if (string.IsNullOrEmpty(_currentFilePath)) { MessageBox.Show("Load an LP file first."); return; }
 
-            lstRevisedLog.Items.Clear();
-            lstRevisedLog.Items.Add("Revised Primal Simplex — Run started.");
-            lstRevisedLog.Items.Add("Computing basis inverse updates (B^-1) incrementally... (stub)");
-            lstRevisedLog.Items.Add("Updating reduced costs and selecting entering variable.");
-            lstRevisedLog.Items.Add("Basis changed 3 times. Final objective = 40.75 (stub)");
-            _stepIndices[lstRevisedLog.Name] = 0;
-            statusLabel.Text = "Revised Primal run completed (stub)";
+            
 
             var lp = LPData.Parse(_currentFilePath);
 
@@ -405,13 +399,7 @@ namespace Linear_Programming_Algorithms
         {
             if (string.IsNullOrEmpty(_currentFilePath)) { MessageBox.Show("Load an LP file first."); return; }
 
-            lstSensitivityLog.Items.Clear();
-            lstSensitivityLog.Items.Add("Data Sensitivity — Run started.");
-            lstSensitivityLog.Items.Add("Computing shadow prices and allowable ranges... (stub)");
-            lstSensitivityLog.Items.Add("Variable x2 has allowable increase +3.5, decrease -1.0 (stub)");
-            lstSensitivityLog.Items.Add("Objective sensitivity table generated.");
-            _stepIndices[lstSensitivityLog.Name] = 0;
-            statusLabel.Text = "Data Sensitivity run completed (stub)";
+            
         }
 
         // Cutting Plane: Run
@@ -419,14 +407,7 @@ namespace Linear_Programming_Algorithms
         {
             if (string.IsNullOrEmpty(_currentFilePath)) { MessageBox.Show("Load an LP file first."); return; }
 
-            lstCuttingLog.Items.Clear();
-            lstCuttingLog.Items.Add("Cutting Plane — Run started.");
-            lstCuttingLog.Items.Add("Solve LP relaxation (root) -> fractional solution found (stub)");
-            lstCuttingLog.Items.Add("Generate Gomory cut #1, add to model.");
-            lstCuttingLog.Items.Add("Re-solve -> new fractional solution -> add cut #2.");
-            lstCuttingLog.Items.Add("Integer-feasible solution found. Objective = 38.00 (stub)");
-            _stepIndices[lstCuttingLog.Name] = 0;
-            statusLabel.Text = "Cutting Plane run completed (stub)";
+           
         }
 
         // Branch & Bound: Run
@@ -434,69 +415,10 @@ namespace Linear_Programming_Algorithms
         {
             if (string.IsNullOrEmpty(_currentFilePath)) { MessageBox.Show("Load an LP file first."); return; }
 
-            lstBranchLog.Items.Clear();
-            lstBranchLog.Items.Add("Branch & Bound — Run started.");
-            lstBranchLog.Items.Add("Solve relaxation at root -> objective = 45.3 (stub)");
-            lstBranchLog.Items.Add("Branch on x1 (floor/ceil): create two children.");
-            lstBranchLog.Items.Add("Found integer incumbent obj = 44.50 (stub), prune nodes by bound.");
-            lstBranchLog.Items.Add("Finished. Best integer solution obj = 44.50 (stub)");
-            _stepIndices[lstBranchLog.Name] = 0;
-            statusLabel.Text = "Branch & Bound run completed (stub)";
+            
         }
 
-        // ---------------- Step methods ----------------
-
-        private void StepPrimal_Click(object sender, EventArgs e)
-        {
-            var key = lstPrimalLog.Name;
-            if (!_stepIndices.TryGetValue(key, out var i)) i = 0;
-            i++;
-            _stepIndices[key] = i;
-
-            switch (i)
-            {
-                case 1:
-                    lstPrimalLog.Items.Add("Pivot 1: entering x3, leaving s2. Updated tableau (stub).");
-                    break;
-                case 2:
-                    lstPrimalLog.Items.Add("Pivot 2: entering x1, leaving s1. Updated tableau (stub).");
-                    break;
-                case 3:
-                    lstPrimalLog.Items.Add("Pivot 3: optimality reached (stub).");
-                    break;
-                default:
-                    lstPrimalLog.Items.Add("No more primal steps (stub).");
-                    break;
-            }
-
-            statusLabel.Text = $"Primal Step {i}";
-        }
-
-        private void StepRevised_Click(object sender, EventArgs e)
-        {
-            var key = lstRevisedLog.Name;
-            if (!_stepIndices.TryGetValue(key, out var i)) i = 0;
-            i++;
-            _stepIndices[key] = i;
-
-            switch (i)
-            {
-                case 1:
-                    lstRevisedLog.Items.Add("Step 1: computed new B^-1 * a_j for entering variable (stub).");
-                    break;
-                case 2:
-                    lstRevisedLog.Items.Add("Step 2: updated basis, recalculated reduced costs (stub).");
-                    break;
-                case 3:
-                    lstRevisedLog.Items.Add("Step 3: found optimal basis (stub).");
-                    break;
-                default:
-                    lstRevisedLog.Items.Add("No more revised-simplex steps (stub).");
-                    break;
-            }
-
-            statusLabel.Text = $"Revised Step {i}";
-        }
+        // ---------------- Step methods ----------------               
 
         private void StepSensitivity_Click(object sender, EventArgs e)
         {
