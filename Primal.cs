@@ -6,18 +6,15 @@ using System.Threading.Tasks;
 
 namespace Linear_Programming_Algorithms
 {
-    public class Primal
+    internal class Primal
     {
         private double[,] tableau;
         private int numConstraints;
         private int numVariables;
 
-        public double[,] TableauPublic => tableau;
-        public int NumConstraints => numConstraints;
-        public int NumVariables => numVariables;
-
         public double[,] OptimalTableau { get; private set; }
         public List<double[,]> TableauList { get; private set; } = new List<double[,]>();
+        public double[,] TableauPublic => tableau;
 
         public Primal(double[,] A, double[] b, double[] c)
         {
@@ -26,12 +23,14 @@ namespace Linear_Programming_Algorithms
 
             tableau = new double[numConstraints + 1, numVariables + numConstraints + 1];
 
+            // Fill constraints
             for (int i = 0; i < numConstraints; i++)
             {
                 for (int j = 0; j < numVariables; j++)
+                {
                     tableau[i, j] = A[i, j];
-
-                tableau[i, numVariables + i] = 1; // slack
+                }
+                tableau[i, numVariables + i] = 1; // slack variable
                 tableau[i, tableau.GetLength(1) - 1] = b[i];
             }
 
@@ -41,16 +40,27 @@ namespace Linear_Programming_Algorithms
 
         public void Solve()
         {
+            TableauList.Clear();
+
             while (true)
             {
+                TableauList.Add((double[,])tableau.Clone());
+
                 int pivotCol = FindPivotColumn();
-                if (pivotCol == -1) break;
+                if (pivotCol == -1) break; // optimal
 
                 int pivotRow = FindPivotRow(pivotCol);
-                if (pivotRow == -1) return;
+                if (pivotRow == -1)
+                {
+                    Console.WriteLine("Unbounded solution.");
+                    return;
+                }
 
                 Pivot(pivotRow, pivotCol);
             }
+
+            Console.WriteLine("Optimal solution found.");
+            OptimalTableau = (double[,])tableau.Clone();
         }
 
         private int FindPivotColumn()
@@ -58,11 +68,13 @@ namespace Linear_Programming_Algorithms
             int col = -1;
             double min = 0;
             for (int j = 0; j < tableau.GetLength(1) - 1; j++)
+            {
                 if (tableau[numConstraints, j] < min)
                 {
                     min = tableau[numConstraints, j];
                     col = j;
                 }
+            }
             return col;
         }
 
@@ -72,7 +84,7 @@ namespace Linear_Programming_Algorithms
             double minRatio = double.PositiveInfinity;
             for (int i = 0; i < numConstraints; i++)
             {
-                if (tableau[i, pivotCol] > 1e-8)
+                if (tableau[i, pivotCol] > 0)
                 {
                     double ratio = tableau[i, tableau.GetLength(1) - 1] / tableau[i, pivotCol];
                     if (ratio < minRatio)
@@ -88,78 +100,73 @@ namespace Linear_Programming_Algorithms
         private void Pivot(int pivotRow, int pivotCol)
         {
             double pivotVal = tableau[pivotRow, pivotCol];
+
             for (int j = 0; j < tableau.GetLength(1); j++)
                 tableau[pivotRow, j] /= pivotVal;
 
             for (int i = 0; i < tableau.GetLength(0); i++)
             {
-                if (i == pivotRow) continue;
-                double factor = tableau[i, pivotCol];
-                for (int j = 0; j < tableau.GetLength(1); j++)
-                    tableau[i, j] -= factor * tableau[pivotRow, j];
+                if (i != pivotRow)
+                {
+                    double factor = tableau[i, pivotCol];
+                    for (int j = 0; j < tableau.GetLength(1); j++)
+                        tableau[i, j] -= factor * tableau[pivotRow, j];
+                }
             }
         }
 
         public (double[] solution, double optimalValue) GetSolution()
         {
             double[] solution = new double[numVariables];
+
             for (int j = 0; j < numVariables; j++)
             {
                 int pivotRow = -1;
                 bool isBasic = true;
+
                 for (int i = 0; i < numConstraints; i++)
                 {
-                    if (Math.Abs(tableau[i, j] - 1) < 1e-8)
+                    if (Math.Abs(tableau[i, j] - 1) < 1e-6)
                     {
                         if (pivotRow == -1) pivotRow = i;
                         else { isBasic = false; break; }
                     }
-                    else if (Math.Abs(tableau[i, j]) > 1e-8)
+                    else if (Math.Abs(tableau[i, j]) > 1e-6)
                     {
                         isBasic = false;
                         break;
                     }
                 }
+
                 solution[j] = (isBasic && pivotRow != -1) ? tableau[pivotRow, tableau.GetLength(1) - 1] : 0;
             }
 
-            double optimalValue = -tableau[numConstraints, tableau.GetLength(1) - 1];
+            double optimalValue = tableau[numConstraints, tableau.GetLength(1) - 1];
             return (solution, optimalValue);
         }
 
-        public void AddGomoryCut(List<double> cutCoeffs, double rhsFrac)
+        public void AddGomoryCut(List<double> cutCoeffs, double rhsFrac, string inequality = "<=")
         {
             int oldRows = tableau.GetLength(0);
             int oldCols = tableau.GetLength(1);
-            int newRows = oldRows + 1;
-            int newCols = oldCols + 1;
 
-            double[,] newTableau = new double[newRows, newCols];
+            double[,] newTableau = new double[oldRows + 1, oldCols + 1];
 
-            // Copy old tableau
             for (int i = 0; i < oldRows; i++)
                 for (int j = 0; j < oldCols; j++)
                     newTableau[i, j] = tableau[i, j];
 
-            // Copy cut coefficients
+            // Add new cut row
             for (int j = 0; j < cutCoeffs.Count; j++)
-                newTableau[oldRows, j] = cutCoeffs[j];
+                newTableau[oldRows, j] = (inequality == "<=") ? cutCoeffs[j] : -cutCoeffs[j];
 
-            // Add new slack for cut
-            newTableau[oldRows, oldCols - 1] = 1.0;
+            newTableau[oldRows, oldCols] = 1;
 
-            // RHS
-            newTableau[oldRows, newCols - 1] = rhsFrac;
+            newTableau[oldRows, oldCols + 1] = rhsFrac;
 
-            // Copy objective row to new tableau
-            for (int j = 0; j < oldCols; j++)
-                newTableau[newRows - 1, j] = tableau[oldRows - 1, j];
-
-            tableau = newTableau;
             numConstraints++;
+            tableau = newTableau;
         }
-
-
 
         public bool IsFeasible()
         {
@@ -172,3 +179,4 @@ namespace Linear_Programming_Algorithms
         }
     }
 }
+
