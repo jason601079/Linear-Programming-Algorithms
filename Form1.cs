@@ -397,8 +397,12 @@ namespace Linear_Programming_Algorithms
         }
 
         // Data Sensitivity: Run
-               private void RunSensitivity_Click(object sender, EventArgs e)
+                private void RunSensitivity_Click(object sender, EventArgs e)
         {
+            //still needs:
+            // - TextBox: txtNewVarObjective
+            // - TextBox: txtNewVarCoeffs
+            // - Button: btnAnalyzeNewVar
 
 
             if (string.IsNullOrEmpty(_currentFilePath)) { MessageBox.Show("Load an LP file first."); return; }
@@ -433,7 +437,16 @@ namespace Linear_Programming_Algorithms
                 var newConstraintCoeffs = new List<double> { 1, 2, 3 }; // replace with your actual values
                 double newRhs = 10; //replace with actual RHS
 
-                lstSensitivityLog.Items.Add(sa.AnalyzeNewConstraint(newConstraintCoeffs, newRhs));
+                //double newVarObjective = double.Parse(txtNewVarObjective.Text);
+
+               // var newVarCoeffs = txtNewVarCoeffs.Text
+                    //.Split(new[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries)
+                    //.Select(double.Parse)
+                    //.ToList();
+
+                //string result = sa.AnalyzeNewVariable(newVarObjective, newVarCoeffs);
+
+                //lstSensitivityLog.Items.Add(result);
 
                 lstSensitivityLog.Items.Add("=== New Constraint Test ===");
                 lstSensitivityLog.Items.Add(sa.AnalyzeNewConstraint(newConstraintCoeffs, newRhs));
@@ -789,5 +802,6 @@ namespace Linear_Programming_Algorithms
 
     }
 }
+
 
 
