@@ -10,22 +10,17 @@ namespace Linear_Programming_Algorithms
     public class CuttingPlane
     {
         private readonly Primal _primal;
-        private readonly Dual _dual;
-        private readonly BuildConstraint _builder;
         private bool _hasFractional = true;
         private int _iteration = 1;
 
         public bool IsFinished => !_hasFractional;
         public int CurrentIteration => _iteration;
 
-        public CuttingPlane(Primal primal, Dual dual, BuildConstraint builder)
+        public CuttingPlane(Primal primal)
         {
-            _primal = primal;
-            _dual = dual;
-            _builder = builder;
+            _primal = primal ?? throw new ArgumentNullException(nameof(primal));
         }
 
-        
         public void Step(ListBox log)
         {
             if (!_hasFractional)
@@ -46,28 +41,26 @@ namespace Linear_Programming_Algorithms
                 log.Items.Add(row);
             }
 
-            // Build Gomory cut
-            var (cutCoeffs, inequality, rhsFrac) = _builder.BuildGomoryCut();
-            _hasFractional = cutCoeffs != null;
-
-            if (_hasFractional)
+            int fracRow = _primal.FindFractionalRow();
+            if (fracRow != -1)
             {
-                log.Items.Add("Adding Gomory Cut:");
-                string cut = string.Join(" + ", cutCoeffs.Select((v, idx) => $"{v:F3}*x{idx + 1}"));
-                log.Items.Add($"{cut} {inequality} {rhsFrac:F3}");
+                _hasFractional = true;
+                log.Items.Add($"Adding Gomory cut from row {fracRow}.");
+                _primal.AddGomoryCut(fracRow);
 
-                _primal.AddGomoryCut(cutCoeffs, rhsFrac);
-
-                if (inequality == ">=")
-                    _dual.Solve();
-                else
-                    _primal.Solve();
+                _primal.Solve();
+            }
+            else
+            {
+                _hasFractional = false;
+                log.Items.Add("Integer-feasible solution found!");
             }
 
             _iteration++;
         }
 
+
         public (double[] x, double z) GetSolution() => _primal.GetSolution();
     }
-
-}
+   
+    }

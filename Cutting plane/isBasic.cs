@@ -9,7 +9,7 @@ namespace Linear_Programming_Algorithms.Cutting_plane
 {
     internal class isBasic
     {
-        public bool IsBasicVar(DataToColumn columns) //possible type object for each column
+        public bool IsBasicVar(DataToColumn columns) 
         {
             int onesCount = 0;
             foreach (var coefficient in columns.column) 

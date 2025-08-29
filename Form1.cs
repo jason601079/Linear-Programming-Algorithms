@@ -33,7 +33,7 @@ namespace Linear_Programming_Algorithms
             btnBBExport.Click += (s, e) => ExportListBox(lstBranchLog, "BranchLog.txt");
             btnKnapsackExport.Click += (s, e) => ExportRichText(rtbKnapsack, "KnapsackLog.txt");
             btnNLExport.Click += (s, e) => ExportRichText(rtbNL, "NonLinearLog.txt");
-            
+
         }
 
         private void ExportListBox(ListBox listBox, string baseFileName)
@@ -358,7 +358,7 @@ namespace Linear_Programming_Algorithms
             if (string.IsNullOrEmpty(_currentFilePath)) { MessageBox.Show("Load an LP file first."); return; }
 
 
-            
+
 
             var lp = LPData.Parse(_currentFilePath);
 
@@ -404,8 +404,6 @@ namespace Linear_Programming_Algorithms
 
 
         // Cutting Plane: Run
-        private CuttingPlane cuttingSolver;
-
         private void RunCutting_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(_currentFilePath))
@@ -413,55 +411,105 @@ namespace Linear_Programming_Algorithms
                 MessageBox.Show("Load an LP file first.", "No file", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
-            var lp = LPData.Parse(_currentFilePath);
-            lstCuttingLog.Items.Clear();
-            lstCuttingLog.Items.Add("Cutting Plane — Run started.");
 
-            double[] c = lp.Objective.Coefficients;
+            var lp = LPData.Parse(_currentFilePath);
+
+            lstPrimalLog.Items.Clear();
+            lstCuttingLog.Items.Clear();
 
             int m = lp.Constraints.Count;
             int n = lp.VariableCount;
 
             double[,] A = new double[m, n];
+            double[] b = new double[m];
+            double[] c = lp.Objective.Coefficients;
+
             for (int i = 0; i < m; i++)
             {
                 for (int j = 0; j < n; j++)
-                {
                     A[i, j] = lp.Constraints[i].Coefficients[j];
-                }
-            }
-
-            double[] b = new double[m];
-            for (int i = 0; i < m; i++)
-            {
                 b[i] = lp.Constraints[i].Rhs;
             }
 
-            var solver = new Primal(A, b, c);
-            var dual = new Dual(A,m, n);
-            var builder = new BuildConstraint(solver);
+            var primalSolver = new Primal(A, b, c);
 
-            cuttingSolver = new CuttingPlane(solver, dual, builder);
+            bool integerFeasible = false;
+            int iteration = 0;
+            const int maxIterations = 50;
 
-            while (!cuttingSolver.IsFinished)
+            while (!integerFeasible && iteration < maxIterations)
             {
-                cuttingSolver.Step(lstCuttingLog);
+                iteration++;
+                lstCuttingLog.Items.Add($"=== Cutting-plane iteration {iteration} ===");
+
+                primalSolver.Solve();
+
+                AddTableauToListBox(primalSolver.OptimalTableau, lstCuttingLog);
+
+                var (xPrimal, zPrimal) = primalSolver.GetSolution();
+                lstCuttingLog.Items.Add($"Current Objective = {zPrimal:F3}");
+                for (int i = 0; i < xPrimal.Length; i++)
+                    lstCuttingLog.Items.Add($"x{i + 1} = {xPrimal[i]:F3}");
+
+                int fracRow = FindFractionalRow(primalSolver);
+                if (fracRow == -1)
+                {
+                    integerFeasible = true;
+                    lstCuttingLog.Items.Add("Integer-feasible solution found!");
+                    break;
+                }
+
+                primalSolver.AddGomoryCut(fracRow);
+
+                lstCuttingLog.Items.Add($"Added Gomory cut from row {fracRow}");
+                lstCuttingLog.Items.Add("");
             }
 
-            var (x, z) = cuttingSolver.GetSolution();
-            lstCuttingLog.Items.Add("Final solution:");
-            for (int i = 0; i < x.Length; i++)
-                lstCuttingLog.Items.Add($"x{i + 1} = {x[i]:F3}");
-            lstCuttingLog.Items.Add($"Objective value z = {z:F3}");
+            if (!integerFeasible)
+                lstCuttingLog.Items.Add($"Reached max iteration ({maxIterations}) without integer solution.");
+
+            var (xFinal, zFinal) = primalSolver.GetSolution();
+            lstCuttingLog.Items.Add("=== Final Solution ===");
+            lstCuttingLog.Items.Add($"Objective = {zFinal:F3}");
+            for (int i = 0; i < xFinal.Length; i++)
+                lstCuttingLog.Items.Add($"x{i + 1} = {xFinal[i]:F3}");
 
             statusLabel.Text = "Cutting-plane finished.";
-           
         }
 
+        private void AddTableauToListBox(double[,] matrix, ListBox listBox)
+        {
+            listBox.Items.Add("Tableau:");
+            for (int i = 0; i < matrix.GetLength(0); i++)
+            {
+                string row = "";
+                for (int j = 0; j < matrix.GetLength(1); j++)
+                    row += matrix[i, j].ToString("F3").PadLeft(12);
+                listBox.Items.Add(row);
+            }
+            listBox.Items.Add(""); 
+        }
 
+        public static int FindFractionalRow(Primal primal)
+        {
+            int numRows = primal.OptimalTableau.GetLength(0) - 1;
+            int numCols = primal.OptimalTableau.GetLength(1);
+            double maxFrac = 0;
+            int fracRow = -1;
 
-            
- 
+            for (int i = 0; i < numRows; i++)
+            {
+                double rhs = primal.OptimalTableau[i, numCols - 1];
+                double frac = rhs - Math.Floor(rhs);
+                if (frac > 1e-6 && frac < 0.999 && frac > maxFrac)
+                {
+                    maxFrac = frac;
+                    fracRow = i;
+                }
+            }
+
+            return fracRow;
+        }
 
 
         // Branch & Bound: Run
@@ -469,7 +517,7 @@ namespace Linear_Programming_Algorithms
         {
             if (string.IsNullOrEmpty(_currentFilePath)) { MessageBox.Show("Load an LP file first."); return; }
 
-            
+
         }
 
         // ---------------- Step methods ----------------               
@@ -499,35 +547,10 @@ namespace Linear_Programming_Algorithms
 
         private void StepCutting_Click(object sender, EventArgs e)
         {
-            if (cuttingSolver == null)
-            {
-                MessageBox.Show("Initialize Cutting Plane first by clicking 'Run Cutting'.", "Info",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
 
-            cuttingSolver.Step(lstCuttingLog);
-
-            if (cuttingSolver.IsFinished)
-            {
-                var (x, z) = cuttingSolver.GetSolution();
-                lstCuttingLog.Items.Add($"Final Objective = {z:F3}");
-                for (int idx = 0; idx < x.Length; idx++)
-                    lstCuttingLog.Items.Add($"x{idx + 1} = {x[idx]:F3}");
-
-                statusLabel.Text = "Cutting Plane completed";
-                btnStepCutting.Enabled = false; 
-            }
-            else
-            {
-                statusLabel.Text = $"Cutting Plane iteration {_iterationText()}";
-            }
         }
 
-        private string _iterationText()
-        {
-            return cuttingSolver.CurrentIteration.ToString();
-        }
+
 
 
         private void StepBranch_Click(object sender, EventArgs e)
@@ -582,7 +605,7 @@ namespace Linear_Programming_Algorithms
             if (ctrl is ListBox lb)
             {
                 _stepIndices[lb.Name] = 0;
-                lb.Items.Clear();          
+                lb.Items.Clear();
                 statusLabel.Text = $"Reset {lb.Name}";
                 return;
             }
@@ -597,11 +620,11 @@ namespace Linear_Programming_Algorithms
             box.SelectionColor = defaultColor;
             box.AppendText(text + Environment.NewLine);
 
-          
-            HighlightKeyword(box, "feasible", Color.Goldenrod); 
-            HighlightKeyword(box, "infeasible", Color.Red);      
-            HighlightKeyword(box, "new best", Color.Green);       
-            HighlightKeyword(box, "best", Color.Green);           
+
+            HighlightKeyword(box, "feasible", Color.Goldenrod);
+            HighlightKeyword(box, "infeasible", Color.Red);
+            HighlightKeyword(box, "new best", Color.Green);
+            HighlightKeyword(box, "best", Color.Green);
         }
         private void HighlightKeyword(RichTextBox box, string keyword, Color color)
         {

@@ -3,33 +3,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Linear_Programming_Algorithms;
 
 namespace Linear_Programming_Algorithms.Cutting_plane
 {
-
     public class DataToColumn
     {
-        private Primal _primal;
-        public List<double> column = new List<double>();
+     
+        public List<double> column { get; set; } = new List<double>();
 
-        public DataToColumn(Primal primal)
+       
+        public DataToColumn() { }
+
+        public DataToColumn(IEnumerable<double> values)
         {
-            _primal = primal;
+            column = new List<double>(values);
         }
 
-        public List<double> GetColumn(int colIndex) //transform tableau rows into columns
+        public double this[int index]
         {
-            
-            var tableau = _primal.TableauPublic;
-
-            for (int i = 0; i < tableau.GetLength(0); i++)
-            {
-                column.Add(tableau[i, colIndex]);
-            }
-
-            return column;
+            get => column[index];
+            set => column[index] = value;
         }
     }
-
 }
