@@ -59,6 +59,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cutting plane\BuildConstraint.cs" />
+    <Compile Include="Cutting plane\CuttingPlane.cs" />
+    <Compile Include="Cutting plane\DataToColumn.cs" />
+    <Compile Include="Cutting plane\Dual.cs" />
+    <Compile Include="Cutting plane\isBasic.cs" />
     <Compile Include="Data.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
