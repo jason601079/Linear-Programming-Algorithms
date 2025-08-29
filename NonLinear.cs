@@ -52,7 +52,10 @@ namespace Linear_Programming_Algorithms
 
                 // checks that the answer is close enough to an optimum and itering again will not make any changes
                 if (Math.Abs(newX - currentX) < tolerance)
+                {
+                    currentX = newX;
                     break;
+                }
 
                 currentX = newX;
                 iteration++;

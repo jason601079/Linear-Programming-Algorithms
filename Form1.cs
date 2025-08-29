@@ -810,9 +810,9 @@ namespace Linear_Programming_Algorithms
 
             int finalIt = noLin.Iterations + 1;
             rtbNL.AppendText(Environment.NewLine);
-            rtbNL.AppendText($"x = {noLin.FinalX.ToString():F6}" + Environment.NewLine);
-            rtbNL.AppendText($"f(x) = {noLin.FinalFx.ToString():F6}" + Environment.NewLine);
-            rtbNL.AppendText($"Iteration {finalIt.ToString()} " + Environment.NewLine);
+            rtbNL.AppendText($"x = {noLin.FinalX:F6}" + Environment.NewLine);
+            rtbNL.AppendText($"f(x) = {noLin.FinalFx:F6}" + Environment.NewLine);
+            rtbNL.AppendText($"Iterations : {finalIt.ToString()} " + Environment.NewLine);
 
             foreach (var item in noLin.IterationLog)
             {
