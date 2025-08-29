@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,8 +11,10 @@ namespace Linear_Programming_Algorithms
         private double[,] tableau;
         private int numConstraints;
         private int numVariables;
+
         public double[,] OptimalTableau { get; private set; }
         public List<double[,]> TableauList { get; private set; } = new List<double[,]>();
+        public double[,] TableauPublic => tableau; 
 
         public Primal(double[,] A, double[] b, double[] c)
         {
@@ -32,7 +34,6 @@ namespace Linear_Programming_Algorithms
                 tableau[i, tableau.GetLength(1) - 1] = b[i];
             }
 
-            // Objective row
             for (int j = 0; j < numVariables; j++)
                 tableau[numConstraints, j] = -c[j];
         }
@@ -44,7 +45,6 @@ namespace Linear_Programming_Algorithms
             while (true)
             {
                 TableauList.Add((double[,])tableau.Clone());
-                
 
                 int pivotCol = FindPivotColumn();
                 if (pivotCol == -1) break; // optimal
@@ -60,8 +60,7 @@ namespace Linear_Programming_Algorithms
             }
 
             Console.WriteLine("Optimal solution found.");
-            OptimalTableau = (double[,])tableau.Clone(); // store final tableau
-            
+            OptimalTableau = (double[,])tableau.Clone(); 
         }
 
         private int FindPivotColumn()
@@ -139,18 +138,45 @@ namespace Linear_Programming_Algorithms
                     }
                 }
 
-                if (isBasic && pivotRow != -1)
-                    solution[j] = tableau[pivotRow, tableau.GetLength(1) - 1];
-                else
-                    solution[j] = 0;
+                solution[j] = (isBasic && pivotRow != -1) ? tableau[pivotRow, tableau.GetLength(1) - 1] : 0;
             }
 
             double optimalValue = tableau[numConstraints, tableau.GetLength(1) - 1];
-
             return (solution, optimalValue);
         }
 
+        public void AddGomoryCut(List<double> cutCoeffs, double rhsFrac, string inequality = "<=")
+        {
+            int oldRows = tableau.GetLength(0);
+            int oldCols = tableau.GetLength(1);
 
+            double[,] newTableau = new double[oldRows + 1, oldCols + 1];
 
+            for (int i = 0; i < oldRows; i++)
+                for (int j = 0; j < oldCols; j++)
+                    newTableau[i, j] = tableau[i, j];
+
+            // Add new cut row
+            for (int j = 0; j < cutCoeffs.Count; j++)
+                newTableau[oldRows, j] = (inequality == "<=") ? cutCoeffs[j] : -cutCoeffs[j];
+
+            newTableau[oldRows, oldCols] = 1;
+
+            newTableau[oldRows, oldCols + 1] = rhsFrac;
+
+            numConstraints++;
+            tableau = newTableau;
+        }
+
+        public bool IsFeasible()
+        {
+            for (int i = 0; i < numConstraints; i++)
+            {
+                if (tableau[i, tableau.GetLength(1) - 1] < -1e-6)
+                    return false;
+            }
+            return true;
+        }
     }
 }
+
