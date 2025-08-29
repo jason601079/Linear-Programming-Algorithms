@@ -1,15 +1,15 @@
-﻿using iTextSharp.text;
-using iTextSharp.text.pdf;
-using Org.BouncyCastle.Tsp;
+﻿using iTextSharp.text.pdf;
+using iTextSharp.text;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using System.Xml.Linq;
+using System.Drawing;
+using Linear_Programming_Algorithms.Cutting_plane;
 
 namespace Linear_Programming_Algorithms
 {
@@ -19,7 +19,7 @@ namespace Linear_Programming_Algorithms
         private KnapsackStepper _stepper = new KnapsackStepper();
 
 
-        private string _currentFilePath = null;      
+        private string _currentFilePath = null;
         private readonly Dictionary<string, int> _stepIndices = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
 
         public Form1()
@@ -102,7 +102,7 @@ namespace Linear_Programming_Algorithms
                 PdfWriter.GetInstance(doc, stream);
                 doc.Open();
 
-                var font = FontFactory.GetFont(FontFactory.COURIER, 11); 
+                var font = FontFactory.GetFont(FontFactory.COURIER, 11);
                 doc.Add(new Paragraph(richTextBox.Text, font));
 
                 doc.Close();
@@ -143,7 +143,7 @@ namespace Linear_Programming_Algorithms
         {
             openFileDialog.Filter = "LP or text files (*.lp;*.txt)|*.lp;*.txt|All files (*.*)|*.*";
 
-       
+
             btnCopyPreview.Left = Math.Max(8, previewTopPanel.ClientSize.Width - btnCopyPreview.Width - 8);
             btnCopyPreview.Top = Math.Max(4, (previewTopPanel.ClientSize.Height - btnCopyPreview.Height) / 2);
             previewTopPanel.Resize += (s, ev) =>
@@ -204,7 +204,7 @@ namespace Linear_Programming_Algorithms
                 lblDropHint.Text = $"Loaded: {Path.GetFileName(path)}";
                 statusLabel.Text = $"Loaded {Path.GetFileName(path)} • Variables: {lp.VariableCount} • Constraints: {lp.Constraints.Count}";
 
-               
+
             }
             catch (FormatException ex)
             {
@@ -246,15 +246,15 @@ namespace Linear_Programming_Algorithms
             lstPrimalLog.Items.Clear();
             try
             {
-                var lp = LPData.Parse(_currentFilePath); 
+                var lp = LPData.Parse(_currentFilePath);
                 lstPrimalLog.Items.Add("LP parsed successfully.");
                 lstPrimalLog.Items.Add($"Vars: {lp.VariableCount}, Constraints: {lp.Constraints.Count}");
                 lstPrimalLog.Items.Add("Running  Primal simplex)...");
 
                 double[] c = lp.Objective.Coefficients;
 
-                int m = lp.Constraints.Count;        
-                int n = lp.VariableCount;            
+                int m = lp.Constraints.Count;
+                int n = lp.VariableCount;
 
                 double[,] A = new double[m, n];
                 for (int i = 0; i < m; i++)
@@ -283,14 +283,14 @@ namespace Linear_Programming_Algorithms
                 header += "RHS".PadLeft(11);
 
                 int matrixIndex = 1;
-                foreach (var matrix in solver.TableauList) 
+                foreach (var matrix in solver.TableauList)
                 {
                     lstPrimalLog.Items.Add($"Tableau {matrixIndex}:");
 
                     int rows = matrix.GetLength(0);
                     int cols = matrix.GetLength(1);
 
-  
+
 
                     lstPrimalLog.Items.Add(header);
 
@@ -305,7 +305,7 @@ namespace Linear_Programming_Algorithms
                         lstPrimalLog.Items.Add(row);
                     }
 
-                    lstPrimalLog.Items.Add(""); 
+                    lstPrimalLog.Items.Add("");
                     matrixIndex++;
                 }
 
@@ -318,11 +318,11 @@ namespace Linear_Programming_Algorithms
                     string row = "";
                     for (int j = 0; j < solver.OptimalTableau.GetLength(1); j++) // columns
                     {
-                        row += solver.OptimalTableau[i, j].ToString("F3").PadLeft(12);  
+                        row += solver.OptimalTableau[i, j].ToString("F3").PadLeft(12);
                     }
-                   
+
                     lstPrimalLog.Items.Add(row);
-                    lstPrimalLog.Items.Add(""); 
+                    lstPrimalLog.Items.Add("");
                 }
 
                 var (x, z) = solver.GetSolution();
@@ -362,40 +362,6 @@ namespace Linear_Programming_Algorithms
             lstRevisedLog.Items.Add("Basis changed 3 times. Final objective = 40.75 (stub)");
             _stepIndices[lstRevisedLog.Name] = 0;
             statusLabel.Text = "Revised Primal run completed (stub)";
-
-            var lp = LPData.Parse(_currentFilePath);
-
-            /*  int m = lp.Constraints.Count;
-              int n = lp.VariableCount;
-
-              // 2. Build arrays
-              double[,] A = new double[m, n];
-              double[] b = new double[m];
-              double[] c = (double[])lp.Objective.Coefficients.Clone();
-
-              for (int i = 0; i < m; i++)
-              {
-                  var con = lp.Constraints[i];
-                  for (int j = 0; j < n; j++)
-                      A[i, j] = con.Coefficients[j];
-                  b[i] = con.Rhs;
-              }*/
-
-            ConvertToStandardForm(lp, out double[,] A, out double[] b, out double[] c);
-
-
-            var solver = new RevisedPrimalSimplex(A, b, c);
-            var answer = solver.Solve();
-
-            lstRevisedLog.Items.Add($"Status :{answer.Status}");
-            lstRevisedLog.Items.Add($"Optimal value: {answer.z}");
-            lstRevisedLog.Items.Add($"x = [{string.Join(", ", answer.x)}]");
-
-            lstRevisedLog.Items.Add("");
-
-            foreach (var iter in solver.Iterations)
-                lstRevisedLog.Items.Add(iter.ToPrettyString());
-
         }
 
         // Data Sensitivity: Run
@@ -413,19 +379,61 @@ namespace Linear_Programming_Algorithms
         }
 
         // Cutting Plane: Run
+        private CuttingPlane cuttingSolver;
+
         private void RunCutting_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(_currentFilePath)) { MessageBox.Show("Load an LP file first."); return; }
-
+            if (string.IsNullOrEmpty(_currentFilePath))
+            {
+                MessageBox.Show("Load an LP file first.", "No file", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+            var lp = LPData.Parse(_currentFilePath);
             lstCuttingLog.Items.Clear();
             lstCuttingLog.Items.Add("Cutting Plane — Run started.");
-            lstCuttingLog.Items.Add("Solve LP relaxation (root) -> fractional solution found (stub)");
-            lstCuttingLog.Items.Add("Generate Gomory cut #1, add to model.");
-            lstCuttingLog.Items.Add("Re-solve -> new fractional solution -> add cut #2.");
-            lstCuttingLog.Items.Add("Integer-feasible solution found. Objective = 38.00 (stub)");
-            _stepIndices[lstCuttingLog.Name] = 0;
-            statusLabel.Text = "Cutting Plane run completed (stub)";
+
+            double[] c = lp.Objective.Coefficients;
+
+            int m = lp.Constraints.Count;
+            int n = lp.VariableCount;
+
+            double[,] A = new double[m, n];
+            for (int i = 0; i < m; i++)
+            {
+                for (int j = 0; j < n; j++)
+                {
+                    A[i, j] = lp.Constraints[i].Coefficients[j];
+                }
+            }
+
+            double[] b = new double[m];
+            for (int i = 0; i < m; i++)
+            {
+                b[i] = lp.Constraints[i].Rhs;
+            }
+
+            var solver = new Primal(A, b, c);
+            var dual = new Dual(A,m, n);
+            var builder = new BuildConstraint(solver);
+
+            cuttingSolver = new CuttingPlane(solver, dual, builder);
+
+            while (!cuttingSolver.IsFinished)
+            {
+                cuttingSolver.Step(lstCuttingLog);
+            }
+
+            var (x, z) = cuttingSolver.GetSolution();
+            lstCuttingLog.Items.Add("Final solution:");
+            for (int i = 0; i < x.Length; i++)
+                lstCuttingLog.Items.Add($"x{i + 1} = {x[i]:F3}");
+            lstCuttingLog.Items.Add($"Objective value z = {z:F3}");
+
+            statusLabel.Text = "Cutting-plane finished.";
+           
         }
+
+
 
         // Branch & Bound: Run
         private void RunBranch_Click(object sender, EventArgs e)
@@ -521,29 +529,36 @@ namespace Linear_Programming_Algorithms
 
         private void StepCutting_Click(object sender, EventArgs e)
         {
-            var key = lstCuttingLog.Name;
-            if (!_stepIndices.TryGetValue(key, out var i)) i = 0;
-            i++;
-            _stepIndices[key] = i;
-
-            switch (i)
+            if (cuttingSolver == null)
             {
-                case 1:
-                    lstCuttingLog.Items.Add("Step 1: solved relaxation and generated Gomory cut #1 (stub).");
-                    break;
-                case 2:
-                    lstCuttingLog.Items.Add("Step 2: re-solved with cut #1; generated cut #2 (stub).");
-                    break;
-                case 3:
-                    lstCuttingLog.Items.Add("Step 3: integer solution found (stub).");
-                    break;
-                default:
-                    lstCuttingLog.Items.Add("No more cutting-plane steps (stub).");
-                    break;
+                MessageBox.Show("Initialize Cutting Plane first by clicking 'Run Cutting'.", "Info",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
             }
 
-            statusLabel.Text = $"Cutting Step {i}";
+            cuttingSolver.Step(lstCuttingLog);
+
+            if (cuttingSolver.IsFinished)
+            {
+                var (x, z) = cuttingSolver.GetSolution();
+                lstCuttingLog.Items.Add($"Final Objective = {z:F3}");
+                for (int idx = 0; idx < x.Length; idx++)
+                    lstCuttingLog.Items.Add($"x{idx + 1} = {x[idx]:F3}");
+
+                statusLabel.Text = "Cutting Plane completed";
+                btnStepCutting.Enabled = false; 
+            }
+            else
+            {
+                statusLabel.Text = $"Cutting Plane iteration {_iterationText()}";
+            }
         }
+
+        private string _iterationText()
+        {
+            return cuttingSolver.CurrentIteration.ToString();
+        }
+
 
         private void StepBranch_Click(object sender, EventArgs e)
         {
@@ -730,48 +745,6 @@ namespace Linear_Programming_Algorithms
         {
             _stepper.Reset();
             rtbKnapsack.Clear();
-        }
-
-        private void ConvertToStandardForm(LPData lp, out double[,] A, out double[] b, out double[] c)
-        {
-            int m = lp.Constraints.Count;
-            int n = lp.VariableCount;
-
-            // count slack vars (only for <= constraints)
-            int slackCount = lp.Constraints.Count(cons => cons.Relation == Relation.LessOrEqual);
-
-            int totalVars = n + slackCount;
-            A = new double[m, totalVars];
-            b = new double[m];
-            c = new double[totalVars];
-
-            // copy objective
-            for (int j = 0; j < n; j++)
-                c[j] = lp.Objective.Coefficients[j];
-
-            // flip if minimization
-            if (lp.Objective.Type == ProblemType.Min)
-                for (int j = 0; j < n; j++) c[j] = -c[j];
-
-            // fill A and b
-            int slackCol = n;
-            for (int i = 0; i < m; i++)
-            {
-                var cons = lp.Constraints[i];
-                for (int j = 0; j < n; j++)
-                    A[i, j] = cons.Coefficients[j];
-                b[i] = cons.Rhs;
-
-                if (cons.Relation == Relation.LessOrEqual)
-                {
-                    A[i, slackCol] = 1.0; // add slack
-                    slackCol++;
-                }
-                else
-                {
-                    throw new NotSupportedException("Only <= constraints are supported in this solver.");
-                }
-            }
         }
     }
 }
