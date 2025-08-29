@@ -16,35 +16,31 @@ namespace Linear_Programming_Algorithms.Cutting_plane
         {
             int numRows = _primal.TableauPublic.GetLength(0) - 1;
             int numCols = _primal.TableauPublic.GetLength(1);
+            int numOriginalVars = _primal.NumVariables;
 
             for (int i = 0; i < numRows; i++)
             {
                 double rhs = _primal.TableauPublic[i, numCols - 1];
                 double fracPart = rhs - Math.Floor(rhs);
 
-                if (fracPart > 1e-6) // fractional RHS
+                if (fracPart > 1e-6)
                 {
                     var cutCoeffs = new List<double>();
-                    for (int j = 0; j < numCols - 1; j++)
+                    for (int j = 0; j < numOriginalVars; j++)
                     {
                         double val = _primal.TableauPublic[i, j];
                         double coeffFrac = val - Math.Floor(val);
                         cutCoeffs.Add(coeffFrac);
                     }
 
-                    string inequality;
-
-
-                    // If the sum of fractional parts > 0.5, treat as >= else <=
-                    double sumFrac = 0;
-                    foreach (var c in cutCoeffs) sumFrac += c;
-                    inequality = (sumFrac > 0.5) ? ">=" : "<=";
-
-                    return (cutCoeffs, inequality, fracPart);
+                    return (cutCoeffs, "<=", fracPart);
                 }
             }
 
             return (null, null, 0);
         }
+
+
+
     }
 }
