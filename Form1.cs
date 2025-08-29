@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using System.Xml.Linq;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Linear_Programming_Algorithms
 {
@@ -580,10 +581,10 @@ namespace Linear_Programming_Algorithms
         // Wired as the Click handler for ALL reset buttons.
         private void AlgorithmReset_Click(object sender, EventArgs e)
         {
-            if (!(sender is Button btn))
+         /*   if (!(sender is Button btn))
             {
                 statusLabel.Text = "Reset invoked";
-                return;
+               return;
             }
 
             // Designer should set Tag on each reset button to the listbox name 
@@ -604,7 +605,8 @@ namespace Linear_Programming_Algorithms
                 return;
             }
 
-            statusLabel.Text = "Reset target not found";
+           statusLabel.Text = "Reset target not found";
+         */
         }
         private void AppendColoredLine(RichTextBox box, string text, Color defaultColor)
         {
@@ -781,6 +783,43 @@ namespace Linear_Programming_Algorithms
                 }
             }
 
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            
+
+
+        }
+
+        private void button1_Click_2(object sender, EventArgs e)
+        {
+          
+        }
+
+        private void button1_Click_3(object sender, EventArgs e)
+        {
+            rtbNL.Multiline = true;
+            rtbNL.Clear();
+            var noLin = new NonLinear();
+            noLin.Solve();
+
+            string max = noLin.maximize ? "max" : "min";
+
+            rtbNL.AppendText($"{max}  Function: f(x) = -x² + 4x + 10\r\n");
+
+            int finalIt = noLin.Iterations + 1;
+            rtbNL.AppendText(Environment.NewLine);
+            rtbNL.AppendText($"x = {noLin.FinalX.ToString():F6}" + Environment.NewLine);
+            rtbNL.AppendText($"f(x) = {noLin.FinalFx.ToString():F6}" + Environment.NewLine);
+            rtbNL.AppendText($"Iteration {finalIt.ToString()} " + Environment.NewLine);
+
+            foreach (var item in noLin.IterationLog)
+            {
+                rtbNL.AppendText(item + Environment.NewLine);
+            }
+
+           
         }
     }
 }

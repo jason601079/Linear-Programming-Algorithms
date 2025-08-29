@@ -91,16 +91,16 @@ namespace Linear_Programming_Algorithms
             this.btnKnapsackStep = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.btnKnapsackExport = new System.Windows.Forms.Button();
-            this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.statusStrip = new System.Windows.Forms.StatusStrip();
-            this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.tabNonLinear = new System.Windows.Forms.TabPage();
+            this.rtbNL = new System.Windows.Forms.RichTextBox();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.btnNLReset = new System.Windows.Forms.Button();
             this.btnNLExport = new System.Windows.Forms.Button();
-            this.rtbNL = new System.Windows.Forms.RichTextBox();
+            this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.statusStrip = new System.Windows.Forms.StatusStrip();
+            this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.tableLayoutMain.SuspendLayout();
             this.leftColumn.SuspendLayout();
             this.groupFileInput.SuspendLayout();
@@ -126,9 +126,9 @@ namespace Linear_Programming_Algorithms
             this.flowBranchButtons.SuspendLayout();
             this.tabBBKnapsack.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
-            this.statusStrip.SuspendLayout();
             this.tabNonLinear.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
+            this.statusStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutMain
@@ -144,7 +144,7 @@ namespace Linear_Programming_Algorithms
             this.tableLayoutMain.Padding = new System.Windows.Forms.Padding(12);
             this.tableLayoutMain.RowCount = 1;
             this.tableLayoutMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutMain.Size = new System.Drawing.Size(1924, 1007);
+            this.tableLayoutMain.Size = new System.Drawing.Size(1924, 1029);
             this.tableLayoutMain.TabIndex = 0;
             // 
             // leftColumn
@@ -159,7 +159,7 @@ namespace Linear_Programming_Algorithms
             this.leftColumn.RowCount = 2;
             this.leftColumn.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 38F));
             this.leftColumn.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 62F));
-            this.leftColumn.Size = new System.Drawing.Size(678, 977);
+            this.leftColumn.Size = new System.Drawing.Size(678, 999);
             this.leftColumn.TabIndex = 0;
             // 
             // groupFileInput
@@ -172,7 +172,7 @@ namespace Linear_Programming_Algorithms
             this.groupFileInput.Location = new System.Drawing.Point(3, 3);
             this.groupFileInput.Name = "groupFileInput";
             this.groupFileInput.Padding = new System.Windows.Forms.Padding(12);
-            this.groupFileInput.Size = new System.Drawing.Size(672, 365);
+            this.groupFileInput.Size = new System.Drawing.Size(672, 373);
             this.groupFileInput.TabIndex = 0;
             this.groupFileInput.TabStop = false;
             this.groupFileInput.Text = "File Input";
@@ -184,7 +184,7 @@ namespace Linear_Programming_Algorithms
             this.panelDropZone.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panelDropZone.Controls.Add(this.lblDropHint);
             this.panelDropZone.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panelDropZone.Location = new System.Drawing.Point(12, 253);
+            this.panelDropZone.Location = new System.Drawing.Point(12, 261);
             this.panelDropZone.Name = "panelDropZone";
             this.panelDropZone.Size = new System.Drawing.Size(648, 100);
             this.panelDropZone.TabIndex = 0;
@@ -208,7 +208,7 @@ namespace Linear_Programming_Algorithms
             this.flowFileButtons.Controls.Add(this.btnBrowse);
             this.flowFileButtons.Controls.Add(this.btnClear);
             this.flowFileButtons.Dock = System.Windows.Forms.DockStyle.Top;
-            this.flowFileButtons.Location = new System.Drawing.Point(12, 40);
+            this.flowFileButtons.Location = new System.Drawing.Point(12, 27);
             this.flowFileButtons.Name = "flowFileButtons";
             this.flowFileButtons.Size = new System.Drawing.Size(648, 57);
             this.flowFileButtons.TabIndex = 1;
@@ -252,10 +252,10 @@ namespace Linear_Programming_Algorithms
             this.groupPreview.Controls.Add(this.previewTopPanel);
             this.groupPreview.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupPreview.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(37)))), ((int)(((byte)(41)))));
-            this.groupPreview.Location = new System.Drawing.Point(3, 374);
+            this.groupPreview.Location = new System.Drawing.Point(3, 382);
             this.groupPreview.Name = "groupPreview";
             this.groupPreview.Padding = new System.Windows.Forms.Padding(12);
-            this.groupPreview.Size = new System.Drawing.Size(672, 600);
+            this.groupPreview.Size = new System.Drawing.Size(672, 614);
             this.groupPreview.TabIndex = 1;
             this.groupPreview.TabStop = false;
             this.groupPreview.Text = "Preview";
@@ -266,19 +266,19 @@ namespace Linear_Programming_Algorithms
             this.txtPreview.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtPreview.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtPreview.Font = new System.Drawing.Font("Consolas", 10F);
-            this.txtPreview.Location = new System.Drawing.Point(12, 84);
+            this.txtPreview.Location = new System.Drawing.Point(12, 71);
             this.txtPreview.Multiline = true;
             this.txtPreview.Name = "txtPreview";
             this.txtPreview.ReadOnly = true;
             this.txtPreview.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtPreview.Size = new System.Drawing.Size(648, 504);
+            this.txtPreview.Size = new System.Drawing.Size(648, 531);
             this.txtPreview.TabIndex = 0;
             // 
             // previewTopPanel
             // 
             this.previewTopPanel.Controls.Add(this.btnCopyPreview);
             this.previewTopPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.previewTopPanel.Location = new System.Drawing.Point(12, 40);
+            this.previewTopPanel.Location = new System.Drawing.Point(12, 27);
             this.previewTopPanel.Name = "previewTopPanel";
             this.previewTopPanel.Size = new System.Drawing.Size(648, 44);
             this.previewTopPanel.TabIndex = 1;
@@ -313,15 +313,15 @@ namespace Linear_Programming_Algorithms
             this.tabControlAlgorithms.Name = "tabControlAlgorithms";
             this.tabControlAlgorithms.Padding = new System.Drawing.Point(8, 6);
             this.tabControlAlgorithms.SelectedIndex = 0;
-            this.tabControlAlgorithms.Size = new System.Drawing.Size(1210, 977);
+            this.tabControlAlgorithms.Size = new System.Drawing.Size(1210, 999);
             this.tabControlAlgorithms.TabIndex = 1;
             // 
             // tabPrimal
             // 
             this.tabPrimal.Controls.Add(this.panelPrimal);
-            this.tabPrimal.Location = new System.Drawing.Point(10, 49);
+            this.tabPrimal.Location = new System.Drawing.Point(4, 31);
             this.tabPrimal.Name = "tabPrimal";
-            this.tabPrimal.Size = new System.Drawing.Size(1190, 918);
+            this.tabPrimal.Size = new System.Drawing.Size(1202, 964);
             this.tabPrimal.TabIndex = 0;
             this.tabPrimal.Text = "Primal Simplex";
             // 
@@ -333,7 +333,7 @@ namespace Linear_Programming_Algorithms
             this.panelPrimal.Location = new System.Drawing.Point(0, 0);
             this.panelPrimal.Name = "panelPrimal";
             this.panelPrimal.Padding = new System.Windows.Forms.Padding(12);
-            this.panelPrimal.Size = new System.Drawing.Size(1190, 918);
+            this.panelPrimal.Size = new System.Drawing.Size(1202, 964);
             this.panelPrimal.TabIndex = 0;
             // 
             // lstPrimalLog
@@ -342,10 +342,10 @@ namespace Linear_Programming_Algorithms
             this.lstPrimalLog.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.lstPrimalLog.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lstPrimalLog.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.lstPrimalLog.ItemHeight = 37;
+            this.lstPrimalLog.ItemHeight = 20;
             this.lstPrimalLog.Location = new System.Drawing.Point(12, 82);
             this.lstPrimalLog.Name = "lstPrimalLog";
-            this.lstPrimalLog.Size = new System.Drawing.Size(1166, 824);
+            this.lstPrimalLog.Size = new System.Drawing.Size(1178, 870);
             this.lstPrimalLog.TabIndex = 0;
             // 
             // flowPrimalButtons
@@ -358,7 +358,7 @@ namespace Linear_Programming_Algorithms
             this.flowPrimalButtons.Location = new System.Drawing.Point(12, 12);
             this.flowPrimalButtons.Name = "flowPrimalButtons";
             this.flowPrimalButtons.Padding = new System.Windows.Forms.Padding(8);
-            this.flowPrimalButtons.Size = new System.Drawing.Size(1166, 70);
+            this.flowPrimalButtons.Size = new System.Drawing.Size(1178, 70);
             this.flowPrimalButtons.TabIndex = 2;
             // 
             // btnRunPrimal
@@ -432,9 +432,9 @@ namespace Linear_Programming_Algorithms
             // tabRevised
             // 
             this.tabRevised.Controls.Add(this.panelRevised);
-            this.tabRevised.Location = new System.Drawing.Point(10, 49);
+            this.tabRevised.Location = new System.Drawing.Point(4, 31);
             this.tabRevised.Name = "tabRevised";
-            this.tabRevised.Size = new System.Drawing.Size(1190, 918);
+            this.tabRevised.Size = new System.Drawing.Size(1202, 942);
             this.tabRevised.TabIndex = 1;
             this.tabRevised.Text = "Revised Primal Simplex";
             // 
@@ -446,7 +446,7 @@ namespace Linear_Programming_Algorithms
             this.panelRevised.Location = new System.Drawing.Point(0, 0);
             this.panelRevised.Name = "panelRevised";
             this.panelRevised.Padding = new System.Windows.Forms.Padding(12);
-            this.panelRevised.Size = new System.Drawing.Size(1190, 918);
+            this.panelRevised.Size = new System.Drawing.Size(1202, 942);
             this.panelRevised.TabIndex = 0;
             // 
             // lstRevisedLog
@@ -455,10 +455,10 @@ namespace Linear_Programming_Algorithms
             this.lstRevisedLog.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.lstRevisedLog.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lstRevisedLog.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.lstRevisedLog.ItemHeight = 37;
+            this.lstRevisedLog.ItemHeight = 20;
             this.lstRevisedLog.Location = new System.Drawing.Point(12, 82);
             this.lstRevisedLog.Name = "lstRevisedLog";
-            this.lstRevisedLog.Size = new System.Drawing.Size(1166, 824);
+            this.lstRevisedLog.Size = new System.Drawing.Size(1178, 848);
             this.lstRevisedLog.TabIndex = 0;
             // 
             // flowRevisedButtons
@@ -471,7 +471,7 @@ namespace Linear_Programming_Algorithms
             this.flowRevisedButtons.Location = new System.Drawing.Point(12, 12);
             this.flowRevisedButtons.Name = "flowRevisedButtons";
             this.flowRevisedButtons.Padding = new System.Windows.Forms.Padding(8);
-            this.flowRevisedButtons.Size = new System.Drawing.Size(1166, 70);
+            this.flowRevisedButtons.Size = new System.Drawing.Size(1178, 70);
             this.flowRevisedButtons.TabIndex = 2;
             // 
             // btnRunRevised
@@ -545,9 +545,9 @@ namespace Linear_Programming_Algorithms
             // tabSensitivity
             // 
             this.tabSensitivity.Controls.Add(this.panelSensitivity);
-            this.tabSensitivity.Location = new System.Drawing.Point(10, 49);
+            this.tabSensitivity.Location = new System.Drawing.Point(4, 31);
             this.tabSensitivity.Name = "tabSensitivity";
-            this.tabSensitivity.Size = new System.Drawing.Size(1190, 918);
+            this.tabSensitivity.Size = new System.Drawing.Size(1202, 942);
             this.tabSensitivity.TabIndex = 2;
             this.tabSensitivity.Text = "Data Sensitivity";
             // 
@@ -559,7 +559,7 @@ namespace Linear_Programming_Algorithms
             this.panelSensitivity.Location = new System.Drawing.Point(0, 0);
             this.panelSensitivity.Name = "panelSensitivity";
             this.panelSensitivity.Padding = new System.Windows.Forms.Padding(12);
-            this.panelSensitivity.Size = new System.Drawing.Size(1190, 918);
+            this.panelSensitivity.Size = new System.Drawing.Size(1202, 942);
             this.panelSensitivity.TabIndex = 0;
             // 
             // lstSensitivityLog
@@ -568,10 +568,10 @@ namespace Linear_Programming_Algorithms
             this.lstSensitivityLog.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.lstSensitivityLog.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lstSensitivityLog.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.lstSensitivityLog.ItemHeight = 37;
+            this.lstSensitivityLog.ItemHeight = 20;
             this.lstSensitivityLog.Location = new System.Drawing.Point(12, 82);
             this.lstSensitivityLog.Name = "lstSensitivityLog";
-            this.lstSensitivityLog.Size = new System.Drawing.Size(1166, 824);
+            this.lstSensitivityLog.Size = new System.Drawing.Size(1178, 848);
             this.lstSensitivityLog.TabIndex = 0;
             // 
             // flowSensitivityButtons
@@ -584,7 +584,7 @@ namespace Linear_Programming_Algorithms
             this.flowSensitivityButtons.Location = new System.Drawing.Point(12, 12);
             this.flowSensitivityButtons.Name = "flowSensitivityButtons";
             this.flowSensitivityButtons.Padding = new System.Windows.Forms.Padding(8);
-            this.flowSensitivityButtons.Size = new System.Drawing.Size(1166, 70);
+            this.flowSensitivityButtons.Size = new System.Drawing.Size(1178, 70);
             this.flowSensitivityButtons.TabIndex = 2;
             // 
             // btnRunSensitivity
@@ -658,9 +658,9 @@ namespace Linear_Programming_Algorithms
             // tabCutting
             // 
             this.tabCutting.Controls.Add(this.panelCutting);
-            this.tabCutting.Location = new System.Drawing.Point(10, 49);
+            this.tabCutting.Location = new System.Drawing.Point(4, 31);
             this.tabCutting.Name = "tabCutting";
-            this.tabCutting.Size = new System.Drawing.Size(1190, 918);
+            this.tabCutting.Size = new System.Drawing.Size(1202, 942);
             this.tabCutting.TabIndex = 3;
             this.tabCutting.Text = "Cutting Plane";
             // 
@@ -672,7 +672,7 @@ namespace Linear_Programming_Algorithms
             this.panelCutting.Location = new System.Drawing.Point(0, 0);
             this.panelCutting.Name = "panelCutting";
             this.panelCutting.Padding = new System.Windows.Forms.Padding(12);
-            this.panelCutting.Size = new System.Drawing.Size(1190, 918);
+            this.panelCutting.Size = new System.Drawing.Size(1202, 942);
             this.panelCutting.TabIndex = 0;
             // 
             // lstCuttingLog
@@ -681,10 +681,10 @@ namespace Linear_Programming_Algorithms
             this.lstCuttingLog.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.lstCuttingLog.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lstCuttingLog.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.lstCuttingLog.ItemHeight = 37;
+            this.lstCuttingLog.ItemHeight = 20;
             this.lstCuttingLog.Location = new System.Drawing.Point(12, 82);
             this.lstCuttingLog.Name = "lstCuttingLog";
-            this.lstCuttingLog.Size = new System.Drawing.Size(1166, 824);
+            this.lstCuttingLog.Size = new System.Drawing.Size(1178, 848);
             this.lstCuttingLog.TabIndex = 0;
             // 
             // flowCuttingButtons
@@ -697,7 +697,7 @@ namespace Linear_Programming_Algorithms
             this.flowCuttingButtons.Location = new System.Drawing.Point(12, 12);
             this.flowCuttingButtons.Name = "flowCuttingButtons";
             this.flowCuttingButtons.Padding = new System.Windows.Forms.Padding(8);
-            this.flowCuttingButtons.Size = new System.Drawing.Size(1166, 70);
+            this.flowCuttingButtons.Size = new System.Drawing.Size(1178, 70);
             this.flowCuttingButtons.TabIndex = 2;
             // 
             // btnRunCutting
@@ -771,9 +771,9 @@ namespace Linear_Programming_Algorithms
             // tabBranchBound
             // 
             this.tabBranchBound.Controls.Add(this.panelBranch);
-            this.tabBranchBound.Location = new System.Drawing.Point(10, 49);
+            this.tabBranchBound.Location = new System.Drawing.Point(4, 31);
             this.tabBranchBound.Name = "tabBranchBound";
-            this.tabBranchBound.Size = new System.Drawing.Size(1190, 918);
+            this.tabBranchBound.Size = new System.Drawing.Size(1202, 942);
             this.tabBranchBound.TabIndex = 4;
             this.tabBranchBound.Text = "Branch & Bound";
             // 
@@ -785,7 +785,7 @@ namespace Linear_Programming_Algorithms
             this.panelBranch.Location = new System.Drawing.Point(0, 0);
             this.panelBranch.Name = "panelBranch";
             this.panelBranch.Padding = new System.Windows.Forms.Padding(12);
-            this.panelBranch.Size = new System.Drawing.Size(1190, 918);
+            this.panelBranch.Size = new System.Drawing.Size(1202, 942);
             this.panelBranch.TabIndex = 0;
             // 
             // lstBranchLog
@@ -794,10 +794,10 @@ namespace Linear_Programming_Algorithms
             this.lstBranchLog.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.lstBranchLog.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lstBranchLog.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.lstBranchLog.ItemHeight = 37;
+            this.lstBranchLog.ItemHeight = 20;
             this.lstBranchLog.Location = new System.Drawing.Point(12, 82);
             this.lstBranchLog.Name = "lstBranchLog";
-            this.lstBranchLog.Size = new System.Drawing.Size(1166, 824);
+            this.lstBranchLog.Size = new System.Drawing.Size(1178, 848);
             this.lstBranchLog.TabIndex = 0;
             // 
             // flowBranchButtons
@@ -810,7 +810,7 @@ namespace Linear_Programming_Algorithms
             this.flowBranchButtons.Location = new System.Drawing.Point(12, 12);
             this.flowBranchButtons.Name = "flowBranchButtons";
             this.flowBranchButtons.Padding = new System.Windows.Forms.Padding(8);
-            this.flowBranchButtons.Size = new System.Drawing.Size(1166, 70);
+            this.flowBranchButtons.Size = new System.Drawing.Size(1178, 70);
             this.flowBranchButtons.TabIndex = 2;
             // 
             // btnRunBranch
@@ -886,9 +886,9 @@ namespace Linear_Programming_Algorithms
             this.tabBBKnapsack.BackColor = System.Drawing.SystemColors.Control;
             this.tabBBKnapsack.Controls.Add(this.rtbKnapsack);
             this.tabBBKnapsack.Controls.Add(this.flowLayoutPanel1);
-            this.tabBBKnapsack.Location = new System.Drawing.Point(10, 49);
+            this.tabBBKnapsack.Location = new System.Drawing.Point(4, 31);
             this.tabBBKnapsack.Name = "tabBBKnapsack";
-            this.tabBBKnapsack.Size = new System.Drawing.Size(1190, 918);
+            this.tabBBKnapsack.Size = new System.Drawing.Size(1202, 942);
             this.tabBBKnapsack.TabIndex = 5;
             this.tabBBKnapsack.Text = "B&B Knapsack";
             // 
@@ -901,7 +901,7 @@ namespace Linear_Programming_Algorithms
             this.rtbKnapsack.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.rtbKnapsack.Location = new System.Drawing.Point(11, 83);
             this.rtbKnapsack.Name = "rtbKnapsack";
-            this.rtbKnapsack.Size = new System.Drawing.Size(1164, 830);
+            this.rtbKnapsack.Size = new System.Drawing.Size(1176, 854);
             this.rtbKnapsack.TabIndex = 4;
             this.rtbKnapsack.Text = "";
             // 
@@ -916,7 +916,7 @@ namespace Linear_Programming_Algorithms
             this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(10);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Padding = new System.Windows.Forms.Padding(8);
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(1190, 70);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(1202, 70);
             this.flowLayoutPanel1.TabIndex = 3;
             // 
             // btnKnapsackRun
@@ -987,32 +987,29 @@ namespace Linear_Programming_Algorithms
             this.btnKnapsackExport.Text = "Export";
             this.btnKnapsackExport.UseVisualStyleBackColor = false;
             // 
-            // statusStrip
-            // 
-            this.statusStrip.ImageScalingSize = new System.Drawing.Size(36, 36);
-            this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.statusLabel});
-            this.statusStrip.Location = new System.Drawing.Point(0, 1007);
-            this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(1924, 48);
-            this.statusStrip.TabIndex = 1;
-            // 
-            // statusLabel
-            // 
-            this.statusLabel.Name = "statusLabel";
-            this.statusLabel.Size = new System.Drawing.Size(89, 37);
-            this.statusLabel.Text = "Ready";
-            // 
             // tabNonLinear
             // 
             this.tabNonLinear.BackColor = System.Drawing.SystemColors.Control;
             this.tabNonLinear.Controls.Add(this.rtbNL);
             this.tabNonLinear.Controls.Add(this.flowLayoutPanel2);
-            this.tabNonLinear.Location = new System.Drawing.Point(10, 49);
+            this.tabNonLinear.Location = new System.Drawing.Point(4, 31);
             this.tabNonLinear.Name = "tabNonLinear";
-            this.tabNonLinear.Size = new System.Drawing.Size(1190, 918);
+            this.tabNonLinear.Size = new System.Drawing.Size(1202, 964);
             this.tabNonLinear.TabIndex = 6;
             this.tabNonLinear.Text = "Non Linear";
+            // 
+            // rtbNL
+            // 
+            this.rtbNL.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.rtbNL.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(251)))), ((int)(((byte)(252)))));
+            this.rtbNL.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.rtbNL.Location = new System.Drawing.Point(11, 76);
+            this.rtbNL.Name = "rtbNL";
+            this.rtbNL.Size = new System.Drawing.Size(1176, 876);
+            this.rtbNL.TabIndex = 5;
+            this.rtbNL.Text = "This is a test";
             // 
             // flowLayoutPanel2
             // 
@@ -1024,7 +1021,7 @@ namespace Linear_Programming_Algorithms
             this.flowLayoutPanel2.Location = new System.Drawing.Point(0, 0);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
             this.flowLayoutPanel2.Padding = new System.Windows.Forms.Padding(8);
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(1190, 70);
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(1202, 70);
             this.flowLayoutPanel2.TabIndex = 3;
             // 
             // button1
@@ -1042,6 +1039,7 @@ namespace Linear_Programming_Algorithms
             this.button1.Tag = "lstPrimalLog";
             this.button1.Text = "Run";
             this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click_3);
             // 
             // button2
             // 
@@ -1093,18 +1091,21 @@ namespace Linear_Programming_Algorithms
             this.btnNLExport.Text = "Export";
             this.btnNLExport.UseVisualStyleBackColor = false;
             // 
-            // rtbNL
+            // statusStrip
             // 
-            this.rtbNL.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.rtbNL.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(251)))), ((int)(((byte)(252)))));
-            this.rtbNL.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.rtbNL.Location = new System.Drawing.Point(11, 76);
-            this.rtbNL.Name = "rtbNL";
-            this.rtbNL.Size = new System.Drawing.Size(1164, 830);
-            this.rtbNL.TabIndex = 5;
-            this.rtbNL.Text = "This is a test";
+            this.statusStrip.ImageScalingSize = new System.Drawing.Size(36, 36);
+            this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.statusLabel});
+            this.statusStrip.Location = new System.Drawing.Point(0, 1029);
+            this.statusStrip.Name = "statusStrip";
+            this.statusStrip.Size = new System.Drawing.Size(1924, 26);
+            this.statusStrip.TabIndex = 1;
+            // 
+            // statusLabel
+            // 
+            this.statusLabel.Name = "statusLabel";
+            this.statusLabel.Size = new System.Drawing.Size(50, 20);
+            this.statusLabel.Text = "Ready";
             // 
             // Form1
             // 
@@ -1153,11 +1154,11 @@ namespace Linear_Programming_Algorithms
             this.tabBBKnapsack.ResumeLayout(false);
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
-            this.statusStrip.ResumeLayout(false);
-            this.statusStrip.PerformLayout();
             this.tabNonLinear.ResumeLayout(false);
             this.flowLayoutPanel2.ResumeLayout(false);
             this.flowLayoutPanel2.PerformLayout();
+            this.statusStrip.ResumeLayout(false);
+            this.statusStrip.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 

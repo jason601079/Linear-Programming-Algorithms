@@ -13,7 +13,7 @@ namespace Linear_Programming_Algorithms
         private double learningRate = 0.1;
         private double tolerance = 1e-6;
         private int maxIterations = 1000;
-        private bool maximize = true;
+        public bool maximize = true;
 
         //used to store the final results to display on form
         public double FinalX { get; private set; }
@@ -38,6 +38,7 @@ namespace Linear_Programming_Algorithms
             double currentX = x;
 
             IterationLog.Clear();
+
             IterationLog.Add($"Initial guess: x = {currentX}, f(x) = {Function(currentX)}");
 
             while (iteration < maxIterations)
