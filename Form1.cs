@@ -400,6 +400,7 @@ namespace Linear_Programming_Algorithms
         private void RunSensitivity_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(_currentFilePath)) { MessageBox.Show("Load an LP file first."); return; }
+        }
 
 
         // Cutting Plane: Run
@@ -460,15 +461,7 @@ namespace Linear_Programming_Algorithms
 
 
             
-        }
-
-        // Cutting Plane: Run
-        private void RunCutting_Click(object sender, EventArgs e)
-        {
-            if (string.IsNullOrEmpty(_currentFilePath)) { MessageBox.Show("Load an LP file first."); return; }
-
-           
-        }
+ 
 
 
         // Branch & Bound: Run
