@@ -31,6 +31,8 @@ namespace Linear_Programming_Algorithms
             btnDSExport.Click += (s, e) => ExportListBox(lstSensitivityLog, "SensitivityLog.txt");
             btnBBExport.Click += (s, e) => ExportListBox(lstBranchLog, "BranchLog.txt");
             btnKnapsackExport.Click += (s, e) => ExportRichText(rtbKnapsack, "KnapsackLog.txt");
+            btnNLExport.Click += (s, e) => ExportRichText(rtbNL, "NonLinearLog.txt");
+            
         }
 
         private void ExportListBox(ListBox listBox, string baseFileName)
@@ -695,6 +697,11 @@ namespace Linear_Programming_Algorithms
         {
             _stepper.Reset();
             rtbKnapsack.Clear();
+        }
+
+        private void btnNLReset_Click(object sender, EventArgs e)
+        {
+            rtbNL.Clear();
         }
     }
 }
