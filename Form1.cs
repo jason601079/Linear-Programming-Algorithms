@@ -404,63 +404,42 @@ namespace Linear_Programming_Algorithms
 
 
         // Cutting Plane: Run
-        private CuttingPlane cuttingSolver;
-
         private void RunCutting_Click(object sender, EventArgs e)
+{
+    if (string.IsNullOrEmpty(_currentFilePath))
+    {
+        MessageBox.Show("Load an LP file first (Browse or drag & drop).", "No file", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        return;
+    }
+
+    lstCuttingLog.Items.Clear(); 
+
+    try
+    {
+        string[] lpLines = System.IO.File.ReadAllLines(_currentFilePath);
+        CuttingPlane solver = new CuttingPlane(lpLines);
+
+        string log = solver.Solve(); 
+
+        foreach (var line in log.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries))
         {
-            if (string.IsNullOrEmpty(_currentFilePath))
-            {
-                MessageBox.Show("Load an LP file first.", "No file", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
-            var lp = LPData.Parse(_currentFilePath);
-            lstCuttingLog.Items.Clear();
-            lstCuttingLog.Items.Add("Cutting Plane — Run started.");
-
-            double[] c = lp.Objective.Coefficients;
-
-            int m = lp.Constraints.Count;
-            int n = lp.VariableCount;
-
-            double[,] A = new double[m, n];
-            for (int i = 0; i < m; i++)
-            {
-                for (int j = 0; j < n; j++)
-                {
-                    A[i, j] = lp.Constraints[i].Coefficients[j];
-                }
-            }
-
-            double[] b = new double[m];
-            for (int i = 0; i < m; i++)
-            {
-                b[i] = lp.Constraints[i].Rhs;
-            }
-
-            var solver = new Primal(A, b, c);
-            var dual = new Dual(A,m, n);
-            var builder = new BuildConstraint(solver);
-
-            cuttingSolver = new CuttingPlane(solver, dual, builder);
-
-            while (!cuttingSolver.IsFinished)
-            {
-                cuttingSolver.Step(lstCuttingLog);
-            }
-
-            var (x, z) = cuttingSolver.GetSolution();
-            lstCuttingLog.Items.Add("Final solution:");
-            for (int i = 0; i < x.Length; i++)
-                lstCuttingLog.Items.Add($"x{i + 1} = {x[i]:F3}");
-            lstCuttingLog.Items.Add($"Objective value z = {z:F3}");
-
-            statusLabel.Text = "Cutting-plane finished.";
-           
+            lstCuttingLog.Items.Add(line);
         }
 
+        statusLabel.Text = "Cutting Plane finished";
+    }
+    catch (FormatException fex)
+    {
+        MessageBox.Show("Invalid LP file format:\n" + fex.Message, "Format Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        statusLabel.Text = "Error: invalid format";
+    }
+    catch (Exception ex)
+    {
+        MessageBox.Show("Failed to run cutting plane:\n" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        statusLabel.Text = "Error running cutting plane";
+    }
+}
 
-
-            
  
 
 
@@ -769,3 +748,4 @@ namespace Linear_Programming_Algorithms
 
     }
 }
+
