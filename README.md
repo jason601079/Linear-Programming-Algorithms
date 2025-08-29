@@ -14,6 +14,10 @@ Revised Primal Simplex Algorithm
 
 Cutting Plane Method
 
-Branch and Bound Method
+Branch and Bound Simplex
+
+Branch and Bound Knapsack
 
 Data Sensitivity Analysis
+
+Non-Linear Algorithm
