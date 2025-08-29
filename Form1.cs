@@ -32,6 +32,8 @@ namespace Linear_Programming_Algorithms
             btnDSExport.Click += (s, e) => ExportListBox(lstSensitivityLog, "SensitivityLog.txt");
             btnBBExport.Click += (s, e) => ExportListBox(lstBranchLog, "BranchLog.txt");
             btnKnapsackExport.Click += (s, e) => ExportRichText(rtbKnapsack, "KnapsackLog.txt");
+            btnNLExport.Click += (s, e) => ExportRichText(rtbNL, "NonLinearLog.txt");
+            
         }
 
         private void ExportListBox(ListBox listBox, string baseFileName)
@@ -732,6 +734,11 @@ namespace Linear_Programming_Algorithms
             rtbKnapsack.Clear();
         }
 
+
+        private void btnNLReset_Click(object sender, EventArgs e)
+        {
+            rtbNL.Clear();
+
         private void ConvertToStandardForm(LPData lp, out double[,] A, out double[] b, out double[] c)
         {
             int m = lp.Constraints.Count;
@@ -772,6 +779,7 @@ namespace Linear_Programming_Algorithms
                     throw new NotSupportedException("Only <= constraints are supported in this solver.");
                 }
             }
+
         }
     }
 }
