@@ -68,6 +68,7 @@
     </Compile>
     <Compile Include="Knapsack\KnapsackSolver.cs" />
     <Compile Include="Knapsack\KnapsackStepper.cs" />
+    <Compile Include="NonLinear.cs" />
     <Compile Include="Primal.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
