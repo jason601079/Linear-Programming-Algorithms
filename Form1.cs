@@ -1,4 +1,4 @@
-﻿using iTextSharp.text.pdf;
+using iTextSharp.text.pdf;
 using iTextSharp.text;
 using System;
 using System.Collections.Generic;
@@ -9,7 +9,8 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Xml.Linq;
 using System.Drawing;
-using Linear_Programming_Algorithms.Cutting_plane;
+using static Org.BouncyCastle.Math.Primes;
+using LPR381Project.Algorithms;
 
 namespace Linear_Programming_Algorithms
 {
@@ -33,7 +34,7 @@ namespace Linear_Programming_Algorithms
             btnBBExport.Click += (s, e) => ExportListBox(lstBranchLog, "BranchLog.txt");
             btnKnapsackExport.Click += (s, e) => ExportRichText(rtbKnapsack, "KnapsackLog.txt");
             btnNLExport.Click += (s, e) => ExportRichText(rtbNL, "NonLinearLog.txt");
-            
+
         }
 
         private void ExportListBox(ListBox listBox, string baseFileName)
@@ -358,7 +359,7 @@ namespace Linear_Programming_Algorithms
             if (string.IsNullOrEmpty(_currentFilePath)) { MessageBox.Show("Load an LP file first."); return; }
 
 
-            
+
 
             var lp = LPData.Parse(_currentFilePath);
 
@@ -397,7 +398,7 @@ namespace Linear_Programming_Algorithms
         }
 
         // Data Sensitivity: Run
-                private void RunSensitivity_Click(object sender, EventArgs e)
+        private void RunSensitivity_Click(object sender, EventArgs e)
         {
             //still needs:
             // - TextBox: txtNewVarObjective
@@ -456,45 +457,46 @@ namespace Linear_Programming_Algorithms
                 lstSensitivityLog.Items.Add("Error: " + ex.Message);
             }
         }
+        
+
 
         // Cutting Plane: Run
         private void RunCutting_Click(object sender, EventArgs e)
-{
-    if (string.IsNullOrEmpty(_currentFilePath))
-    {
-        MessageBox.Show("Load an LP file first (Browse or drag & drop).", "No file", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        return;
-    }
-
-    lstCuttingLog.Items.Clear(); 
-
-    try
-    {
-        string[] lpLines = System.IO.File.ReadAllLines(_currentFilePath);
-        CuttingPlane solver = new CuttingPlane(lpLines);
-
-        string log = solver.Solve(); 
-
-        foreach (var line in log.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries))
         {
-            lstCuttingLog.Items.Add(line);
+            if (string.IsNullOrEmpty(_currentFilePath))
+            {
+                MessageBox.Show("Load an LP file first (Browse or drag & drop).", "No file", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            lstCuttingLog.Items.Clear(); 
+
+            try
+            {
+                string[] lpLines = System.IO.File.ReadAllLines(_currentFilePath);
+                CuttingPlane solver = new CuttingPlane(lpLines);
+
+                string log = solver.Solve(); 
+
+                foreach (var line in log.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    lstCuttingLog.Items.Add(line);
+                }
+
+                statusLabel.Text = "Cutting Plane finished";
+            }
+            catch (FormatException fex)
+            {
+                MessageBox.Show("Invalid LP file format:\n" + fex.Message, "Format Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                statusLabel.Text = "Error: invalid format";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Failed to run cutting plane:\n" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                statusLabel.Text = "Error running cutting plane";
+            }
         }
 
-        statusLabel.Text = "Cutting Plane finished";
-    }
-    catch (FormatException fex)
-    {
-        MessageBox.Show("Invalid LP file format:\n" + fex.Message, "Format Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-        statusLabel.Text = "Error: invalid format";
-    }
-    catch (Exception ex)
-    {
-        MessageBox.Show("Failed to run cutting plane:\n" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        statusLabel.Text = "Error running cutting plane";
-    }
-}
-
- 
 
 
         // Branch & Bound: Run
@@ -502,7 +504,7 @@ namespace Linear_Programming_Algorithms
         {
             if (string.IsNullOrEmpty(_currentFilePath)) { MessageBox.Show("Load an LP file first."); return; }
 
-            
+
         }
 
         // ---------------- Step methods ----------------               
@@ -532,35 +534,10 @@ namespace Linear_Programming_Algorithms
 
         private void StepCutting_Click(object sender, EventArgs e)
         {
-            if (cuttingSolver == null)
-            {
-                MessageBox.Show("Initialize Cutting Plane first by clicking 'Run Cutting'.", "Info",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
 
-            cuttingSolver.Step(lstCuttingLog);
-
-            if (cuttingSolver.IsFinished)
-            {
-                var (x, z) = cuttingSolver.GetSolution();
-                lstCuttingLog.Items.Add($"Final Objective = {z:F3}");
-                for (int idx = 0; idx < x.Length; idx++)
-                    lstCuttingLog.Items.Add($"x{idx + 1} = {x[idx]:F3}");
-
-                statusLabel.Text = "Cutting Plane completed";
-                btnStepCutting.Enabled = false; 
-            }
-            else
-            {
-                statusLabel.Text = $"Cutting Plane iteration {_iterationText()}";
-            }
         }
 
-        private string _iterationText()
-        {
-            return cuttingSolver.CurrentIteration.ToString();
-        }
+
 
 
         private void StepBranch_Click(object sender, EventArgs e)
@@ -615,7 +592,7 @@ namespace Linear_Programming_Algorithms
             if (ctrl is ListBox lb)
             {
                 _stepIndices[lb.Name] = 0;
-                lb.Items.Clear();          
+                lb.Items.Clear();
                 statusLabel.Text = $"Reset {lb.Name}";
                 return;
             }
@@ -630,11 +607,11 @@ namespace Linear_Programming_Algorithms
             box.SelectionColor = defaultColor;
             box.AppendText(text + Environment.NewLine);
 
-          
-            HighlightKeyword(box, "feasible", Color.Goldenrod); 
-            HighlightKeyword(box, "infeasible", Color.Red);      
-            HighlightKeyword(box, "new best", Color.Green);       
-            HighlightKeyword(box, "best", Color.Green);           
+
+            HighlightKeyword(box, "feasible", Color.Goldenrod);
+            HighlightKeyword(box, "infeasible", Color.Red);
+            HighlightKeyword(box, "new best", Color.Green);
+            HighlightKeyword(box, "best", Color.Green);
         }
         private void HighlightKeyword(RichTextBox box, string keyword, Color color)
         {
@@ -800,8 +777,9 @@ namespace Linear_Programming_Algorithms
 
         }
 
+        private void txtPreview_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
-
-
-
