@@ -49,7 +49,6 @@ namespace Linear_Programming_Algorithms
             this.lstPrimalLog = new System.Windows.Forms.ListBox();
             this.flowPrimalButtons = new System.Windows.Forms.FlowLayoutPanel();
             this.btnRunPrimal = new System.Windows.Forms.Button();
-            this.btnStepPrimal = new System.Windows.Forms.Button();
             this.btnResetPrimal = new System.Windows.Forms.Button();
             this.btnPrimalExport = new System.Windows.Forms.Button();
             this.tabRevised = new System.Windows.Forms.TabPage();
@@ -57,7 +56,6 @@ namespace Linear_Programming_Algorithms
             this.lstRevisedLog = new System.Windows.Forms.ListBox();
             this.flowRevisedButtons = new System.Windows.Forms.FlowLayoutPanel();
             this.btnRunRevised = new System.Windows.Forms.Button();
-            this.btnStepRevised = new System.Windows.Forms.Button();
             this.btnResetRevised = new System.Windows.Forms.Button();
             this.btnRevisedExport = new System.Windows.Forms.Button();
             this.tabSensitivity = new System.Windows.Forms.TabPage();
@@ -85,15 +83,22 @@ namespace Linear_Programming_Algorithms
             this.btnResetBranch = new System.Windows.Forms.Button();
             this.btnBBExport = new System.Windows.Forms.Button();
             this.tabBBKnapsack = new System.Windows.Forms.TabPage();
+            this.rtbKnapsack = new System.Windows.Forms.RichTextBox();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.btnKnapsackRun = new System.Windows.Forms.Button();
             this.btnKnapsackStep = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.btnKnapsackExport = new System.Windows.Forms.Button();
+            this.tabNonLinear = new System.Windows.Forms.TabPage();
+            this.rtbNL = new System.Windows.Forms.RichTextBox();
+            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+            this.button1 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.btnNLReset = new System.Windows.Forms.Button();
+            this.btnNLExport = new System.Windows.Forms.Button();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
-            this.rtbKnapsack = new System.Windows.Forms.RichTextBox();
             this.tableLayoutMain.SuspendLayout();
             this.leftColumn.SuspendLayout();
             this.groupFileInput.SuspendLayout();
@@ -119,6 +124,8 @@ namespace Linear_Programming_Algorithms
             this.flowBranchButtons.SuspendLayout();
             this.tabBBKnapsack.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
+            this.tabNonLinear.SuspendLayout();
+            this.flowLayoutPanel2.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -298,6 +305,7 @@ namespace Linear_Programming_Algorithms
             this.tabControlAlgorithms.Controls.Add(this.tabCutting);
             this.tabControlAlgorithms.Controls.Add(this.tabBranchBound);
             this.tabControlAlgorithms.Controls.Add(this.tabBBKnapsack);
+            this.tabControlAlgorithms.Controls.Add(this.tabNonLinear);
             this.tabControlAlgorithms.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControlAlgorithms.Location = new System.Drawing.Point(699, 15);
             this.tabControlAlgorithms.Name = "tabControlAlgorithms";
@@ -341,7 +349,6 @@ namespace Linear_Programming_Algorithms
             // flowPrimalButtons
             // 
             this.flowPrimalButtons.Controls.Add(this.btnRunPrimal);
-            this.flowPrimalButtons.Controls.Add(this.btnStepPrimal);
             this.flowPrimalButtons.Controls.Add(this.btnResetPrimal);
             this.flowPrimalButtons.Controls.Add(this.btnPrimalExport);
             this.flowPrimalButtons.Dock = System.Windows.Forms.DockStyle.Top;
@@ -368,23 +375,6 @@ namespace Linear_Programming_Algorithms
             this.btnRunPrimal.UseVisualStyleBackColor = false;
             this.btnRunPrimal.Click += new System.EventHandler(this.RunPrimal_Click);
             // 
-            // btnStepPrimal
-            // 
-            this.btnStepPrimal.AutoSize = true;
-            this.btnStepPrimal.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(234)))), ((int)(((byte)(239)))), ((int)(((byte)(244)))));
-            this.btnStepPrimal.FlatAppearance.BorderSize = 0;
-            this.btnStepPrimal.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnStepPrimal.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(99)))), ((int)(((byte)(235)))));
-            this.btnStepPrimal.Location = new System.Drawing.Point(103, 11);
-            this.btnStepPrimal.Name = "btnStepPrimal";
-            this.btnStepPrimal.Padding = new System.Windows.Forms.Padding(10, 6, 10, 6);
-            this.btnStepPrimal.Size = new System.Drawing.Size(93, 51);
-            this.btnStepPrimal.TabIndex = 1;
-            this.btnStepPrimal.Tag = "lstPrimalLog";
-            this.btnStepPrimal.Text = "Step";
-            this.btnStepPrimal.UseVisualStyleBackColor = false;
-            this.btnStepPrimal.Click += new System.EventHandler(this.StepPrimal_Click);
-            // 
             // btnResetPrimal
             // 
             this.btnResetPrimal.AutoSize = true;
@@ -392,7 +382,7 @@ namespace Linear_Programming_Algorithms
             this.btnResetPrimal.FlatAppearance.BorderSize = 0;
             this.btnResetPrimal.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnResetPrimal.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(99)))), ((int)(((byte)(235)))));
-            this.btnResetPrimal.Location = new System.Drawing.Point(202, 11);
+            this.btnResetPrimal.Location = new System.Drawing.Point(103, 11);
             this.btnResetPrimal.Name = "btnResetPrimal";
             this.btnResetPrimal.Padding = new System.Windows.Forms.Padding(10, 6, 10, 6);
             this.btnResetPrimal.Size = new System.Drawing.Size(106, 51);
@@ -410,7 +400,7 @@ namespace Linear_Programming_Algorithms
             this.btnPrimalExport.FlatAppearance.BorderSize = 0;
             this.btnPrimalExport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnPrimalExport.ForeColor = System.Drawing.Color.White;
-            this.btnPrimalExport.Location = new System.Drawing.Point(314, 11);
+            this.btnPrimalExport.Location = new System.Drawing.Point(215, 11);
             this.btnPrimalExport.Name = "btnPrimalExport";
             this.btnPrimalExport.Padding = new System.Windows.Forms.Padding(10, 6, 10, 6);
             this.btnPrimalExport.Size = new System.Drawing.Size(112, 51);
@@ -454,7 +444,6 @@ namespace Linear_Programming_Algorithms
             // flowRevisedButtons
             // 
             this.flowRevisedButtons.Controls.Add(this.btnRunRevised);
-            this.flowRevisedButtons.Controls.Add(this.btnStepRevised);
             this.flowRevisedButtons.Controls.Add(this.btnResetRevised);
             this.flowRevisedButtons.Controls.Add(this.btnRevisedExport);
             this.flowRevisedButtons.Dock = System.Windows.Forms.DockStyle.Top;
@@ -481,23 +470,6 @@ namespace Linear_Programming_Algorithms
             this.btnRunRevised.UseVisualStyleBackColor = false;
             this.btnRunRevised.Click += new System.EventHandler(this.RunRevised_Click);
             // 
-            // btnStepRevised
-            // 
-            this.btnStepRevised.AutoSize = true;
-            this.btnStepRevised.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(234)))), ((int)(((byte)(239)))), ((int)(((byte)(244)))));
-            this.btnStepRevised.FlatAppearance.BorderSize = 0;
-            this.btnStepRevised.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnStepRevised.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(99)))), ((int)(((byte)(235)))));
-            this.btnStepRevised.Location = new System.Drawing.Point(103, 11);
-            this.btnStepRevised.Name = "btnStepRevised";
-            this.btnStepRevised.Padding = new System.Windows.Forms.Padding(10, 6, 10, 6);
-            this.btnStepRevised.Size = new System.Drawing.Size(93, 51);
-            this.btnStepRevised.TabIndex = 1;
-            this.btnStepRevised.Tag = "lstRevisedLog";
-            this.btnStepRevised.Text = "Step";
-            this.btnStepRevised.UseVisualStyleBackColor = false;
-            this.btnStepRevised.Click += new System.EventHandler(this.StepRevised_Click);
-            // 
             // btnResetRevised
             // 
             this.btnResetRevised.AutoSize = true;
@@ -505,7 +477,7 @@ namespace Linear_Programming_Algorithms
             this.btnResetRevised.FlatAppearance.BorderSize = 0;
             this.btnResetRevised.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnResetRevised.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(99)))), ((int)(((byte)(235)))));
-            this.btnResetRevised.Location = new System.Drawing.Point(202, 11);
+            this.btnResetRevised.Location = new System.Drawing.Point(103, 11);
             this.btnResetRevised.Name = "btnResetRevised";
             this.btnResetRevised.Padding = new System.Windows.Forms.Padding(10, 6, 10, 6);
             this.btnResetRevised.Size = new System.Drawing.Size(106, 51);
@@ -523,7 +495,7 @@ namespace Linear_Programming_Algorithms
             this.btnRevisedExport.FlatAppearance.BorderSize = 0;
             this.btnRevisedExport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRevisedExport.ForeColor = System.Drawing.Color.White;
-            this.btnRevisedExport.Location = new System.Drawing.Point(314, 11);
+            this.btnRevisedExport.Location = new System.Drawing.Point(215, 11);
             this.btnRevisedExport.Name = "btnRevisedExport";
             this.btnRevisedExport.Padding = new System.Windows.Forms.Padding(10, 6, 10, 6);
             this.btnRevisedExport.Size = new System.Drawing.Size(112, 51);
@@ -882,6 +854,19 @@ namespace Linear_Programming_Algorithms
             this.tabBBKnapsack.TabIndex = 5;
             this.tabBBKnapsack.Text = "B&B Knapsack";
             // 
+            // rtbKnapsack
+            // 
+            this.rtbKnapsack.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.rtbKnapsack.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(251)))), ((int)(((byte)(252)))));
+            this.rtbKnapsack.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.rtbKnapsack.Location = new System.Drawing.Point(11, 83);
+            this.rtbKnapsack.Name = "rtbKnapsack";
+            this.rtbKnapsack.Size = new System.Drawing.Size(1164, 830);
+            this.rtbKnapsack.TabIndex = 4;
+            this.rtbKnapsack.Text = "";
+            // 
             // flowLayoutPanel1
             // 
             this.flowLayoutPanel1.Controls.Add(this.btnKnapsackRun);
@@ -964,6 +949,109 @@ namespace Linear_Programming_Algorithms
             this.btnKnapsackExport.Text = "Export";
             this.btnKnapsackExport.UseVisualStyleBackColor = false;
             // 
+            // tabNonLinear
+            // 
+            this.tabNonLinear.BackColor = System.Drawing.SystemColors.Control;
+            this.tabNonLinear.Controls.Add(this.rtbNL);
+            this.tabNonLinear.Controls.Add(this.flowLayoutPanel2);
+            this.tabNonLinear.Location = new System.Drawing.Point(10, 49);
+            this.tabNonLinear.Name = "tabNonLinear";
+            this.tabNonLinear.Size = new System.Drawing.Size(1190, 918);
+            this.tabNonLinear.TabIndex = 6;
+            this.tabNonLinear.Text = "Non Linear";
+            // 
+            // rtbNL
+            // 
+            this.rtbNL.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.rtbNL.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(251)))), ((int)(((byte)(252)))));
+            this.rtbNL.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.rtbNL.Location = new System.Drawing.Point(11, 76);
+            this.rtbNL.Name = "rtbNL";
+            this.rtbNL.Size = new System.Drawing.Size(1164, 830);
+            this.rtbNL.TabIndex = 5;
+            this.rtbNL.Text = "This is a test";
+            // 
+            // flowLayoutPanel2
+            // 
+            this.flowLayoutPanel2.Controls.Add(this.button1);
+            this.flowLayoutPanel2.Controls.Add(this.button2);
+            this.flowLayoutPanel2.Controls.Add(this.btnNLReset);
+            this.flowLayoutPanel2.Controls.Add(this.btnNLExport);
+            this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.flowLayoutPanel2.Location = new System.Drawing.Point(0, 0);
+            this.flowLayoutPanel2.Name = "flowLayoutPanel2";
+            this.flowLayoutPanel2.Padding = new System.Windows.Forms.Padding(8);
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(1190, 70);
+            this.flowLayoutPanel2.TabIndex = 3;
+            // 
+            // button1
+            // 
+            this.button1.AutoSize = true;
+            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(99)))), ((int)(((byte)(235)))));
+            this.button1.FlatAppearance.BorderSize = 0;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.ForeColor = System.Drawing.Color.White;
+            this.button1.Location = new System.Drawing.Point(11, 11);
+            this.button1.Name = "button1";
+            this.button1.Padding = new System.Windows.Forms.Padding(10, 6, 10, 6);
+            this.button1.Size = new System.Drawing.Size(86, 51);
+            this.button1.TabIndex = 0;
+            this.button1.Tag = "lstPrimalLog";
+            this.button1.Text = "Run";
+            this.button1.UseVisualStyleBackColor = false;
+            // 
+            // button2
+            // 
+            this.button2.AutoSize = true;
+            this.button2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(234)))), ((int)(((byte)(239)))), ((int)(((byte)(244)))));
+            this.button2.FlatAppearance.BorderSize = 0;
+            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(99)))), ((int)(((byte)(235)))));
+            this.button2.Location = new System.Drawing.Point(103, 11);
+            this.button2.Name = "button2";
+            this.button2.Padding = new System.Windows.Forms.Padding(10, 6, 10, 6);
+            this.button2.Size = new System.Drawing.Size(93, 51);
+            this.button2.TabIndex = 1;
+            this.button2.Tag = "lstPrimalLog";
+            this.button2.Text = "Step";
+            this.button2.UseVisualStyleBackColor = false;
+            // 
+            // btnNLReset
+            // 
+            this.btnNLReset.AutoSize = true;
+            this.btnNLReset.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(234)))), ((int)(((byte)(239)))), ((int)(((byte)(244)))));
+            this.btnNLReset.FlatAppearance.BorderSize = 0;
+            this.btnNLReset.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnNLReset.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(99)))), ((int)(((byte)(235)))));
+            this.btnNLReset.Location = new System.Drawing.Point(202, 11);
+            this.btnNLReset.Name = "btnNLReset";
+            this.btnNLReset.Padding = new System.Windows.Forms.Padding(10, 6, 10, 6);
+            this.btnNLReset.Size = new System.Drawing.Size(106, 51);
+            this.btnNLReset.TabIndex = 2;
+            this.btnNLReset.Tag = "lstPrimalLog";
+            this.btnNLReset.Text = "Reset";
+            this.btnNLReset.UseVisualStyleBackColor = false;
+            this.btnNLReset.Click += new System.EventHandler(this.btnNLReset_Click);
+            // 
+            // btnNLExport
+            // 
+            this.btnNLExport.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.btnNLExport.AutoSize = true;
+            this.btnNLExport.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(167)))), ((int)(((byte)(69)))));
+            this.btnNLExport.FlatAppearance.BorderSize = 0;
+            this.btnNLExport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnNLExport.ForeColor = System.Drawing.Color.White;
+            this.btnNLExport.Location = new System.Drawing.Point(314, 11);
+            this.btnNLExport.Name = "btnNLExport";
+            this.btnNLExport.Padding = new System.Windows.Forms.Padding(10, 6, 10, 6);
+            this.btnNLExport.Size = new System.Drawing.Size(112, 51);
+            this.btnNLExport.TabIndex = 4;
+            this.btnNLExport.Tag = "lstBranchLog";
+            this.btnNLExport.Text = "Export";
+            this.btnNLExport.UseVisualStyleBackColor = false;
+            // 
             // statusStrip
             // 
             this.statusStrip.ImageScalingSize = new System.Drawing.Size(36, 36);
@@ -979,19 +1067,6 @@ namespace Linear_Programming_Algorithms
             this.statusLabel.Name = "statusLabel";
             this.statusLabel.Size = new System.Drawing.Size(89, 37);
             this.statusLabel.Text = "Ready";
-            // 
-            // rtbKnapsack
-            // 
-            this.rtbKnapsack.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.rtbKnapsack.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(251)))), ((int)(((byte)(252)))));
-            this.rtbKnapsack.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.rtbKnapsack.Location = new System.Drawing.Point(11, 83);
-            this.rtbKnapsack.Name = "rtbKnapsack";
-            this.rtbKnapsack.Size = new System.Drawing.Size(1164, 830);
-            this.rtbKnapsack.TabIndex = 4;
-            this.rtbKnapsack.Text = "";
             // 
             // Form1
             // 
@@ -1040,6 +1115,9 @@ namespace Linear_Programming_Algorithms
             this.tabBBKnapsack.ResumeLayout(false);
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
+            this.tabNonLinear.ResumeLayout(false);
+            this.flowLayoutPanel2.ResumeLayout(false);
+            this.flowLayoutPanel2.PerformLayout();
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
             this.ResumeLayout(false);
@@ -1053,14 +1131,12 @@ namespace Linear_Programming_Algorithms
         private System.Windows.Forms.ListBox lstPrimalLog;
         private System.Windows.Forms.FlowLayoutPanel flowPrimalButtons;
         private System.Windows.Forms.Button btnRunPrimal;
-        private System.Windows.Forms.Button btnStepPrimal;
         private System.Windows.Forms.Button btnResetPrimal;
         private System.Windows.Forms.TabPage tabRevised;
         private System.Windows.Forms.Panel panelRevised;
         private System.Windows.Forms.ListBox lstRevisedLog;
         private System.Windows.Forms.FlowLayoutPanel flowRevisedButtons;
         private System.Windows.Forms.Button btnRunRevised;
-        private System.Windows.Forms.Button btnStepRevised;
         private System.Windows.Forms.Button btnResetRevised;
         private System.Windows.Forms.TabPage tabSensitivity;
         private System.Windows.Forms.Panel panelSensitivity;
@@ -1095,5 +1171,12 @@ namespace Linear_Programming_Algorithms
         private System.Windows.Forms.Button btnBBExport;
         private System.Windows.Forms.Button btnKnapsackExport;
         private System.Windows.Forms.RichTextBox rtbKnapsack;
+        private System.Windows.Forms.TabPage tabNonLinear;
+        private System.Windows.Forms.RichTextBox rtbNL;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button btnNLReset;
+        private System.Windows.Forms.Button btnNLExport;
     }
 }

@@ -32,6 +32,8 @@ namespace Linear_Programming_Algorithms
             btnDSExport.Click += (s, e) => ExportListBox(lstSensitivityLog, "SensitivityLog.txt");
             btnBBExport.Click += (s, e) => ExportListBox(lstBranchLog, "BranchLog.txt");
             btnKnapsackExport.Click += (s, e) => ExportRichText(rtbKnapsack, "KnapsackLog.txt");
+            btnNLExport.Click += (s, e) => ExportRichText(rtbNL, "NonLinearLog.txt");
+            
         }
 
         private void ExportListBox(ListBox listBox, string baseFileName)
@@ -355,13 +357,43 @@ namespace Linear_Programming_Algorithms
         {
             if (string.IsNullOrEmpty(_currentFilePath)) { MessageBox.Show("Load an LP file first."); return; }
 
-            lstRevisedLog.Items.Clear();
-            lstRevisedLog.Items.Add("Revised Primal Simplex — Run started.");
-            lstRevisedLog.Items.Add("Computing basis inverse updates (B^-1) incrementally... (stub)");
-            lstRevisedLog.Items.Add("Updating reduced costs and selecting entering variable.");
-            lstRevisedLog.Items.Add("Basis changed 3 times. Final objective = 40.75 (stub)");
-            _stepIndices[lstRevisedLog.Name] = 0;
-            statusLabel.Text = "Revised Primal run completed (stub)";
+
+            
+
+            var lp = LPData.Parse(_currentFilePath);
+
+            /*  int m = lp.Constraints.Count;
+              int n = lp.VariableCount;
+
+              // 2. Build arrays
+              double[,] A = new double[m, n];
+              double[] b = new double[m];
+              double[] c = (double[])lp.Objective.Coefficients.Clone();
+
+              for (int i = 0; i < m; i++)
+              {
+                  var con = lp.Constraints[i];
+                  for (int j = 0; j < n; j++)
+                      A[i, j] = con.Coefficients[j];
+                  b[i] = con.Rhs;
+              }*/
+
+            ConvertToStandardForm(lp, out double[,] A, out double[] b, out double[] c);
+
+
+            var solver = new RevisedPrimalSimplex(A, b, c);
+            var answer = solver.Solve();
+
+            lstRevisedLog.Items.Add($"Status :{answer.Status}");
+            lstRevisedLog.Items.Add($"Optimal value: {answer.z}");
+            lstRevisedLog.Items.Add($"x = [{string.Join(", ", answer.x)}]");
+
+            lstRevisedLog.Items.Add("");
+
+            foreach (var iter in solver.Iterations)
+                lstRevisedLog.Items.Add(iter.ToPrettyString());
+
+
         }
 
         // Data Sensitivity: Run
@@ -369,14 +401,6 @@ namespace Linear_Programming_Algorithms
         {
             if (string.IsNullOrEmpty(_currentFilePath)) { MessageBox.Show("Load an LP file first."); return; }
 
-            lstSensitivityLog.Items.Clear();
-            lstSensitivityLog.Items.Add("Data Sensitivity — Run started.");
-            lstSensitivityLog.Items.Add("Computing shadow prices and allowable ranges... (stub)");
-            lstSensitivityLog.Items.Add("Variable x2 has allowable increase +3.5, decrease -1.0 (stub)");
-            lstSensitivityLog.Items.Add("Objective sensitivity table generated.");
-            _stepIndices[lstSensitivityLog.Name] = 0;
-            statusLabel.Text = "Data Sensitivity run completed (stub)";
-        }
 
         // Cutting Plane: Run
         private CuttingPlane cuttingSolver;
@@ -435,74 +459,27 @@ namespace Linear_Programming_Algorithms
 
 
 
+            
+        }
+
+        // Cutting Plane: Run
+        private void RunCutting_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(_currentFilePath)) { MessageBox.Show("Load an LP file first."); return; }
+
+           
+        }
+
+
         // Branch & Bound: Run
         private void RunBranch_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(_currentFilePath)) { MessageBox.Show("Load an LP file first."); return; }
 
-            lstBranchLog.Items.Clear();
-            lstBranchLog.Items.Add("Branch & Bound — Run started.");
-            lstBranchLog.Items.Add("Solve relaxation at root -> objective = 45.3 (stub)");
-            lstBranchLog.Items.Add("Branch on x1 (floor/ceil): create two children.");
-            lstBranchLog.Items.Add("Found integer incumbent obj = 44.50 (stub), prune nodes by bound.");
-            lstBranchLog.Items.Add("Finished. Best integer solution obj = 44.50 (stub)");
-            _stepIndices[lstBranchLog.Name] = 0;
-            statusLabel.Text = "Branch & Bound run completed (stub)";
+            
         }
 
-        // ---------------- Step methods ----------------
-
-        private void StepPrimal_Click(object sender, EventArgs e)
-        {
-            var key = lstPrimalLog.Name;
-            if (!_stepIndices.TryGetValue(key, out var i)) i = 0;
-            i++;
-            _stepIndices[key] = i;
-
-            switch (i)
-            {
-                case 1:
-                    lstPrimalLog.Items.Add("Pivot 1: entering x3, leaving s2. Updated tableau (stub).");
-                    break;
-                case 2:
-                    lstPrimalLog.Items.Add("Pivot 2: entering x1, leaving s1. Updated tableau (stub).");
-                    break;
-                case 3:
-                    lstPrimalLog.Items.Add("Pivot 3: optimality reached (stub).");
-                    break;
-                default:
-                    lstPrimalLog.Items.Add("No more primal steps (stub).");
-                    break;
-            }
-
-            statusLabel.Text = $"Primal Step {i}";
-        }
-
-        private void StepRevised_Click(object sender, EventArgs e)
-        {
-            var key = lstRevisedLog.Name;
-            if (!_stepIndices.TryGetValue(key, out var i)) i = 0;
-            i++;
-            _stepIndices[key] = i;
-
-            switch (i)
-            {
-                case 1:
-                    lstRevisedLog.Items.Add("Step 1: computed new B^-1 * a_j for entering variable (stub).");
-                    break;
-                case 2:
-                    lstRevisedLog.Items.Add("Step 2: updated basis, recalculated reduced costs (stub).");
-                    break;
-                case 3:
-                    lstRevisedLog.Items.Add("Step 3: found optimal basis (stub).");
-                    break;
-                default:
-                    lstRevisedLog.Items.Add("No more revised-simplex steps (stub).");
-                    break;
-            }
-
-            statusLabel.Text = $"Revised Step {i}";
-        }
+        // ---------------- Step methods ----------------               
 
         private void StepSensitivity_Click(object sender, EventArgs e)
         {
@@ -746,5 +723,56 @@ namespace Linear_Programming_Algorithms
             _stepper.Reset();
             rtbKnapsack.Clear();
         }
+
+
+
+        private void btnNLReset_Click(object sender, EventArgs e)
+        {
+            rtbNL.Clear();
+        }
+
+        private void ConvertToStandardForm(LPData lp, out double[,] A, out double[] b, out double[] c)
+        {
+            int m = lp.Constraints.Count;
+            int n = lp.VariableCount;
+
+            // count slack vars (only for <= constraints)
+            int slackCount = lp.Constraints.Count(cons => cons.Relation == Relation.LessOrEqual);
+
+            int totalVars = n + slackCount;
+            A = new double[m, totalVars];
+            b = new double[m];
+            c = new double[totalVars];
+
+            // copy objective
+            for (int j = 0; j < n; j++)
+                c[j] = lp.Objective.Coefficients[j];
+
+            // flip if minimization
+            if (lp.Objective.Type == ProblemType.Min)
+                for (int j = 0; j < n; j++) c[j] = -c[j];
+
+            // fill A and b
+            int slackCol = n;
+            for (int i = 0; i < m; i++)
+            {
+                var cons = lp.Constraints[i];
+                for (int j = 0; j < n; j++)
+                    A[i, j] = cons.Coefficients[j];
+                b[i] = cons.Rhs;
+
+                if (cons.Relation == Relation.LessOrEqual)
+                {
+                    A[i, slackCol] = 1.0; // add slack
+                    slackCol++;
+                }
+                else
+                {
+                    throw new NotSupportedException("Only <= constraints are supported in this solver.");
+                }
+            }
+
+        }
+
     }
 }
