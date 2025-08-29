@@ -397,11 +397,52 @@ namespace Linear_Programming_Algorithms
         }
 
         // Data Sensitivity: Run
-        private void RunSensitivity_Click(object sender, EventArgs e)
+               private void RunSensitivity_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(_currentFilePath)) { MessageBox.Show("Load an LP file first."); return; }
-        }
 
+
+            if (string.IsNullOrEmpty(_currentFilePath)) { MessageBox.Show("Load an LP file first."); return; }
+            try
+            {
+                var lp = LPData.Parse(_currentFilePath);
+                double[] c = lp.Objective.Coefficients;
+
+                int m = lp.Constraints.Count;
+                int n = lp.VariableCount;
+
+                double[,] A = new double[m, n];
+                for (int i = 0; i < m; i++)
+                {
+                    for (int j = 0; j < n; j++)
+                    {
+                        A[i, j] = lp.Constraints[i].Coefficients[j];
+                    }
+                }
+
+                double[] b = new double[m];
+                for (int i = 0; i < m; i++)
+                {
+                    b[i] = lp.Constraints[i].Rhs;
+                }
+
+                var solver = new Primal(A, b, c);
+                lstSensitivityLog.Items.Clear();
+
+                SensitivityAnalysis sa = new SensitivityAnalysis(solver);
+
+                var newConstraintCoeffs = new List<double> { 1, 2, 3 }; // replace with your actual values
+                double newRhs = 10; //replace with actual RHS
+
+                lstSensitivityLog.Items.Add(sa.AnalyzeNewConstraint(newConstraintCoeffs, newRhs));
+
+                lstSensitivityLog.Items.Add("=== New Constraint Test ===");
+                lstSensitivityLog.Items.Add(sa.AnalyzeNewConstraint(newConstraintCoeffs, newRhs));
+            }
+            catch (Exception ex)
+            {
+                lstSensitivityLog.Items.Add("Error: " + ex.Message);
+            }
+        }
 
         // Cutting Plane: Run
         private void RunCutting_Click(object sender, EventArgs e)
@@ -748,4 +789,5 @@ namespace Linear_Programming_Algorithms
 
     }
 }
+
 
