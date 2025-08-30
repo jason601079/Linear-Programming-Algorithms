@@ -1,4 +1,4 @@
-using iTextSharp.text.pdf;
+﻿using iTextSharp.text.pdf;
 using iTextSharp.text;
 using System;
 using System.Collections.Generic;
@@ -23,10 +23,14 @@ namespace Linear_Programming_Algorithms
         private string _currentFilePath = null;
         private readonly Dictionary<string, int> _stepIndices = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
 
+        private Linear_Programming_Algorithms.BNB.BranchAndBoundSolver _bnb;
+        private bool _bnbInitialized = false;
+
         public Form1()
         {
             InitializeComponent();
-
+            lstBranchLog.Font = new System.Drawing.Font("Consolas", 9f, FontStyle.Regular);
+            lstPrimalLog.Font = new System.Drawing.Font("Consolas", 9f, FontStyle.Regular);
             btnPrimalExport.Click += (s, e) => ExportListBox(lstPrimalLog, "PrimalLog.txt");
             btnRevisedExport.Click += (s, e) => ExportListBox(lstRevisedLog, "RevisedLog.txt");
             btnCuttingExport.Click += (s, e) => ExportListBox(lstCuttingLog, "CuttingLog.txt");
@@ -34,7 +38,7 @@ namespace Linear_Programming_Algorithms
             btnBBExport.Click += (s, e) => ExportListBox(lstBranchLog, "BranchLog.txt");
             btnKnapsackExport.Click += (s, e) => ExportRichText(rtbKnapsack, "KnapsackLog.txt");
             btnNLExport.Click += (s, e) => ExportRichText(rtbNL, "NonLinearLog.txt");
-
+           
         }
 
         private void ExportListBox(ListBox listBox, string baseFileName)
@@ -289,50 +293,38 @@ namespace Linear_Programming_Algorithms
                 foreach (var matrix in solver.TableauList)
                 {
                     lstPrimalLog.Items.Add($"Tableau {matrixIndex}:");
+                    lstPrimalLog.Items.Add(""); // spacing
 
-                    int rows = matrix.GetLength(0);
-                    int cols = matrix.GetLength(1);
+                    string box = TablePrinter.Box(
+                                    matrix,
+                                    n: lp.VariableCount,                  // x1..xn
+                                    m: lp.Constraints.Count);             // c1..cm
+                    foreach (var line in box.Split(new[] { Environment.NewLine }, StringSplitOptions.None))
+                        lstPrimalLog.Items.Add(line);
 
-
-
-                    lstPrimalLog.Items.Add(header);
-
-                    for (int i = 0; i < rows; i++)
-                    {
-                        string row = "";
-                        for (int j = 0; j < cols; j++)
-                        {
-                            // Format each number to 3 decimals, pad for alignment
-                            row += matrix[i, j].ToString("F3").PadLeft(12);
-                        }
-                        lstPrimalLog.Items.Add(row);
-                    }
-
-                    lstPrimalLog.Items.Add("");
+                    lstPrimalLog.Items.Add(""); // spacing
                     matrixIndex++;
                 }
 
-                lstPrimalLog.Items.Add("Optimal Table");
-                lstPrimalLog.Items.Add(""); // blank line
-                lstPrimalLog.Items.Add(header);
+                // Optimal tableau
+                lstPrimalLog.Items.Add("Optimal Table:");
+                lstPrimalLog.Items.Add("");
 
-                for (int i = 0; i < solver.OptimalTableau.GetLength(0); i++) // rows
-                {
-                    string row = "";
-                    for (int j = 0; j < solver.OptimalTableau.GetLength(1); j++) // columns
-                    {
-                        row += solver.OptimalTableau[i, j].ToString("F3").PadLeft(12);
-                    }
+                string optBox = TablePrinter.Box(
+                                    solver.OptimalTableau,
+                                    n: lp.VariableCount,
+                                    m: lp.Constraints.Count);
+                foreach (var line in optBox.Split(new[] { Environment.NewLine }, StringSplitOptions.None))
+                    lstPrimalLog.Items.Add(line);
 
-                    lstPrimalLog.Items.Add(row);
-                    lstPrimalLog.Items.Add("");
-                }
+                lstPrimalLog.Items.Add(""); // spacing
+
+                var (solution, optimalValue) = solver.GetSolution();
+                lstPrimalLog.Items.Add($"Optimal Value = {optimalValue:F3}");
+                for (int i = 0; i < solution.Length; i++)
+                    lstPrimalLog.Items.Add($"x{i + 1} = {solution[i]:F3}");
 
                 var (x, z) = solver.GetSolution();
-
-                lstPrimalLog.Items.Add($"Optimal Value = {z:F3}");
-                for (int i = 0; i < x.Length; i++)
-                    lstPrimalLog.Items.Add($"x{i + 1} = {x[i]:F3}");
 
             }
             catch (FormatException fex)
@@ -525,6 +517,46 @@ namespace Linear_Programming_Algorithms
         {
             if (string.IsNullOrEmpty(_currentFilePath)) { MessageBox.Show("Load an LP file first."); return; }
 
+            lstBranchLog.Items.Clear();
+
+            try
+            {
+                var lp = LPData.Parse(_currentFilePath);
+
+                // Build A, b, c exactly like your Primal tab (consistent with your code)  :contentReference[oaicite:3]{index=3}
+                int m = lp.Constraints.Count;
+                int n = lp.VariableCount;
+
+                double[,] A = new double[m, n];
+                for (int i = 0; i < m; i++)
+                    for (int j = 0; j < n; j++)
+                        A[i, j] = lp.Constraints[i].Coefficients[j];
+
+                double[] b = new double[m];
+                for (int i = 0; i < m; i++) b[i] = lp.Constraints[i].Rhs;
+
+                double[] c = (double[])lp.Objective.Coefficients.Clone();
+
+                bool isMax = lp.Objective.Type != ProblemType.Min;
+
+                var intIdx = Enumerable.Range(0, n).ToList();
+
+                var adapter = new Linear_Programming_Algorithms.BNB.PrimalAdapter();
+                _bnb = new Linear_Programming_Algorithms.BNB.BranchAndBoundSolver(
+                            adapter, A, b, c, intIdx, isMax);
+
+                _bnb.Initialize();
+                _bnbInitialized = true;
+
+                lstBranchLog.Items.Add($"Branch & Bound — initialized. Vars: {n}, Constraints: {m}");
+                statusLabel.Text = "BnB: initialized";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Failed to initialize Branch & Bound:\n" + ex.Message, "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                statusLabel.Text = "BnB init error";
+            }
 
         }
 
@@ -563,31 +595,44 @@ namespace Linear_Programming_Algorithms
 
         private void StepBranch_Click(object sender, EventArgs e)
         {
-            var key = lstBranchLog.Name;
-            if (!_stepIndices.TryGetValue(key, out var i)) i = 0;
-            i++;
-            _stepIndices[key] = i;
-
-            switch (i)
+            if (!_bnbInitialized || _bnb == null)
             {
-                case 1:
-                    lstBranchLog.Items.Add("Step 1: solved root relaxation (stub).");
-                    break;
-                case 2:
-                    lstBranchLog.Items.Add("Step 2: branched on fractional variable x2 -> created two child nodes (stub).");
-                    break;
-                case 3:
-                    lstBranchLog.Items.Add("Step 3: inspected left child -> found feasible integer solution (stub).");
-                    break;
-                case 4:
-                    lstBranchLog.Items.Add("Step 4: pruned right child due to bound < incumbent (stub).");
-                    break;
-                default:
-                    lstBranchLog.Items.Add("No more branch & bound steps (stub).");
-                    break;
+                MessageBox.Show("Click 'Run' on the Branch & Bound tab first.", "Info",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
             }
 
-            statusLabel.Text = $"Branch Step {i}";
+            var lines = _bnb.Step();
+            foreach (var line in lines)
+            {
+                // multi-line entries (like printed tableaus) are split to preserve formatting in ListBox
+                if (line?.Contains("\n") == true)
+                {
+                    foreach (var sub in line.Split(new[] { "\n" }, StringSplitOptions.None))
+                        lstBranchLog.Items.Add(sub);
+                }
+                else lstBranchLog.Items.Add(line);
+            }
+
+            if (_bnb.IsFinished)
+            {
+                lstBranchLog.Items.Add("");
+                if (_bnb.IncumbentX != null)
+                {
+                    lstBranchLog.Items.Add($"Final incumbent z = {_bnb.IncumbentZ:F3}");
+                    for (int i = 0; i < _bnb.IncumbentX.Length; i++)
+                        lstBranchLog.Items.Add($"x{i + 1} = {_bnb.IncumbentX[i]:F3}");
+                }
+                else
+                {
+                    lstBranchLog.Items.Add("No feasible integer solution found.");
+                }
+                statusLabel.Text = "BnB completed";
+            }
+            else
+            {
+                statusLabel.Text = "BnB stepped";
+            }
         }
 
         // ---------------- Reset  ----------------
