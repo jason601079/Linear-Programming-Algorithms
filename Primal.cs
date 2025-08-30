@@ -6,15 +6,20 @@ using System.Threading.Tasks;
 
 namespace Linear_Programming_Algorithms
 {
-    internal class Primal
+    public class Primal
     {
         private double[,] tableau;
         private int numConstraints;
         private int numVariables;
 
+        public double[,] TableauPublic => tableau;
+        public int NumConstraints => numConstraints;
+        public int NumVariables => numVariables;
+        public bool Solved { get; private set; } = false;
+        public bool Unbounded { get; private set; } = false;
+        public string LastError { get; private set; } = "";
         public double[,] OptimalTableau { get; private set; }
         public List<double[,]> TableauList { get; private set; } = new List<double[,]>();
-        public double[,] TableauPublic => tableau;
 
         public Primal(double[,] A, double[] b, double[] c)
         {
