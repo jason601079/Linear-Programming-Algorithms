@@ -431,7 +431,10 @@ namespace Linear_Programming_Algorithms
                     b[i] = lp.Constraints[i].Rhs;
                 }
 
-                var solver = new Primal(A, b, c);
+                bool[] isBinary = lp.SignRestrictions
+                       .Select(sr => sr == SignRestriction.Binary)
+                       .ToArray();
+                var solver = new Primal(A, b, c,isBinary);
                 lstSensitivityLog.Items.Clear();
 
                 SensitivityAnalysis sa = new SensitivityAnalysis(solver);

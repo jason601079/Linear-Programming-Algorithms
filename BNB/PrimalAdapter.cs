@@ -56,7 +56,7 @@ namespace Linear_Programming_Algorithms.BNB
             bool flipped = false;
             if (!isMax) { for (int j = 0; j < cEff.Length; j++) cEff[j] = -cEff[j]; flipped = true; }
 
-            var solver = new Primal(A2, b2, cEff);
+            var solver = new Primal(A2, b2, cEff, new bool[n]);
             try
             {
                 solver.Solve();
