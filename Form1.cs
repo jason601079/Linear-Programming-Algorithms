@@ -852,5 +852,28 @@ namespace Linear_Programming_Algorithms
         {
 
         }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            rtbNL.Multiline = true;
+            rtbNL.Clear();
+            var noLin = new NonLinear();
+            noLin.Solve();
+
+            string max = noLin.maximize ? "max" : "min";
+
+            rtbNL.AppendText($"{max}  Function: f(x) = -x² + 4x + 10\r\n");
+
+            int finalIt = noLin.Iterations + 1;
+            rtbNL.AppendText(Environment.NewLine);
+            rtbNL.AppendText($"x = {noLin.FinalX:F6}" + Environment.NewLine);
+            rtbNL.AppendText($"f(x) = {noLin.FinalFx:F6}" + Environment.NewLine);
+            rtbNL.AppendText($"Iterations : {finalIt.ToString()} " + Environment.NewLine);
+
+            foreach (var item in noLin.IterationLog)
+            {
+                rtbNL.AppendText(item + Environment.NewLine);
+            }
+        }
     }
 }
