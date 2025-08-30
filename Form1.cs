@@ -400,12 +400,7 @@ namespace Linear_Programming_Algorithms
         // Data Sensitivity: Run
         private void RunSensitivity_Click(object sender, EventArgs e)
         {
-            //still needs:
-            // - TextBox: txtNewVarObjective
-            // - TextBox: txtNewVarCoeffs
-            // - Button: btnAnalyzeNewVar
-
-
+           
             if (string.IsNullOrEmpty(_currentFilePath)) { MessageBox.Show("Load an LP file first."); return; }
             try
             {
@@ -435,19 +430,27 @@ namespace Linear_Programming_Algorithms
 
                 SensitivityAnalysis sa = new SensitivityAnalysis(solver);
 
-                var newConstraintCoeffs = new List<double> { 1, 2, 3 }; // replace with your actual values
-                double newRhs = 10; //replace with actual RHS
+                var newConstraintCoeffs = txtNewVarObjective.Text
+                    .Split(new[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries)
+                    .Select(double.Parse)
+                    .ToList();
+                //Must be numbers separated by commas or spaces. 2,3,4 or 2 3 4
 
-                //double newVarObjective = double.Parse(txtNewVarObjective.Text);
+                double newRhs = Double.Parse(txtNewRHSvar.Text); //Must be a single number
+               
 
-               // var newVarCoeffs = txtNewVarCoeffs.Text
-                    //.Split(new[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries)
-                    //.Select(double.Parse)
-                    //.ToList();
 
-                //string result = sa.AnalyzeNewVariable(newVarObjective, newVarCoeffs);
+                double newVarObjective = double.Parse(txtNewVarObjective.Text); //Must be a single number.
 
-                //lstSensitivityLog.Items.Add(result);
+                var newVarCoeffs = txtNewVarCoeffs.Text
+                    .Split(new[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries)
+                    .Select(double.Parse)
+                    .ToList();
+                //Must be numbers separated by commas or spaces. 2,3,4 or 2 3 4
+
+                string result = sa.AnalyzeNewVariable(newVarObjective, newVarCoeffs);
+
+                lstSensitivityLog.Items.Add(result);
 
                 lstSensitivityLog.Items.Add("=== New Constraint Test ===");
                 lstSensitivityLog.Items.Add(sa.AnalyzeNewConstraint(newConstraintCoeffs, newRhs));
@@ -778,6 +781,11 @@ namespace Linear_Programming_Algorithms
         }
 
         private void txtPreview_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnAnalyzeNewVar_Click(object sender, EventArgs e)
         {
 
         }
