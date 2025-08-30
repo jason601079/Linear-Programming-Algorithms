@@ -11,7 +11,7 @@ namespace Linear_Programming_Algorithms
         private double[,] tableau;
         private int numConstraints;
         private int numVariables;
-
+        private bool[] isBinary;
 
 
 
@@ -27,30 +27,59 @@ namespace Linear_Programming_Algorithms
         public double[,] OptimalTableau { get; private set; }
         public List<double[,]> TableauList { get; private set; } = new List<double[,]>();
 
-        public Primal(double[,] A, double[] b, double[] c)
+        public Primal(double[,] A, double[] b, double[] c, bool[] isBinaryVars = null)
         {
-            //NEW--------------------------------------------------------------
             if (A == null) throw new ArgumentNullException(nameof(A));
             if (b == null) throw new ArgumentNullException(nameof(b));
             if (c == null) throw new ArgumentNullException(nameof(c));
-            //-----------------------------------------------------------------
+
             numConstraints = b.Length;
             numVariables = c.Length;
+            isBinary = isBinaryVars ?? new bool[numVariables];
 
-            tableau = new double[numConstraints + 1, numVariables + numConstraints + 1];
+            // Count how many binary constraints we'll add
+            int numBinaryConstraints = isBinary.Count(x => x);
 
+            // Total rows = original constraints + binary constraints + 1 objective row
+            int totalRows = numConstraints + numBinaryConstraints + 1;
+
+            // Total columns = original variables + slack vars for constraints + slack vars for binary + 1 RHS
+            int totalCols = numVariables + numConstraints + numBinaryConstraints + 1;
+
+            tableau = new double[totalRows, totalCols];
+
+            int slackOffset = numVariables;
+
+            // Fill original constraints
             for (int i = 0; i < numConstraints; i++)
             {
                 for (int j = 0; j < numVariables; j++)
                     tableau[i, j] = A[i, j];
 
-                tableau[i, numVariables + i] = 1; // slack
-                tableau[i, tableau.GetLength(1) - 1] = b[i];
+                tableau[i, slackOffset + i] = 1; // slack variable
+                tableau[i, totalCols - 1] = b[i]; // RHS
             }
 
+            // Add binary constraints x_j <= 1
+            int binaryRow = numConstraints;
+            int binarySlackCol = numVariables + numConstraints;
             for (int j = 0; j < numVariables; j++)
-                tableau[numConstraints, j] = -c[j];
-            //NEW
+            {
+                if (isBinary[j])
+                {
+                    tableau[binaryRow, j] = 1;
+                    tableau[binaryRow, binarySlackCol] = 1; // slack for binary
+                    tableau[binaryRow, totalCols - 1] = 1;  // RHS = 1
+                    binaryRow++;
+                    binarySlackCol++;
+                }
+            }
+
+            // Objective row (maximize c^T x -> minimize -c^T x)
+            int objectiveRow = totalRows - 1;
+            for (int j = 0; j < numVariables; j++)
+                tableau[objectiveRow, j] = -c[j];
+
             OptimalTableau = null;
         }
 

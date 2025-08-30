@@ -278,7 +278,11 @@ namespace Linear_Programming_Algorithms
                     b[i] = lp.Constraints[i].Rhs;
                 }
 
-                var solver = new Primal(A, b, c);
+                bool[] isBinary = lp.SignRestrictions
+                        .Select(sr => sr == SignRestriction.Binary)
+                        .ToArray();
+
+                var solver = new Primal(A, b, c,isBinary);
 
                 solver.Solve();
 
@@ -290,15 +294,22 @@ namespace Linear_Programming_Algorithms
                 header += "RHS".PadLeft(11);
 
                 int matrixIndex = 1;
+
+                int totalRows = 0;
+                int totalCols = 0;
+
                 foreach (var matrix in solver.TableauList)
                 {
                     lstPrimalLog.Items.Add($"Tableau {matrixIndex}:");
                     lstPrimalLog.Items.Add(""); // spacing
 
+                     totalRows = solver.TableauPublic.GetLength(0);
+                     totalCols = solver.TableauPublic.GetLength(1);
+
                     string box = TablePrinter.Box(
                                     matrix,
-                                    n: lp.VariableCount,                  // x1..xn
-                                    m: lp.Constraints.Count);             // c1..cm
+                                    n: totalCols - totalRows,                  // x1..xn
+                                    m: totalRows - 1);             // c1..cm
                     foreach (var line in box.Split(new[] { Environment.NewLine }, StringSplitOptions.None))
                         lstPrimalLog.Items.Add(line);
 
@@ -310,10 +321,13 @@ namespace Linear_Programming_Algorithms
                 lstPrimalLog.Items.Add("Optimal Table:");
                 lstPrimalLog.Items.Add("");
 
+                int optRows = solver.OptimalTableau.GetLength(0);
+                int optCols = solver.OptimalTableau.GetLength(1);
+
                 string optBox = TablePrinter.Box(
                                     solver.OptimalTableau,
-                                    n: lp.VariableCount,
-                                    m: lp.Constraints.Count);
+                                    n: optCols - optRows,
+                                    m: optRows - 1);
                 foreach (var line in optBox.Split(new[] { Environment.NewLine }, StringSplitOptions.None))
                     lstPrimalLog.Items.Add(line);
 
