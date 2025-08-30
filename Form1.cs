@@ -452,8 +452,26 @@ namespace Linear_Programming_Algorithms
 
                 lstSensitivityLog.Items.Add(result);
 
+                if (result.Contains("Zj-Cj"))
+                {
+                    lstSensitivityLog.Items.Add("");
+                    lstSensitivityLog.Items.Add("Explanation: Zj-Cj (Reduced Cost) tells us if adding this variable improves the solution.");
+                    lstSensitivityLog.Items.Add(" - If Zj-Cj < 0 (in maximization), the variable will not improve the objective.");
+                    lstSensitivityLog.Items.Add(" - If Zj-Cj > 0, the variable could enter the basis and improve the solution.");
+                    lstSensitivityLog.Items.Add("");
+
+                }
+
                 lstSensitivityLog.Items.Add("=== New Constraint Test ===");
                 lstSensitivityLog.Items.Add(sa.AnalyzeNewConstraint(newConstraintCoeffs, newRhs));
+
+                if (result.Contains("LHS") && result.Contains("RHS"))
+                {
+                    lstSensitivityLog.Items.Add("Explanation: LHS is the current value of this constraint under the solution.");
+                    lstSensitivityLog.Items.Add(" - If LHS < RHS, the constraint is not binding yet.");
+                    lstSensitivityLog.Items.Add(" - If LHS = RHS, the constraint is binding (tight).");
+                    lstSensitivityLog.Items.Add(" - If LHS > RHS, the constraint is violated and the solution is infeasible.");
+                }
             }
             catch (Exception ex)
             {
