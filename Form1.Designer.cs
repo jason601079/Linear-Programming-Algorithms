@@ -60,11 +60,16 @@ namespace Linear_Programming_Algorithms
             this.btnRevisedExport = new System.Windows.Forms.Button();
             this.tabSensitivity = new System.Windows.Forms.TabPage();
             this.panelSensitivity = new System.Windows.Forms.Panel();
+            this.btnAnalyzeNewVar = new MaterialSkin.Controls.MaterialFloatingActionButton();
+            this.txtNewVarCoeffs = new MaterialSkin.Controls.MaterialTextBox2();
+            this.materialLabel2 = new MaterialSkin.Controls.MaterialLabel();
+            this.txtNewVarObjective = new MaterialSkin.Controls.MaterialTextBox2();
             this.lstSensitivityLog = new System.Windows.Forms.ListBox();
             this.flowSensitivityButtons = new System.Windows.Forms.FlowLayoutPanel();
             this.btnRunSensitivity = new System.Windows.Forms.Button();
             this.btnResetSensitivity = new System.Windows.Forms.Button();
             this.btnDSExport = new System.Windows.Forms.Button();
+            this.materialLabel1 = new MaterialSkin.Controls.MaterialLabel();
             this.tabCutting = new System.Windows.Forms.TabPage();
             this.panelCutting = new System.Windows.Forms.Panel();
             this.lstCuttingLog = new System.Windows.Forms.ListBox();
@@ -92,17 +97,14 @@ namespace Linear_Programming_Algorithms
             this.rtbNL = new System.Windows.Forms.RichTextBox();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
             this.btnNLReset = new System.Windows.Forms.Button();
             this.btnNLExport = new System.Windows.Forms.Button();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
-            this.txtNewVarObjective = new MaterialSkin.Controls.MaterialTextBox2();
-            this.materialLabel1 = new MaterialSkin.Controls.MaterialLabel();
-            this.txtNewVarCoeffs = new MaterialSkin.Controls.MaterialTextBox2();
-            this.materialLabel2 = new MaterialSkin.Controls.MaterialLabel();
-            this.btnAnalyzeNewVar = new MaterialSkin.Controls.MaterialFloatingActionButton();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.txtNewRHSvar = new MaterialSkin.Controls.MaterialTextBox2();
+            this.materialLabel3 = new MaterialSkin.Controls.MaterialLabel();
             this.tableLayoutMain.SuspendLayout();
             this.leftColumn.SuspendLayout();
             this.groupFileInput.SuspendLayout();
@@ -131,6 +133,7 @@ namespace Linear_Programming_Algorithms
             this.tabNonLinear.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
             this.statusStrip.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutMain
@@ -146,7 +149,7 @@ namespace Linear_Programming_Algorithms
             this.tableLayoutMain.Padding = new System.Windows.Forms.Padding(12);
             this.tableLayoutMain.RowCount = 1;
             this.tableLayoutMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutMain.Size = new System.Drawing.Size(1924, 1029);
+            this.tableLayoutMain.Size = new System.Drawing.Size(1924, 1007);
             this.tableLayoutMain.TabIndex = 0;
             // 
             // leftColumn
@@ -161,7 +164,7 @@ namespace Linear_Programming_Algorithms
             this.leftColumn.RowCount = 2;
             this.leftColumn.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 38F));
             this.leftColumn.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 62F));
-            this.leftColumn.Size = new System.Drawing.Size(678, 999);
+            this.leftColumn.Size = new System.Drawing.Size(678, 977);
             this.leftColumn.TabIndex = 0;
             // 
             // groupFileInput
@@ -174,7 +177,7 @@ namespace Linear_Programming_Algorithms
             this.groupFileInput.Location = new System.Drawing.Point(3, 3);
             this.groupFileInput.Name = "groupFileInput";
             this.groupFileInput.Padding = new System.Windows.Forms.Padding(12);
-            this.groupFileInput.Size = new System.Drawing.Size(672, 373);
+            this.groupFileInput.Size = new System.Drawing.Size(672, 365);
             this.groupFileInput.TabIndex = 0;
             this.groupFileInput.TabStop = false;
             this.groupFileInput.Text = "File Input";
@@ -186,7 +189,7 @@ namespace Linear_Programming_Algorithms
             this.panelDropZone.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panelDropZone.Controls.Add(this.lblDropHint);
             this.panelDropZone.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panelDropZone.Location = new System.Drawing.Point(12, 261);
+            this.panelDropZone.Location = new System.Drawing.Point(12, 253);
             this.panelDropZone.Name = "panelDropZone";
             this.panelDropZone.Size = new System.Drawing.Size(648, 100);
             this.panelDropZone.TabIndex = 0;
@@ -210,7 +213,7 @@ namespace Linear_Programming_Algorithms
             this.flowFileButtons.Controls.Add(this.btnBrowse);
             this.flowFileButtons.Controls.Add(this.btnClear);
             this.flowFileButtons.Dock = System.Windows.Forms.DockStyle.Top;
-            this.flowFileButtons.Location = new System.Drawing.Point(12, 27);
+            this.flowFileButtons.Location = new System.Drawing.Point(12, 40);
             this.flowFileButtons.Name = "flowFileButtons";
             this.flowFileButtons.Size = new System.Drawing.Size(648, 57);
             this.flowFileButtons.TabIndex = 1;
@@ -254,10 +257,10 @@ namespace Linear_Programming_Algorithms
             this.groupPreview.Controls.Add(this.previewTopPanel);
             this.groupPreview.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupPreview.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(37)))), ((int)(((byte)(41)))));
-            this.groupPreview.Location = new System.Drawing.Point(3, 382);
+            this.groupPreview.Location = new System.Drawing.Point(3, 374);
             this.groupPreview.Name = "groupPreview";
             this.groupPreview.Padding = new System.Windows.Forms.Padding(12);
-            this.groupPreview.Size = new System.Drawing.Size(672, 614);
+            this.groupPreview.Size = new System.Drawing.Size(672, 600);
             this.groupPreview.TabIndex = 1;
             this.groupPreview.TabStop = false;
             this.groupPreview.Text = "Preview";
@@ -268,12 +271,12 @@ namespace Linear_Programming_Algorithms
             this.txtPreview.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtPreview.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtPreview.Font = new System.Drawing.Font("Consolas", 10F);
-            this.txtPreview.Location = new System.Drawing.Point(12, 71);
+            this.txtPreview.Location = new System.Drawing.Point(12, 84);
             this.txtPreview.Multiline = true;
             this.txtPreview.Name = "txtPreview";
             this.txtPreview.ReadOnly = true;
             this.txtPreview.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtPreview.Size = new System.Drawing.Size(648, 531);
+            this.txtPreview.Size = new System.Drawing.Size(648, 504);
             this.txtPreview.TabIndex = 0;
             this.txtPreview.TextChanged += new System.EventHandler(this.txtPreview_TextChanged);
             // 
@@ -281,7 +284,7 @@ namespace Linear_Programming_Algorithms
             // 
             this.previewTopPanel.Controls.Add(this.btnCopyPreview);
             this.previewTopPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.previewTopPanel.Location = new System.Drawing.Point(12, 27);
+            this.previewTopPanel.Location = new System.Drawing.Point(12, 40);
             this.previewTopPanel.Name = "previewTopPanel";
             this.previewTopPanel.Size = new System.Drawing.Size(648, 44);
             this.previewTopPanel.TabIndex = 1;
@@ -316,15 +319,15 @@ namespace Linear_Programming_Algorithms
             this.tabControlAlgorithms.Name = "tabControlAlgorithms";
             this.tabControlAlgorithms.Padding = new System.Drawing.Point(8, 6);
             this.tabControlAlgorithms.SelectedIndex = 0;
-            this.tabControlAlgorithms.Size = new System.Drawing.Size(1210, 999);
+            this.tabControlAlgorithms.Size = new System.Drawing.Size(1210, 977);
             this.tabControlAlgorithms.TabIndex = 1;
             // 
             // tabPrimal
             // 
             this.tabPrimal.Controls.Add(this.panelPrimal);
-            this.tabPrimal.Location = new System.Drawing.Point(4, 31);
+            this.tabPrimal.Location = new System.Drawing.Point(10, 49);
             this.tabPrimal.Name = "tabPrimal";
-            this.tabPrimal.Size = new System.Drawing.Size(1202, 964);
+            this.tabPrimal.Size = new System.Drawing.Size(1190, 918);
             this.tabPrimal.TabIndex = 0;
             this.tabPrimal.Text = "Primal Simplex";
             // 
@@ -336,7 +339,7 @@ namespace Linear_Programming_Algorithms
             this.panelPrimal.Location = new System.Drawing.Point(0, 0);
             this.panelPrimal.Name = "panelPrimal";
             this.panelPrimal.Padding = new System.Windows.Forms.Padding(12);
-            this.panelPrimal.Size = new System.Drawing.Size(1202, 964);
+            this.panelPrimal.Size = new System.Drawing.Size(1190, 918);
             this.panelPrimal.TabIndex = 0;
             // 
             // lstPrimalLog
@@ -345,10 +348,10 @@ namespace Linear_Programming_Algorithms
             this.lstPrimalLog.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.lstPrimalLog.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lstPrimalLog.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.lstPrimalLog.ItemHeight = 20;
+            this.lstPrimalLog.ItemHeight = 37;
             this.lstPrimalLog.Location = new System.Drawing.Point(12, 82);
             this.lstPrimalLog.Name = "lstPrimalLog";
-            this.lstPrimalLog.Size = new System.Drawing.Size(1178, 870);
+            this.lstPrimalLog.Size = new System.Drawing.Size(1166, 824);
             this.lstPrimalLog.TabIndex = 0;
             // 
             // flowPrimalButtons
@@ -360,7 +363,7 @@ namespace Linear_Programming_Algorithms
             this.flowPrimalButtons.Location = new System.Drawing.Point(12, 12);
             this.flowPrimalButtons.Name = "flowPrimalButtons";
             this.flowPrimalButtons.Padding = new System.Windows.Forms.Padding(8);
-            this.flowPrimalButtons.Size = new System.Drawing.Size(1178, 70);
+            this.flowPrimalButtons.Size = new System.Drawing.Size(1166, 70);
             this.flowPrimalButtons.TabIndex = 2;
             // 
             // btnRunPrimal
@@ -417,9 +420,9 @@ namespace Linear_Programming_Algorithms
             // tabRevised
             // 
             this.tabRevised.Controls.Add(this.panelRevised);
-            this.tabRevised.Location = new System.Drawing.Point(4, 31);
+            this.tabRevised.Location = new System.Drawing.Point(10, 49);
             this.tabRevised.Name = "tabRevised";
-            this.tabRevised.Size = new System.Drawing.Size(1202, 964);
+            this.tabRevised.Size = new System.Drawing.Size(1190, 940);
             this.tabRevised.TabIndex = 1;
             this.tabRevised.Text = "Revised Primal Simplex";
             // 
@@ -431,7 +434,7 @@ namespace Linear_Programming_Algorithms
             this.panelRevised.Location = new System.Drawing.Point(0, 0);
             this.panelRevised.Name = "panelRevised";
             this.panelRevised.Padding = new System.Windows.Forms.Padding(12);
-            this.panelRevised.Size = new System.Drawing.Size(1202, 964);
+            this.panelRevised.Size = new System.Drawing.Size(1190, 940);
             this.panelRevised.TabIndex = 0;
             // 
             // lstRevisedLog
@@ -440,10 +443,10 @@ namespace Linear_Programming_Algorithms
             this.lstRevisedLog.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.lstRevisedLog.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lstRevisedLog.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.lstRevisedLog.ItemHeight = 20;
+            this.lstRevisedLog.ItemHeight = 37;
             this.lstRevisedLog.Location = new System.Drawing.Point(12, 82);
             this.lstRevisedLog.Name = "lstRevisedLog";
-            this.lstRevisedLog.Size = new System.Drawing.Size(1178, 870);
+            this.lstRevisedLog.Size = new System.Drawing.Size(1166, 846);
             this.lstRevisedLog.TabIndex = 0;
             // 
             // flowRevisedButtons
@@ -455,7 +458,7 @@ namespace Linear_Programming_Algorithms
             this.flowRevisedButtons.Location = new System.Drawing.Point(12, 12);
             this.flowRevisedButtons.Name = "flowRevisedButtons";
             this.flowRevisedButtons.Padding = new System.Windows.Forms.Padding(8);
-            this.flowRevisedButtons.Size = new System.Drawing.Size(1178, 70);
+            this.flowRevisedButtons.Size = new System.Drawing.Size(1166, 70);
             this.flowRevisedButtons.TabIndex = 2;
             // 
             // btnRunRevised
@@ -512,45 +515,114 @@ namespace Linear_Programming_Algorithms
             // tabSensitivity
             // 
             this.tabSensitivity.Controls.Add(this.panelSensitivity);
-            this.tabSensitivity.Location = new System.Drawing.Point(4, 31);
+            this.tabSensitivity.Location = new System.Drawing.Point(10, 49);
             this.tabSensitivity.Name = "tabSensitivity";
-            this.tabSensitivity.Size = new System.Drawing.Size(1202, 964);
+            this.tabSensitivity.Size = new System.Drawing.Size(1190, 918);
             this.tabSensitivity.TabIndex = 2;
             this.tabSensitivity.Text = "Data Sensitivity";
             // 
             // panelSensitivity
             // 
-            this.panelSensitivity.Controls.Add(this.btnAnalyzeNewVar);
-            this.panelSensitivity.Controls.Add(this.txtNewVarCoeffs);
-            this.panelSensitivity.Controls.Add(this.materialLabel2);
-            this.panelSensitivity.Controls.Add(this.txtNewVarObjective);
+            this.panelSensitivity.Controls.Add(this.panel1);
             this.panelSensitivity.Controls.Add(this.lstSensitivityLog);
             this.panelSensitivity.Controls.Add(this.flowSensitivityButtons);
-            this.panelSensitivity.Controls.Add(this.materialLabel1);
             this.panelSensitivity.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelSensitivity.Location = new System.Drawing.Point(0, 0);
             this.panelSensitivity.Name = "panelSensitivity";
             this.panelSensitivity.Padding = new System.Windows.Forms.Padding(12);
-            this.panelSensitivity.Size = new System.Drawing.Size(1202, 964);
+            this.panelSensitivity.Size = new System.Drawing.Size(1190, 918);
             this.panelSensitivity.TabIndex = 0;
+            // 
+            // btnAnalyzeNewVar
+            // 
+            this.btnAnalyzeNewVar.Depth = 0;
+            this.btnAnalyzeNewVar.Icon = null;
+            this.btnAnalyzeNewVar.Location = new System.Drawing.Point(959, 23);
+            this.btnAnalyzeNewVar.MouseState = MaterialSkin.MouseState.HOVER;
+            this.btnAnalyzeNewVar.Name = "btnAnalyzeNewVar";
+            this.btnAnalyzeNewVar.Size = new System.Drawing.Size(56, 56);
+            this.btnAnalyzeNewVar.TabIndex = 8;
+            this.btnAnalyzeNewVar.Text = "Run";
+            this.btnAnalyzeNewVar.UseVisualStyleBackColor = true;
+            // 
+            // txtNewVarCoeffs
+            // 
+            this.txtNewVarCoeffs.AnimateReadOnly = false;
+            this.txtNewVarCoeffs.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.txtNewVarCoeffs.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal;
+            this.txtNewVarCoeffs.Depth = 0;
+            this.txtNewVarCoeffs.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.txtNewVarCoeffs.HideSelection = true;
+            this.txtNewVarCoeffs.LeadingIcon = null;
+            this.txtNewVarCoeffs.Location = new System.Drawing.Point(369, 31);
+            this.txtNewVarCoeffs.MaxLength = 32767;
+            this.txtNewVarCoeffs.MouseState = MaterialSkin.MouseState.OUT;
+            this.txtNewVarCoeffs.Name = "txtNewVarCoeffs";
+            this.txtNewVarCoeffs.PasswordChar = '\0';
+            this.txtNewVarCoeffs.PrefixSuffixText = null;
+            this.txtNewVarCoeffs.ReadOnly = false;
+            this.txtNewVarCoeffs.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.txtNewVarCoeffs.SelectedText = "";
+            this.txtNewVarCoeffs.SelectionLength = 0;
+            this.txtNewVarCoeffs.SelectionStart = 0;
+            this.txtNewVarCoeffs.ShortcutsEnabled = true;
+            this.txtNewVarCoeffs.Size = new System.Drawing.Size(250, 48);
+            this.txtNewVarCoeffs.TabIndex = 6;
+            this.txtNewVarCoeffs.TabStop = false;
+            this.txtNewVarCoeffs.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.txtNewVarCoeffs.TrailingIcon = null;
+            this.txtNewVarCoeffs.UseSystemPasswordChar = false;
+            // 
+            // materialLabel2
+            // 
+            this.materialLabel2.Depth = 0;
+            this.materialLabel2.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.materialLabel2.Location = new System.Drawing.Point(414, 7);
+            this.materialLabel2.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialLabel2.Name = "materialLabel2";
+            this.materialLabel2.Size = new System.Drawing.Size(153, 35);
+            this.materialLabel2.TabIndex = 7;
+            this.materialLabel2.Text = "Add new coefficents";
+            // 
+            // txtNewVarObjective
+            // 
+            this.txtNewVarObjective.AnimateReadOnly = false;
+            this.txtNewVarObjective.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.txtNewVarObjective.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal;
+            this.txtNewVarObjective.Depth = 0;
+            this.txtNewVarObjective.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.txtNewVarObjective.HideSelection = true;
+            this.txtNewVarObjective.LeadingIcon = null;
+            this.txtNewVarObjective.Location = new System.Drawing.Point(21, 31);
+            this.txtNewVarObjective.MaxLength = 32767;
+            this.txtNewVarObjective.MouseState = MaterialSkin.MouseState.OUT;
+            this.txtNewVarObjective.Name = "txtNewVarObjective";
+            this.txtNewVarObjective.PasswordChar = '\0';
+            this.txtNewVarObjective.PrefixSuffixText = null;
+            this.txtNewVarObjective.ReadOnly = false;
+            this.txtNewVarObjective.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.txtNewVarObjective.SelectedText = "";
+            this.txtNewVarObjective.SelectionLength = 0;
+            this.txtNewVarObjective.SelectionStart = 0;
+            this.txtNewVarObjective.ShortcutsEnabled = true;
+            this.txtNewVarObjective.Size = new System.Drawing.Size(250, 48);
+            this.txtNewVarObjective.TabIndex = 4;
+            this.txtNewVarObjective.TabStop = false;
+            this.txtNewVarObjective.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.txtNewVarObjective.TrailingIcon = null;
+            this.txtNewVarObjective.UseSystemPasswordChar = false;
             // 
             // lstSensitivityLog
             // 
-            this.lstSensitivityLog.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.lstSensitivityLog.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lstSensitivityLog.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(251)))), ((int)(((byte)(252)))));
             this.lstSensitivityLog.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.lstSensitivityLog.Font = new System.Drawing.Font("Segoe UI", 9F);
-
-            this.lstSensitivityLog.ItemHeight = 20;
-            this.lstSensitivityLog.Location = new System.Drawing.Point(12, 82);
-            this.lstSensitivityLog.Name = "lstSensitivityLog";
-            this.lstSensitivityLog.Size = new System.Drawing.Size(1178, 870);
-
             this.lstSensitivityLog.ItemHeight = 37;
-            this.lstSensitivityLog.Location = new System.Drawing.Point(21, 200);
+            this.lstSensitivityLog.Location = new System.Drawing.Point(15, 214);
             this.lstSensitivityLog.Name = "lstSensitivityLog";
-            this.lstSensitivityLog.Size = new System.Drawing.Size(1166, 713);
-
+            this.lstSensitivityLog.Size = new System.Drawing.Size(1166, 666);
             this.lstSensitivityLog.TabIndex = 0;
             // 
             // flowSensitivityButtons
@@ -562,7 +634,7 @@ namespace Linear_Programming_Algorithms
             this.flowSensitivityButtons.Location = new System.Drawing.Point(12, 12);
             this.flowSensitivityButtons.Name = "flowSensitivityButtons";
             this.flowSensitivityButtons.Padding = new System.Windows.Forms.Padding(8);
-            this.flowSensitivityButtons.Size = new System.Drawing.Size(1178, 70);
+            this.flowSensitivityButtons.Size = new System.Drawing.Size(1166, 70);
             this.flowSensitivityButtons.TabIndex = 2;
             // 
             // btnRunSensitivity
@@ -616,12 +688,23 @@ namespace Linear_Programming_Algorithms
             this.btnDSExport.Text = "Export";
             this.btnDSExport.UseVisualStyleBackColor = false;
             // 
+            // materialLabel1
+            // 
+            this.materialLabel1.Depth = 0;
+            this.materialLabel1.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.materialLabel1.Location = new System.Drawing.Point(49, 7);
+            this.materialLabel1.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialLabel1.Name = "materialLabel1";
+            this.materialLabel1.Size = new System.Drawing.Size(196, 35);
+            this.materialLabel1.TabIndex = 5;
+            this.materialLabel1.Text = "Add new variable objective";
+            // 
             // tabCutting
             // 
             this.tabCutting.Controls.Add(this.panelCutting);
-            this.tabCutting.Location = new System.Drawing.Point(4, 31);
+            this.tabCutting.Location = new System.Drawing.Point(10, 49);
             this.tabCutting.Name = "tabCutting";
-            this.tabCutting.Size = new System.Drawing.Size(1202, 964);
+            this.tabCutting.Size = new System.Drawing.Size(1190, 940);
             this.tabCutting.TabIndex = 3;
             this.tabCutting.Text = "Cutting Plane";
             // 
@@ -633,7 +716,7 @@ namespace Linear_Programming_Algorithms
             this.panelCutting.Location = new System.Drawing.Point(0, 0);
             this.panelCutting.Name = "panelCutting";
             this.panelCutting.Padding = new System.Windows.Forms.Padding(12);
-            this.panelCutting.Size = new System.Drawing.Size(1202, 964);
+            this.panelCutting.Size = new System.Drawing.Size(1190, 940);
             this.panelCutting.TabIndex = 0;
             // 
             // lstCuttingLog
@@ -642,10 +725,10 @@ namespace Linear_Programming_Algorithms
             this.lstCuttingLog.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.lstCuttingLog.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lstCuttingLog.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.lstCuttingLog.ItemHeight = 20;
+            this.lstCuttingLog.ItemHeight = 37;
             this.lstCuttingLog.Location = new System.Drawing.Point(12, 82);
             this.lstCuttingLog.Name = "lstCuttingLog";
-            this.lstCuttingLog.Size = new System.Drawing.Size(1178, 870);
+            this.lstCuttingLog.Size = new System.Drawing.Size(1166, 846);
             this.lstCuttingLog.TabIndex = 0;
             // 
             // flowCuttingButtons
@@ -658,7 +741,7 @@ namespace Linear_Programming_Algorithms
             this.flowCuttingButtons.Location = new System.Drawing.Point(12, 12);
             this.flowCuttingButtons.Name = "flowCuttingButtons";
             this.flowCuttingButtons.Padding = new System.Windows.Forms.Padding(8);
-            this.flowCuttingButtons.Size = new System.Drawing.Size(1178, 70);
+            this.flowCuttingButtons.Size = new System.Drawing.Size(1166, 70);
             this.flowCuttingButtons.TabIndex = 2;
             // 
             // btnRunCutting
@@ -732,9 +815,9 @@ namespace Linear_Programming_Algorithms
             // tabBranchBound
             // 
             this.tabBranchBound.Controls.Add(this.panelBranch);
-            this.tabBranchBound.Location = new System.Drawing.Point(4, 31);
+            this.tabBranchBound.Location = new System.Drawing.Point(10, 49);
             this.tabBranchBound.Name = "tabBranchBound";
-            this.tabBranchBound.Size = new System.Drawing.Size(1202, 964);
+            this.tabBranchBound.Size = new System.Drawing.Size(1190, 940);
             this.tabBranchBound.TabIndex = 4;
             this.tabBranchBound.Text = "Branch & Bound";
             // 
@@ -746,7 +829,7 @@ namespace Linear_Programming_Algorithms
             this.panelBranch.Location = new System.Drawing.Point(0, 0);
             this.panelBranch.Name = "panelBranch";
             this.panelBranch.Padding = new System.Windows.Forms.Padding(12);
-            this.panelBranch.Size = new System.Drawing.Size(1202, 964);
+            this.panelBranch.Size = new System.Drawing.Size(1190, 940);
             this.panelBranch.TabIndex = 0;
             // 
             // lstBranchLog
@@ -755,10 +838,10 @@ namespace Linear_Programming_Algorithms
             this.lstBranchLog.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.lstBranchLog.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lstBranchLog.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.lstBranchLog.ItemHeight = 20;
+            this.lstBranchLog.ItemHeight = 37;
             this.lstBranchLog.Location = new System.Drawing.Point(12, 82);
             this.lstBranchLog.Name = "lstBranchLog";
-            this.lstBranchLog.Size = new System.Drawing.Size(1178, 870);
+            this.lstBranchLog.Size = new System.Drawing.Size(1166, 846);
             this.lstBranchLog.TabIndex = 0;
             // 
             // flowBranchButtons
@@ -771,7 +854,7 @@ namespace Linear_Programming_Algorithms
             this.flowBranchButtons.Location = new System.Drawing.Point(12, 12);
             this.flowBranchButtons.Name = "flowBranchButtons";
             this.flowBranchButtons.Padding = new System.Windows.Forms.Padding(8);
-            this.flowBranchButtons.Size = new System.Drawing.Size(1178, 70);
+            this.flowBranchButtons.Size = new System.Drawing.Size(1166, 70);
             this.flowBranchButtons.TabIndex = 2;
             // 
             // btnRunBranch
@@ -847,9 +930,9 @@ namespace Linear_Programming_Algorithms
             this.tabBBKnapsack.BackColor = System.Drawing.SystemColors.Control;
             this.tabBBKnapsack.Controls.Add(this.rtbKnapsack);
             this.tabBBKnapsack.Controls.Add(this.flowLayoutPanel1);
-            this.tabBBKnapsack.Location = new System.Drawing.Point(4, 31);
+            this.tabBBKnapsack.Location = new System.Drawing.Point(10, 49);
             this.tabBBKnapsack.Name = "tabBBKnapsack";
-            this.tabBBKnapsack.Size = new System.Drawing.Size(1202, 964);
+            this.tabBBKnapsack.Size = new System.Drawing.Size(1190, 918);
             this.tabBBKnapsack.TabIndex = 5;
             this.tabBBKnapsack.Text = "B&B Knapsack";
             // 
@@ -862,7 +945,7 @@ namespace Linear_Programming_Algorithms
             this.rtbKnapsack.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.rtbKnapsack.Location = new System.Drawing.Point(11, 83);
             this.rtbKnapsack.Name = "rtbKnapsack";
-            this.rtbKnapsack.Size = new System.Drawing.Size(1176, 876);
+            this.rtbKnapsack.Size = new System.Drawing.Size(1164, 830);
             this.rtbKnapsack.TabIndex = 4;
             this.rtbKnapsack.Text = "";
             // 
@@ -877,7 +960,7 @@ namespace Linear_Programming_Algorithms
             this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(10);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Padding = new System.Windows.Forms.Padding(8);
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(1202, 70);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(1190, 70);
             this.flowLayoutPanel1.TabIndex = 3;
             // 
             // btnKnapsackRun
@@ -953,9 +1036,9 @@ namespace Linear_Programming_Algorithms
             this.tabNonLinear.BackColor = System.Drawing.SystemColors.Control;
             this.tabNonLinear.Controls.Add(this.rtbNL);
             this.tabNonLinear.Controls.Add(this.flowLayoutPanel2);
-            this.tabNonLinear.Location = new System.Drawing.Point(4, 31);
+            this.tabNonLinear.Location = new System.Drawing.Point(10, 49);
             this.tabNonLinear.Name = "tabNonLinear";
-            this.tabNonLinear.Size = new System.Drawing.Size(1202, 964);
+            this.tabNonLinear.Size = new System.Drawing.Size(1190, 918);
             this.tabNonLinear.TabIndex = 6;
             this.tabNonLinear.Text = "Non Linear";
             // 
@@ -968,21 +1051,20 @@ namespace Linear_Programming_Algorithms
             this.rtbNL.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.rtbNL.Location = new System.Drawing.Point(11, 76);
             this.rtbNL.Name = "rtbNL";
-            this.rtbNL.Size = new System.Drawing.Size(1176, 876);
+            this.rtbNL.Size = new System.Drawing.Size(1164, 830);
             this.rtbNL.TabIndex = 5;
             this.rtbNL.Text = "This is a test";
             // 
             // flowLayoutPanel2
             // 
             this.flowLayoutPanel2.Controls.Add(this.button1);
-            this.flowLayoutPanel2.Controls.Add(this.button2);
             this.flowLayoutPanel2.Controls.Add(this.btnNLReset);
             this.flowLayoutPanel2.Controls.Add(this.btnNLExport);
             this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.flowLayoutPanel2.Location = new System.Drawing.Point(0, 0);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
             this.flowLayoutPanel2.Padding = new System.Windows.Forms.Padding(8);
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(1202, 70);
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(1190, 70);
             this.flowLayoutPanel2.TabIndex = 3;
             // 
             // button1
@@ -1000,22 +1082,7 @@ namespace Linear_Programming_Algorithms
             this.button1.Tag = "lstPrimalLog";
             this.button1.Text = "Run";
             this.button1.UseVisualStyleBackColor = false;
-            // 
-            // button2
-            // 
-            this.button2.AutoSize = true;
-            this.button2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(234)))), ((int)(((byte)(239)))), ((int)(((byte)(244)))));
-            this.button2.FlatAppearance.BorderSize = 0;
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(99)))), ((int)(((byte)(235)))));
-            this.button2.Location = new System.Drawing.Point(103, 11);
-            this.button2.Name = "button2";
-            this.button2.Padding = new System.Windows.Forms.Padding(10, 6, 10, 6);
-            this.button2.Size = new System.Drawing.Size(93, 51);
-            this.button2.TabIndex = 1;
-            this.button2.Tag = "lstPrimalLog";
-            this.button2.Text = "Step";
-            this.button2.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click_1);
             // 
             // btnNLReset
             // 
@@ -1024,7 +1091,7 @@ namespace Linear_Programming_Algorithms
             this.btnNLReset.FlatAppearance.BorderSize = 0;
             this.btnNLReset.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnNLReset.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(99)))), ((int)(((byte)(235)))));
-            this.btnNLReset.Location = new System.Drawing.Point(202, 11);
+            this.btnNLReset.Location = new System.Drawing.Point(103, 11);
             this.btnNLReset.Name = "btnNLReset";
             this.btnNLReset.Padding = new System.Windows.Forms.Padding(10, 6, 10, 6);
             this.btnNLReset.Size = new System.Drawing.Size(106, 51);
@@ -1042,7 +1109,7 @@ namespace Linear_Programming_Algorithms
             this.btnNLExport.FlatAppearance.BorderSize = 0;
             this.btnNLExport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnNLExport.ForeColor = System.Drawing.Color.White;
-            this.btnNLExport.Location = new System.Drawing.Point(314, 11);
+            this.btnNLExport.Location = new System.Drawing.Point(215, 11);
             this.btnNLExport.Name = "btnNLExport";
             this.btnNLExport.Padding = new System.Windows.Forms.Padding(10, 6, 10, 6);
             this.btnNLExport.Size = new System.Drawing.Size(112, 51);
@@ -1056,106 +1123,69 @@ namespace Linear_Programming_Algorithms
             this.statusStrip.ImageScalingSize = new System.Drawing.Size(36, 36);
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.statusLabel});
-            this.statusStrip.Location = new System.Drawing.Point(0, 1029);
+            this.statusStrip.Location = new System.Drawing.Point(0, 1007);
             this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(1924, 26);
+            this.statusStrip.Size = new System.Drawing.Size(1924, 48);
             this.statusStrip.TabIndex = 1;
             // 
             // statusLabel
             // 
             this.statusLabel.Name = "statusLabel";
-            this.statusLabel.Size = new System.Drawing.Size(50, 20);
+            this.statusLabel.Size = new System.Drawing.Size(89, 37);
             this.statusLabel.Text = "Ready";
             // 
-            // txtNewVarObjective
+            // panel1
             // 
-            this.txtNewVarObjective.AnimateReadOnly = false;
-            this.txtNewVarObjective.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.txtNewVarObjective.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal;
-            this.txtNewVarObjective.Depth = 0;
-            this.txtNewVarObjective.Font = new System.Drawing.Font("Roboto", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.txtNewVarObjective.HideSelection = true;
-            this.txtNewVarObjective.LeadingIcon = null;
-            this.txtNewVarObjective.Location = new System.Drawing.Point(23, 123);
-            this.txtNewVarObjective.MaxLength = 32767;
-            this.txtNewVarObjective.MouseState = MaterialSkin.MouseState.OUT;
-            this.txtNewVarObjective.Name = "txtNewVarObjective";
-            this.txtNewVarObjective.PasswordChar = '\0';
-            this.txtNewVarObjective.PrefixSuffixText = null;
-            this.txtNewVarObjective.ReadOnly = false;
-            this.txtNewVarObjective.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtNewVarObjective.SelectedText = "";
-            this.txtNewVarObjective.SelectionLength = 0;
-            this.txtNewVarObjective.SelectionStart = 0;
-            this.txtNewVarObjective.ShortcutsEnabled = true;
-            this.txtNewVarObjective.Size = new System.Drawing.Size(250, 48);
-            this.txtNewVarObjective.TabIndex = 4;
-            this.txtNewVarObjective.TabStop = false;
-            this.txtNewVarObjective.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.txtNewVarObjective.TrailingIcon = null;
-            this.txtNewVarObjective.UseSystemPasswordChar = false;
+            this.panel1.Controls.Add(this.txtNewRHSvar);
+            this.panel1.Controls.Add(this.txtNewVarCoeffs);
+            this.panel1.Controls.Add(this.txtNewVarObjective);
+            this.panel1.Controls.Add(this.btnAnalyzeNewVar);
+            this.panel1.Controls.Add(this.materialLabel3);
+            this.panel1.Controls.Add(this.materialLabel1);
+            this.panel1.Controls.Add(this.materialLabel2);
+            this.panel1.Location = new System.Drawing.Point(12, 88);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(1159, 92);
+            this.panel1.TabIndex = 9;
             // 
-            // materialLabel1
+            // txtNewRHSvar
             // 
-            this.materialLabel1.Depth = 0;
-            this.materialLabel1.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.materialLabel1.Location = new System.Drawing.Point(51, 99);
-            this.materialLabel1.MouseState = MaterialSkin.MouseState.HOVER;
-            this.materialLabel1.Name = "materialLabel1";
-            this.materialLabel1.Size = new System.Drawing.Size(196, 35);
-            this.materialLabel1.TabIndex = 5;
-            this.materialLabel1.Text = "Add new variable objective";
+            this.txtNewRHSvar.AnimateReadOnly = false;
+            this.txtNewRHSvar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.txtNewRHSvar.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal;
+            this.txtNewRHSvar.Depth = 0;
+            this.txtNewRHSvar.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.txtNewRHSvar.HideSelection = true;
+            this.txtNewRHSvar.LeadingIcon = null;
+            this.txtNewRHSvar.Location = new System.Drawing.Point(651, 31);
+            this.txtNewRHSvar.MaxLength = 32767;
+            this.txtNewRHSvar.MouseState = MaterialSkin.MouseState.OUT;
+            this.txtNewRHSvar.Name = "txtNewRHSvar";
+            this.txtNewRHSvar.PasswordChar = '\0';
+            this.txtNewRHSvar.PrefixSuffixText = null;
+            this.txtNewRHSvar.ReadOnly = false;
+            this.txtNewRHSvar.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.txtNewRHSvar.SelectedText = "";
+            this.txtNewRHSvar.SelectionLength = 0;
+            this.txtNewRHSvar.SelectionStart = 0;
+            this.txtNewRHSvar.ShortcutsEnabled = true;
+            this.txtNewRHSvar.Size = new System.Drawing.Size(250, 48);
+            this.txtNewRHSvar.TabIndex = 8;
+            this.txtNewRHSvar.TabStop = false;
+            this.txtNewRHSvar.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.txtNewRHSvar.TrailingIcon = null;
+            this.txtNewRHSvar.UseSystemPasswordChar = false;
             // 
-            // txtNewVarCoeffs
+            // materialLabel3
             // 
-            this.txtNewVarCoeffs.AnimateReadOnly = false;
-            this.txtNewVarCoeffs.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.txtNewVarCoeffs.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal;
-            this.txtNewVarCoeffs.Depth = 0;
-            this.txtNewVarCoeffs.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.txtNewVarCoeffs.HideSelection = true;
-            this.txtNewVarCoeffs.LeadingIcon = null;
-            this.txtNewVarCoeffs.Location = new System.Drawing.Point(371, 123);
-            this.txtNewVarCoeffs.MaxLength = 32767;
-            this.txtNewVarCoeffs.MouseState = MaterialSkin.MouseState.OUT;
-            this.txtNewVarCoeffs.Name = "txtNewVarCoeffs";
-            this.txtNewVarCoeffs.PasswordChar = '\0';
-            this.txtNewVarCoeffs.PrefixSuffixText = null;
-            this.txtNewVarCoeffs.ReadOnly = false;
-            this.txtNewVarCoeffs.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtNewVarCoeffs.SelectedText = "";
-            this.txtNewVarCoeffs.SelectionLength = 0;
-            this.txtNewVarCoeffs.SelectionStart = 0;
-            this.txtNewVarCoeffs.ShortcutsEnabled = true;
-            this.txtNewVarCoeffs.Size = new System.Drawing.Size(250, 48);
-            this.txtNewVarCoeffs.TabIndex = 6;
-            this.txtNewVarCoeffs.TabStop = false;
-            this.txtNewVarCoeffs.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.txtNewVarCoeffs.TrailingIcon = null;
-            this.txtNewVarCoeffs.UseSystemPasswordChar = false;
-            // 
-            // materialLabel2
-            // 
-            this.materialLabel2.Depth = 0;
-            this.materialLabel2.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.materialLabel2.Location = new System.Drawing.Point(416, 99);
-            this.materialLabel2.MouseState = MaterialSkin.MouseState.HOVER;
-            this.materialLabel2.Name = "materialLabel2";
-            this.materialLabel2.Size = new System.Drawing.Size(153, 35);
-            this.materialLabel2.TabIndex = 7;
-            this.materialLabel2.Text = "Add new coefficents";
-            // 
-            // btnAnalyzeNewVar
-            // 
-            this.btnAnalyzeNewVar.Depth = 0;
-            this.btnAnalyzeNewVar.Icon = null;
-            this.btnAnalyzeNewVar.Location = new System.Drawing.Point(667, 115);
-            this.btnAnalyzeNewVar.MouseState = MaterialSkin.MouseState.HOVER;
-            this.btnAnalyzeNewVar.Name = "btnAnalyzeNewVar";
-            this.btnAnalyzeNewVar.Size = new System.Drawing.Size(56, 56);
-            this.btnAnalyzeNewVar.TabIndex = 8;
-            this.btnAnalyzeNewVar.Text = "Run";
-            this.btnAnalyzeNewVar.UseVisualStyleBackColor = true;
+            this.materialLabel3.Depth = 0;
+            this.materialLabel3.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.materialLabel3.Location = new System.Drawing.Point(696, 7);
+            this.materialLabel3.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialLabel3.Name = "materialLabel3";
+            this.materialLabel3.Size = new System.Drawing.Size(153, 35);
+            this.materialLabel3.TabIndex = 9;
+            this.materialLabel3.Text = "Add new RHS";
             // 
             // Form1
             // 
@@ -1209,6 +1239,7 @@ namespace Linear_Programming_Algorithms
             this.flowLayoutPanel2.PerformLayout();
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
+            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1263,7 +1294,6 @@ namespace Linear_Programming_Algorithms
         private System.Windows.Forms.RichTextBox rtbNL;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button btnNLReset;
         private System.Windows.Forms.Button btnNLExport;
         private MaterialSkin.Controls.MaterialLabel materialLabel1;
@@ -1271,5 +1301,8 @@ namespace Linear_Programming_Algorithms
         private MaterialSkin.Controls.MaterialTextBox2 txtNewVarCoeffs;
         private MaterialSkin.Controls.MaterialLabel materialLabel2;
         private MaterialSkin.Controls.MaterialFloatingActionButton btnAnalyzeNewVar;
+        private System.Windows.Forms.Panel panel1;
+        private MaterialSkin.Controls.MaterialTextBox2 txtNewRHSvar;
+        private MaterialSkin.Controls.MaterialLabel materialLabel3;
     }
 }
