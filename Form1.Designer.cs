@@ -63,7 +63,6 @@ namespace Linear_Programming_Algorithms
             this.lstSensitivityLog = new System.Windows.Forms.ListBox();
             this.flowSensitivityButtons = new System.Windows.Forms.FlowLayoutPanel();
             this.btnRunSensitivity = new System.Windows.Forms.Button();
-            this.btnStepSensitivity = new System.Windows.Forms.Button();
             this.btnResetSensitivity = new System.Windows.Forms.Button();
             this.btnDSExport = new System.Windows.Forms.Button();
             this.tabCutting = new System.Windows.Forms.TabPage();
@@ -99,6 +98,11 @@ namespace Linear_Programming_Algorithms
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.txtNewVarObjective = new MaterialSkin.Controls.MaterialTextBox2();
+            this.materialLabel1 = new MaterialSkin.Controls.MaterialLabel();
+            this.txtNewVarCoeffs = new MaterialSkin.Controls.MaterialTextBox2();
+            this.materialLabel2 = new MaterialSkin.Controls.MaterialLabel();
+            this.btnAnalyzeNewVar = new MaterialSkin.Controls.MaterialFloatingActionButton();
             this.tableLayoutMain.SuspendLayout();
             this.leftColumn.SuspendLayout();
             this.groupFileInput.SuspendLayout();
@@ -516,8 +520,13 @@ namespace Linear_Programming_Algorithms
             // 
             // panelSensitivity
             // 
+            this.panelSensitivity.Controls.Add(this.btnAnalyzeNewVar);
+            this.panelSensitivity.Controls.Add(this.txtNewVarCoeffs);
+            this.panelSensitivity.Controls.Add(this.materialLabel2);
+            this.panelSensitivity.Controls.Add(this.txtNewVarObjective);
             this.panelSensitivity.Controls.Add(this.lstSensitivityLog);
             this.panelSensitivity.Controls.Add(this.flowSensitivityButtons);
+            this.panelSensitivity.Controls.Add(this.materialLabel1);
             this.panelSensitivity.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelSensitivity.Location = new System.Drawing.Point(0, 0);
             this.panelSensitivity.Name = "panelSensitivity";
@@ -527,20 +536,26 @@ namespace Linear_Programming_Algorithms
             // 
             // lstSensitivityLog
             // 
+            this.lstSensitivityLog.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lstSensitivityLog.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(251)))), ((int)(((byte)(252)))));
             this.lstSensitivityLog.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.lstSensitivityLog.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lstSensitivityLog.Font = new System.Drawing.Font("Segoe UI", 9F);
+
             this.lstSensitivityLog.ItemHeight = 20;
             this.lstSensitivityLog.Location = new System.Drawing.Point(12, 82);
             this.lstSensitivityLog.Name = "lstSensitivityLog";
             this.lstSensitivityLog.Size = new System.Drawing.Size(1178, 870);
+
+            this.lstSensitivityLog.ItemHeight = 37;
+            this.lstSensitivityLog.Location = new System.Drawing.Point(21, 200);
+            this.lstSensitivityLog.Name = "lstSensitivityLog";
+            this.lstSensitivityLog.Size = new System.Drawing.Size(1166, 713);
+
             this.lstSensitivityLog.TabIndex = 0;
             // 
             // flowSensitivityButtons
             // 
             this.flowSensitivityButtons.Controls.Add(this.btnRunSensitivity);
-            this.flowSensitivityButtons.Controls.Add(this.btnStepSensitivity);
             this.flowSensitivityButtons.Controls.Add(this.btnResetSensitivity);
             this.flowSensitivityButtons.Controls.Add(this.btnDSExport);
             this.flowSensitivityButtons.Dock = System.Windows.Forms.DockStyle.Top;
@@ -567,23 +582,6 @@ namespace Linear_Programming_Algorithms
             this.btnRunSensitivity.UseVisualStyleBackColor = false;
             this.btnRunSensitivity.Click += new System.EventHandler(this.RunSensitivity_Click);
             // 
-            // btnStepSensitivity
-            // 
-            this.btnStepSensitivity.AutoSize = true;
-            this.btnStepSensitivity.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(234)))), ((int)(((byte)(239)))), ((int)(((byte)(244)))));
-            this.btnStepSensitivity.FlatAppearance.BorderSize = 0;
-            this.btnStepSensitivity.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnStepSensitivity.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(99)))), ((int)(((byte)(235)))));
-            this.btnStepSensitivity.Location = new System.Drawing.Point(103, 11);
-            this.btnStepSensitivity.Name = "btnStepSensitivity";
-            this.btnStepSensitivity.Padding = new System.Windows.Forms.Padding(10, 6, 10, 6);
-            this.btnStepSensitivity.Size = new System.Drawing.Size(93, 51);
-            this.btnStepSensitivity.TabIndex = 1;
-            this.btnStepSensitivity.Tag = "lstSensitivityLog";
-            this.btnStepSensitivity.Text = "Step";
-            this.btnStepSensitivity.UseVisualStyleBackColor = false;
-            this.btnStepSensitivity.Click += new System.EventHandler(this.StepSensitivity_Click);
-            // 
             // btnResetSensitivity
             // 
             this.btnResetSensitivity.AutoSize = true;
@@ -591,7 +589,7 @@ namespace Linear_Programming_Algorithms
             this.btnResetSensitivity.FlatAppearance.BorderSize = 0;
             this.btnResetSensitivity.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnResetSensitivity.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(99)))), ((int)(((byte)(235)))));
-            this.btnResetSensitivity.Location = new System.Drawing.Point(202, 11);
+            this.btnResetSensitivity.Location = new System.Drawing.Point(103, 11);
             this.btnResetSensitivity.Name = "btnResetSensitivity";
             this.btnResetSensitivity.Padding = new System.Windows.Forms.Padding(10, 6, 10, 6);
             this.btnResetSensitivity.Size = new System.Drawing.Size(106, 51);
@@ -609,7 +607,7 @@ namespace Linear_Programming_Algorithms
             this.btnDSExport.FlatAppearance.BorderSize = 0;
             this.btnDSExport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDSExport.ForeColor = System.Drawing.Color.White;
-            this.btnDSExport.Location = new System.Drawing.Point(314, 11);
+            this.btnDSExport.Location = new System.Drawing.Point(215, 11);
             this.btnDSExport.Name = "btnDSExport";
             this.btnDSExport.Padding = new System.Windows.Forms.Padding(10, 6, 10, 6);
             this.btnDSExport.Size = new System.Drawing.Size(112, 51);
@@ -1069,6 +1067,96 @@ namespace Linear_Programming_Algorithms
             this.statusLabel.Size = new System.Drawing.Size(50, 20);
             this.statusLabel.Text = "Ready";
             // 
+            // txtNewVarObjective
+            // 
+            this.txtNewVarObjective.AnimateReadOnly = false;
+            this.txtNewVarObjective.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.txtNewVarObjective.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal;
+            this.txtNewVarObjective.Depth = 0;
+            this.txtNewVarObjective.Font = new System.Drawing.Font("Roboto", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.txtNewVarObjective.HideSelection = true;
+            this.txtNewVarObjective.LeadingIcon = null;
+            this.txtNewVarObjective.Location = new System.Drawing.Point(23, 123);
+            this.txtNewVarObjective.MaxLength = 32767;
+            this.txtNewVarObjective.MouseState = MaterialSkin.MouseState.OUT;
+            this.txtNewVarObjective.Name = "txtNewVarObjective";
+            this.txtNewVarObjective.PasswordChar = '\0';
+            this.txtNewVarObjective.PrefixSuffixText = null;
+            this.txtNewVarObjective.ReadOnly = false;
+            this.txtNewVarObjective.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.txtNewVarObjective.SelectedText = "";
+            this.txtNewVarObjective.SelectionLength = 0;
+            this.txtNewVarObjective.SelectionStart = 0;
+            this.txtNewVarObjective.ShortcutsEnabled = true;
+            this.txtNewVarObjective.Size = new System.Drawing.Size(250, 48);
+            this.txtNewVarObjective.TabIndex = 4;
+            this.txtNewVarObjective.TabStop = false;
+            this.txtNewVarObjective.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.txtNewVarObjective.TrailingIcon = null;
+            this.txtNewVarObjective.UseSystemPasswordChar = false;
+            // 
+            // materialLabel1
+            // 
+            this.materialLabel1.Depth = 0;
+            this.materialLabel1.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.materialLabel1.Location = new System.Drawing.Point(51, 99);
+            this.materialLabel1.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialLabel1.Name = "materialLabel1";
+            this.materialLabel1.Size = new System.Drawing.Size(196, 35);
+            this.materialLabel1.TabIndex = 5;
+            this.materialLabel1.Text = "Add new variable objective";
+            // 
+            // txtNewVarCoeffs
+            // 
+            this.txtNewVarCoeffs.AnimateReadOnly = false;
+            this.txtNewVarCoeffs.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.txtNewVarCoeffs.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal;
+            this.txtNewVarCoeffs.Depth = 0;
+            this.txtNewVarCoeffs.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.txtNewVarCoeffs.HideSelection = true;
+            this.txtNewVarCoeffs.LeadingIcon = null;
+            this.txtNewVarCoeffs.Location = new System.Drawing.Point(371, 123);
+            this.txtNewVarCoeffs.MaxLength = 32767;
+            this.txtNewVarCoeffs.MouseState = MaterialSkin.MouseState.OUT;
+            this.txtNewVarCoeffs.Name = "txtNewVarCoeffs";
+            this.txtNewVarCoeffs.PasswordChar = '\0';
+            this.txtNewVarCoeffs.PrefixSuffixText = null;
+            this.txtNewVarCoeffs.ReadOnly = false;
+            this.txtNewVarCoeffs.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.txtNewVarCoeffs.SelectedText = "";
+            this.txtNewVarCoeffs.SelectionLength = 0;
+            this.txtNewVarCoeffs.SelectionStart = 0;
+            this.txtNewVarCoeffs.ShortcutsEnabled = true;
+            this.txtNewVarCoeffs.Size = new System.Drawing.Size(250, 48);
+            this.txtNewVarCoeffs.TabIndex = 6;
+            this.txtNewVarCoeffs.TabStop = false;
+            this.txtNewVarCoeffs.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.txtNewVarCoeffs.TrailingIcon = null;
+            this.txtNewVarCoeffs.UseSystemPasswordChar = false;
+            // 
+            // materialLabel2
+            // 
+            this.materialLabel2.Depth = 0;
+            this.materialLabel2.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.materialLabel2.Location = new System.Drawing.Point(416, 99);
+            this.materialLabel2.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialLabel2.Name = "materialLabel2";
+            this.materialLabel2.Size = new System.Drawing.Size(153, 35);
+            this.materialLabel2.TabIndex = 7;
+            this.materialLabel2.Text = "Add new coefficents";
+            // 
+            // btnAnalyzeNewVar
+            // 
+            this.btnAnalyzeNewVar.Depth = 0;
+            this.btnAnalyzeNewVar.Icon = null;
+            this.btnAnalyzeNewVar.Location = new System.Drawing.Point(667, 115);
+            this.btnAnalyzeNewVar.MouseState = MaterialSkin.MouseState.HOVER;
+            this.btnAnalyzeNewVar.Name = "btnAnalyzeNewVar";
+            this.btnAnalyzeNewVar.Size = new System.Drawing.Size(56, 56);
+            this.btnAnalyzeNewVar.TabIndex = 8;
+            this.btnAnalyzeNewVar.Text = "Run";
+            this.btnAnalyzeNewVar.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(247)))), ((int)(((byte)(250)))));
@@ -1144,7 +1232,6 @@ namespace Linear_Programming_Algorithms
         private System.Windows.Forms.ListBox lstSensitivityLog;
         private System.Windows.Forms.FlowLayoutPanel flowSensitivityButtons;
         private System.Windows.Forms.Button btnRunSensitivity;
-        private System.Windows.Forms.Button btnStepSensitivity;
         private System.Windows.Forms.Button btnResetSensitivity;
         private System.Windows.Forms.TabPage tabCutting;
         private System.Windows.Forms.Panel panelCutting;
@@ -1179,5 +1266,10 @@ namespace Linear_Programming_Algorithms
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button btnNLReset;
         private System.Windows.Forms.Button btnNLExport;
+        private MaterialSkin.Controls.MaterialLabel materialLabel1;
+        private MaterialSkin.Controls.MaterialTextBox2 txtNewVarObjective;
+        private MaterialSkin.Controls.MaterialTextBox2 txtNewVarCoeffs;
+        private MaterialSkin.Controls.MaterialLabel materialLabel2;
+        private MaterialSkin.Controls.MaterialFloatingActionButton btnAnalyzeNewVar;
     }
 }
